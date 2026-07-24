@@ -1,0 +1,2098 @@
+openapi: 3.0.3
+info:
+  title: Total Expert Public Account Endpoints Contact Endpoints API
+  version: v1
+  description: "The Total Expert REST API allows you to programmatically create, retrieve, update, and delete information through various endpoints.\n\nDocumentation Layout\n\nEach section of this documentation describes a collection of related endpoints that affect a given resource.\n\nWhere applicable, at the top of a section you will find a table listing the attributes for the resource and a second showing its relationships with other resources.\n\nNOTE: If an attribute is marked as 'Assignable', its value can be set via a POST/PATCH. You can also modify the data for an 'Assignable' relationship.\n\nAuthentication in the TE API\n\nInteraction with the TE API is protected with OAuth 2.0. A client ID/secret pair is required to use the API.\n\nThe ID/secret pair is used to request an access token from the '/token' endpoint. This token will need to be present within the header on all calls to the API.\n\nNOTE: See the 'Authentication' endpoint collection for more information. See the 'Heartbeats' endpoint collection for more information on how to test your authentication.\n\nEndpoint Standards\n\nEach endpoint provides interaction with two aspects of an entity:\n\n'Attributes' - Attributes of the entity itself. Includes things like first name, phone number, or birthday of the contact.\nE.g. A 'Contact'\n\n'Relationships' - Describe a relationship between that entity and another entity.\nE.g. A contact that has an owner in the TE System OR a set of contact groups (separate entities with their own endpoint).\n\nAttributes\n\nEach endpoint returns a JSON object with a set of attributes. Each endpoint collection should describe the names and types of attributes available in each endpoint.\n\nData Types\n\nEach attribute has a type. There are four data types in the TE API - Numeric, String, Boolean, and Date.\n\nData Types\n\nType\nDescription\n\nNumeric\nInteger or floating point numbers. Supplied with no surrounding quotes. e.g. { \"loan_rate\":4.5 }\n\nString\nString of characters - supplied surrounded with quotes. e.g. { \"first_name\":\"Clark\" }\n\nBoolean\nTruth value - supplied in one of two ways - see Boolean (String) and Boolean (Numeric) for details\n\nBoolean (String)\nTruth value - supplied as the word \"True\" or \"False\", surrounded by quotes. e.g. { \"first_time_buyer\":\"True\" }\n\nBoolean (Numeric)\nTruth value - supplied as the number 1 or 0, not surrounded by quotes. e.g. { \"first_time_buyer\":0 }\n\nDate\nA date and time - preferred supplied in the format \"YYYY-MM-DD hh:mm:ss\". All dates must be provided in UTC timezone. When returned, the value will be expressed in UTC. To clear a field with a date type, use the value \"0000-00-00 00:00:00\".\n\nPhone Numbers\n\nPhone numbers are accepted in any format. For deduplication, any non-numeric symbols will be stripped out and the numeric phone number will be stored separately. If a numerically identical phone number is used in a different format later, the records are compared using the numeric value only. This applies only to phone numbers with at least 7 digits.\n\nAll phone numbers will also be converted into E164 for use in external services (e.g. Twilio). If a phone number cannot be converted into E164, the number will be marked 'Invalid', and external services that rely on phone numbers will not function.\n\nUniqueness in the TE API\n\nEach type of entity in the TE API can be uniquely identified by a set of attributes. In some cases, multiple options are available to uniquely identify an entity. See each section below for details. These sets of attributes are used to deduplicate entries on creation and to uniquely identify the target in a relationship.\n\nRelationships\n\nRelationships in the TE API are very flexible.\n\n'GET'ing\n\nWhen GETing an entity, a relationship will be returned with only a partial set of attributes that make sense in the context of that endpoint - e.g. the 'contact_groups' relationship on the '/contacts' endpoint will display only the group name of the target contact_group.\n\nPOST and PATCH Requests\n\nWhen setting a relationship (by POST or PATCH), the target entity is specified using one or more attributes that uniquely identify the entity.\n\nThe allowed attributes are listed in the 'Settable Fields' column of each Relationships table. For example, when POSTing to the '/contact-groups' endpoint, either of the following are allowed:\n\n{\n  \"group_name\": \"Hot Leads\",\n  \"owner\":{\"username\": \"alfred\"}\n  }\n  OR\n\n{\n  \"group_name\": \"Hot Leads\",\n  \"owner\":{\"id\": \"123589\"}\n  }\n\nIn cases where an endpoint's relationship supports multiple Settable Fields be aware that the request examples may only make use of one of the attributes though any could be used in its place.\n\nInteracting with the API\n\nAdmin Calls vs User Calls\n\nYou'll notice that many sections of the documentation have samples for POSTs and GETs that are labeled \"As Admin\" or \"As User\".\nWhen using client credentials to access the API, you'll use the \"As Admin\" examples. For Authorization Code access, you'll use the \"As User\" examples.\n\n'GET'ing\n\nThere are two types of GETable endpoints in the TE API: Paging and Individual. Paging endpoints provide lists of entities. E.g. '/contacts' returns a list of contacts.\n\nGetting Individual Entities\n\nIndividual endpoints return specific individual entities, specified by TE ID. E.g. '/contacts/51151' returns the contact with the 'id' attribute '51151' (the TE internal identifier).\n\nGetting Multiple Entities (Paging)\n\nPaging endpoints will return an object with two properties: 'objects' and 'links'. The 'objects' property will be an array of entities in 'pages'. Each page will have a number of entities along with a set of links. The page size and page number can be specified using the '?page' GET parameter. Setting '?page[number]=5' will return the fifth page. Setting '?page[size]=100' will make each page consist of 100 items, instead of the default of 10. Both attributes can be set together. E.g. setting '?page[size]=100&page[number]=6' will return items 501-600.\n\nPaging Links\n\nThe 'links' attribute on a page object will have four attributes, specifying metadata about the number of entities available to page.\n\n'first' will be the page number of the first page of entities (always '1').\n\n'last' will be the page number of the last page of entities.\n\n'next' will be the page number of the next page after the currently requested one. 'next' may be null if there are no subsequent pages.\n\n'prev' will be the page number of the page immediately preceding the current one. 'prev' may be null if there are no preceding pages.\n\n'POST'ing\n\nEntities can be created in the TE system by POSTing to paging endpoints. E.g. sending a POST to '/contacts' will create a contact.\n\nDeduplication\n\nWhen POSTing an entity, the TE API will attempt to 'Deduplicate' by searching for existing entities with similar attributes. If such a duplicate does exist, the TE API will treat the POST as a PATCH to that entity instead. See each section for details on what attributes will be used to search for duplicates.\n\n'PATCH'ing\n\nEntities can be updated in the TE system by PATCHing to individual endpoints. E.g. sending a PATCH to '/contacts/51151' will update the attributes of the contact with TE 'id' of '51151'.\n\n'DELETE'ing\n\nEntities can be deleted only by TE ID. Send a DELETE request to the appropriate individual entity endpoint to delete it.\n\nReturn Codes\n\nWhere applicable, the API will respond with an HTTP status code that indicates what happened during the request. Possible values include:\n\nHTTP CODES\n\nStatus Code\nGeneral Description\n\n200 SUCCESS\nThe operation completed successfully. See the response body for details (if applicable).\n\n201 CREATED\nThe object was created successfully. See the response body for details (if applicable).\n\n400 BAD REQUEST\nThe JSON supplied to the API was malformed and unparseable.\n\n401 UNAUTHORIZED\nThe request's credentials are invalid. This could mean your token has expired and should be renewed. See the response body for details.\n\n403 FORBIDDEN\nAn attempt was made to access a resource for which you do not have permission\n\n405 METHOD NOT ALLOWED\nAn attempt was made to interact with an endpoint in an unsupported manner, e.g. sending a POST to '/contacts/1'\n\n415 UNSUPPORTED MEDIA TYPE\nThe API endpoints expect a content type of 'media/json'\n\n422 UNPROCESSABLE ENTITY\nThe JSON body supplied is valid, but not processable semantically. For example, the 'owner' relationship for a contact refers to a User that does not exist in the TE system.\n\n418 I'M A TEAPOT\nThe API is a teapot (See the 'Heartbeat' section for details).\n\n503 SERVICE UNAVAILABLE\nThe API is unavailable. Please try your request again later. If this message persists, please contact Technical Support"
+  contact:
+    url: https://developer.totalexpert.net
+servers:
+- url: https://public.totalexpert.net
+  description: Total Expert external API — production
+- url: https://public.vt.totalexpert.net
+  description: Total Expert external API — development/sandbox domain (isolated from live data; per the Vendor OAuth Integration Guide)
+security:
+- oauth2: []
+tags:
+- name: Contact Endpoints
+paths:
+  /v1/contacts/{contact_id}:
+    get:
+      operationId: fetchContact
+      summary: Fetch Contact
+      description: Fetch a specific contact specified by ID.
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Fetch Contact (as User)
+          content:
+            application/json:
+              example:
+                address: 1234 Fake St
+                address_2: Apartment -8
+                birthday: '1900-01-01'
+                city: Pleasantville
+                classification: ''
+                close_date: '2016-12-26'
+                creation_date: '2017-01-01 11:11:11'
+                email: username@example.com
+                email_work: clark.gable2@totalexpertinc.com
+                employer_address: 1235 Fake Ave.
+                employer_address_2: Ste 10058818144
+                employer_city: Unpleasantville
+                employer_name: BigIndustry Co, Inc. LLC
+                employer_state: WI
+                employer_zip: '54321'
+                external_id: '101010'
+                first_name: Clark
+                id: 2317
+                internal_created_at: '2019-01-31 18:53:53'
+                internal_updated_at: '2019-01-31 18:55:29'
+                last_contacted_date: '2017-01-01 12:12:12'
+                last_name: Gable
+                license_number: Q10101010101011
+                list_date: '2016-12-25'
+                ok_to_call: false
+                ok_to_email: false
+                ok_to_mail: false
+                phone_cell: (763)555-0123
+                phone_home: (612)-555-0123
+                phone_office: (763)555-1234
+                referred_by: ''
+                referred_to: ''
+                source: OurSystem
+                state: MN
+                title: Doctor
+                zip_code: '12345'
+                contact_groups:
+                - group_name: Past Client
+                  id: 14
+                - group_name: Prospect
+                  id: 15
+                external_ids:
+                - external_id: abcd
+                  source: local
+                - external_id: '101010'
+                  source: OurSystem
+                external_status:
+                  status_name: Processing
+                preferences:
+                  is_silenced: true
+                assignee:
+                  email: toni.ark@expert.com
+                  external_id: ironExpertExternal
+                  id: '58'
+                  username: ironExpert
+                owner:
+                  email: stevie.dodgers@expert.com
+                  external_id: captainExpertExternal
+                  id: '59'
+                  username: captainExpert
+                shared_with_users:
+                - email: pete.park@expert.com
+                  external_id: spiderExpertExternal
+                  id: '56'
+                  username: spiderExpert
+      parameters:
+      - name: contact_id
+        in: path
+        required: true
+        schema:
+          type: string
+    patch:
+      operationId: updateContact
+      summary: Update Contact
+      description: Update an existing contact by ID.
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Success. See the Total Expert Public API documentation for the response shape.
+      parameters:
+      - name: contact_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              title: Doctor
+              first_name: Clark
+              last_name: Gable
+              email: username@example.com
+              email_work: clark.gable2@totalexpertinc.com
+              address: 1234 Fake St
+              address_2: Apartment -8
+              city: Pleasantville
+              state: MN
+              zip_code: '12345'
+              phone_cell: (763)555-0123
+              phone_office: (763)555-1234
+              phone_home: (612)-555-0123
+              employer_name: BigIndustry Co, Inc. LLC
+              employer_address: 1235 Fake Ave.
+              employer_address_2: Ste 10058818144
+              employer_city: Unpleasantville
+              employer_state: WI
+              employer_zip: '54321'
+              license_number: Q10101010101011
+              source: OurSystem
+              creation_date: '2017-01-01 11:11:11'
+              last_contacted: '2017-01-01 12:12:12'
+              list_date: '2016-12-25 10:00:00'
+              close_date: '2016-12-26 09:09:09'
+              external_id: '101010'
+              birthday: '1970-01-01'
+              ok_to_mail: 0
+              ok_to_email: 0
+              ok_to_call: 0
+              contact_groups:
+              - group_name: Past Client
+              - group_name: Open House Visitors
+              external_ids:
+              - source: local
+                external_id: abcd
+    delete:
+      operationId: deleteContact
+      summary: Delete Contact
+      description: Delete a contact by ID.
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Success. See the Total Expert Public API documentation for the response shape.
+      parameters:
+      - name: contact_id
+        in: path
+        required: true
+        schema:
+          type: string
+  /v1/contacts:
+    get:
+      operationId: fetchContacts
+      summary: Fetch Contacts
+      description: Fetch a page of contacts. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters.
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Success. See the Total Expert Public API documentation for the response shape.
+      parameters:
+      - name: page[number]
+        in: query
+        required: false
+        schema:
+          type: string
+        example: '1'
+      - name: page[size]
+        in: query
+        required: false
+        schema:
+          type: string
+        example: '10'
+    post:
+      operationId: createContactAsAdmin
+      summary: Create Contact (as Admin)
+      description: 'Create a contact.
+
+
+        Required Attributes (one of the following combinations):
+
+
+        source, first_name, last_name, email
+
+
+        source, first_name, last_name, phone_cell
+
+
+        source, first_name, last_name, phone_home
+
+
+        source, first_name, last_name, phone_office
+
+
+        source, first_name, last_name, address, city, state, zip_code
+
+
+        Required Relationships:
+
+
+        owner*
+
+
+        *required if authenticated as an organization admin
+
+
+        Alternate documented request: Create Contact (as User).
+
+
+        Alternate documented request: Create Contact (as Admin) with Entity.
+
+
+        Alternate documented request: Grant Consent on Create.'
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Update Contact (as Admin)
+          content:
+            application/json:
+              example:
+                duplicate: external-api.totaldev.us/v1/contacts/56495
+                id: 56495
+        '201':
+          description: Create Contact (as Admin)
+          content:
+            application/json:
+              example:
+                created: '{external_api_host}/v1/contacts/56495'
+                id: 56495
+      requestBody:
+        content:
+          application/json:
+            examples:
+              default:
+                value:
+                  title: Doctor
+                  first_name: Clark
+                  last_name: Gable
+                  email: username@example.com
+                  email_work: clark.gable2@totalexpert.com
+                  address: 1234 Fake St
+                  address_2: Apartment -8
+                  city: Pleasantville
+                  state: MN
+                  zip_code: '12345'
+                  phone_cell: (763)555-0123
+                  phone_office: (763)555-1234
+                  phone_home: (612)-555-0123
+                  employer_name: BigIndustry Co, Inc. LLC
+                  employer_address: 1235 Fake Ave.
+                  employer_address_2: Ste 10058818144
+                  employer_city: Unpleasantville
+                  employer_state: WI
+                  employer_zip: '54321'
+                  license_number: Q10101010101011
+                  source: OurSystem
+                  creation_date: '2017-01-01 11:11:11'
+                  last_contacted_date: '2017-01-01 12:12:12'
+                  list_date: '2016-12-25 10:00:00'
+                  close_date: '2016-12-26 09:09:09'
+                  external_id: '101010'
+                  birthday: '1970-01-01'
+                  ok_to_mail: 0
+                  ok_to_email: 0
+                  ok_to_call: 0
+                  preferences:
+                    is_silenced: true
+                  owner:
+                    external_id: userExternal1
+                  contact_groups:
+                  - group_name: Past Client
+                  - id: '14'
+                  custom:
+                  - field_name: custom_string
+                    value: the custom field string value
+                  external_ids:
+                  - source: local
+                    external_id: abcd
+                  external_status:
+                    status_name: Processing
+              create-contact-as-user:
+                value:
+                  title: Doctor
+                  first_name: Clark
+                  last_name: Gable
+                  email: username@example.com
+                  email_work: clark.gable2@totalexpertinc.com
+                  address: 1234 Fake St
+                  address_2: Apartment -8
+                  city: Pleasantville
+                  state: MN
+                  zip_code: '12345'
+                  phone_cell: (763)555-0123
+                  phone_office: (763)555-1234
+                  phone_home: (612)-555-0123
+                  employer_name: BigIndustry Co, Inc. LLC
+                  employer_address: 1235 Fake Ave.
+                  employer_address_2: Ste 10058818144
+                  employer_city: Unpleasantville
+                  employer_state: WI
+                  employer_zip: '54321'
+                  license_number: Q10101010101011
+                  source: OurSystem
+                  creation_date: '2017-01-01 11:11:11'
+                  last_contacted_date: '2017-01-01 12:12:12'
+                  list_date: '2016-12-25 10:00:00'
+                  close_date: '2016-12-26 09:09:09'
+                  external_id: '101010'
+                  birthday: '1970-01-01'
+                  ok_to_mail: 0
+                  ok_to_email: 0
+                  ok_to_call: 0
+                  preferences:
+                    is_silenced: 0
+                  external_ids:
+                  - source: local
+                    external_id: abcd
+                  contact_groups:
+                  - group_name: Past Client
+                  external_status:
+                    status_name: Processing
+                  owner:
+                    external_id: ironExpertExternal
+                  assignee:
+                    external_id: captainExpertExternal
+                  shared_with_users:
+                  - external_id: spiderExpertExternal
+              create-contact-as-admin-with-entity:
+                value:
+                  title: Doctor
+                  first_name: Clark
+                  last_name: Gable
+                  email: username@example.com
+                  email_work: clark.gable2@totalexpertinc.com
+                  address: 1234 Fake St
+                  address_2: Apartment -8
+                  city: Pleasantville
+                  state: MN
+                  zip_code: '12345'
+                  phone_cell: (763)555-0123
+                  phone_office: (763)555-1234
+                  phone_home: (612)-555-0123
+                  employer_name: BigIndustry Co, Inc. LLC
+                  employer_address: 1235 Fake Ave.
+                  employer_address_2: Ste 10058818144
+                  employer_city: Unpleasantville
+                  employer_state: WI
+                  employer_zip: '54321'
+                  license_number: Q10101010101011
+                  source: OurSystem
+                  creation_date: '2017-01-01 11:11:11'
+                  last_contacted_date: '2017-01-01 12:12:12'
+                  list_date: '2016-12-25 10:00:00'
+                  close_date: '2016-12-26 09:09:09'
+                  external_id: '101010'
+                  birthday: '1970-01-01'
+                  ok_to_mail: 0
+                  ok_to_email: 0
+                  ok_to_call: 0
+                  preferences:
+                    is_silenced: true
+                  owner:
+                    external_id: userExternal1
+                  contact_groups:
+                  - group_name: Past Client
+                  - id: '14'
+                  external_ids:
+                  - source: local
+                    external_id: abcd
+                  external_status:
+                    status_name: Processing
+                  related_entities:
+                  - relationship_type:
+                      system_name: household
+                    parent:
+                      id: 1234abcd7
+                      entity_name: Gable Household
+              grant-consent-on-create:
+                value:
+                  title: Doctor
+                  first_name: Clark
+                  last_name: Gable
+                  email: username@example.com
+                  email_work: clark.gable2@totalexpertinc.com
+                  address: 1234 Fake St
+                  address_2: Apartment -8
+                  city: Pleasantville
+                  state: MN
+                  zip_code: '12345'
+                  phone_cell: (763)555-0123
+                  phone_office: (763)555-1234
+                  phone_home: (612)-555-0123
+                  external_ids:
+                  - source: local
+                    external_id: abcd
+                  grant_consent:
+                    communication_agent: agentic-a-i
+                    communication_channel: phone
+                    channel_target: '+17635550123'
+                    contact_purpose: marketing
+                    capture_source: A web form check box
+                    consent_language: Contact has consented to AI calls
+                    ip_address: 1.1.1.1
+    patch:
+      operationId: grantConsentOnUpdate
+      summary: Grant Consent on Update
+      description: 'Alternate documented request: Revoke Consent.'
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Success. See the Total Expert Public API documentation for the response shape.
+      requestBody:
+        content:
+          application/json:
+            examples:
+              default:
+                value:
+                  title: Doctor
+                  first_name: Clark
+                  last_name: Gable
+                  email: username@example.com
+                  email_work: clark.gable2@totalexpertinc.com
+                  address: 1234 Fake St
+                  address_2: Apartment -8
+                  city: Pleasantville
+                  state: MN
+                  zip_code: '12345'
+                  phone_cell: (763)555-0123
+                  phone_office: (763)555-1234
+                  phone_home: (612)-555-0123
+                  external_ids:
+                  - source: local
+                    external_id: abcd
+                  grant_consent:
+                    communication_agent: agentic-a-i
+                    communication_channel: phone
+                    channel_target: '+17635550123'
+                    contact_purpose: marketing
+                    capture_source: A web form check box
+                    consent_language: Contact has consented to AI calls
+                    ip_address: 1.1.1.1
+              revoke-consent:
+                value:
+                  title: Doctor
+                  first_name: Clark
+                  last_name: Gable
+                  email: username@example.com
+                  email_work: clark.gable2@totalexpertinc.com
+                  address: 1234 Fake St
+                  address_2: Apartment -8
+                  city: Pleasantville
+                  state: MN
+                  zip_code: '12345'
+                  phone_cell: (763)555-0123
+                  phone_office: (763)555-1234
+                  phone_home: (612)-555-0123
+                  external_ids:
+                  - source: local
+                    external_id: abcd
+                  revoke_consent:
+                    communication_agent: agentic-a-i
+                    communication_channel: phone
+                    channel_target: '+17635550123'
+                    contact_purpose: marketing
+                    capture_source: Customer support
+                    consent_language: Contact has revoked consented for AI calls
+                    ip_address: 1.1.1.1
+  /v1/contact-groups/{contact_group_id}:
+    get:
+      operationId: fetchContactGroup
+      summary: Fetch Contact Group
+      description: Fetch a contact group by ID.
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Fetch Contact Group (as User)
+          content:
+            application/json:
+              example:
+                group_name: My Group
+                id: 15643
+                user_editable: false
+      parameters:
+      - name: contact_group_id
+        in: path
+        required: true
+        schema:
+          type: string
+    patch:
+      operationId: updateContactGroup
+      summary: Update Contact Group
+      description: Update an existing contact group by ID.
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Update Contact Group
+          content:
+            application/json:
+              example: []
+      parameters:
+      - name: contact_group_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              group_name: My Group
+    delete:
+      operationId: deleteContactGroup
+      summary: Delete Contact Group
+      description: Deletes a contact group by ID.
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Delete Contact Group
+          content:
+            application/json:
+              example: []
+      parameters:
+      - name: contact_group_id
+        in: path
+        required: true
+        schema:
+          type: string
+  /v1/contact-groups:
+    get:
+      operationId: fetchContactGroups
+      summary: Fetch Contact Groups
+      description: Fetch a page of contact groups. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters.
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Fetch Contact Groups (as Admin)
+          content:
+            application/json:
+              example:
+                items:
+                - group_name: Active Lead
+                  id: 5
+                  user_editable: false
+                  owner:
+                    email: ted@example.com
+                    external_id: userExternal1
+                    id: 65412
+                    username: ted-example
+                - group_name: Active Client
+                  id: 6
+                  user_editable: false
+                  owner:
+                    email: ted@example.com
+                    external_id: userExternal1
+                    id: 65412
+                    username: ted-example
+                - group_name: Past Client
+                  id: 7
+                  user_editable: false
+                  owner:
+                    email: ted@example.com
+                    external_id: userExternal1
+                    id: 65412
+                    username: ted-example
+                - group_name: Won
+                  id: 8
+                  user_editable: false
+                  owner:
+                    email: ted@example.com
+                    external_id: userExternal1
+                    id: 65412
+                    username: ted-example
+                - group_name: Lost
+                  id: 9
+                  user_editable: false
+                  owner:
+                    email: ted@example.com
+                    external_id: userExternal1
+                    id: 65412
+                    username: ted-example
+                - group_name: Pre-Approved
+                  id: 10
+                  user_editable: false
+                  owner:
+                    email: ted@example.com
+                    external_id: userExternal1
+                    id: 65412
+                    username: ted-example
+                - group_name: Referral
+                  id: 11
+                  user_editable: false
+                  owner:
+                    email: ted@example.com
+                    external_id: userExternal1
+                    id: 65412
+                    username: ted-example
+                - group_name: Under Contract
+                  id: 12
+                  user_editable: false
+                  owner:
+                    email: ted@example.com
+                    external_id: userExternal1
+                    id: 65412
+                    username: ted-example
+                - group_name: Dead
+                  id: 13
+                  user_editable: false
+                  owner:
+                    email: ted@example.com
+                    external_id: userExternal1
+                    id: 65412
+                    username: ted-example
+                - group_name: Past Client
+                  id: 14
+                  user_editable: false
+                  owner:
+                    email: eric@example.com
+                    external_id: userExternalTwo
+                    id: 70564
+                    username: eric-example
+                links:
+                  first: 1
+                  last: 2
+                  next: 2
+      parameters:
+      - name: page[number]
+        in: query
+        required: false
+        schema:
+          type: string
+        example: '1'
+      - name: page[size]
+        in: query
+        required: false
+        schema:
+          type: string
+        example: '100'
+    post:
+      operationId: createContactGroupAsAdmin
+      summary: Create Contact Group (as Admin)
+      description: 'Create a contact group.
+
+
+        Required Attributes:
+
+
+        group_name
+
+
+        Required Relationships:
+
+
+        owner*
+
+
+        *required if authenticated as an organization admin
+
+
+        Alternate documented request: Create Contact Group (as User).'
+      tags:
+      - Contact Endpoints
+      responses:
+        '422':
+          description: Owner not found
+          content:
+            application/json:
+              example:
+                error: 'Unable to find target for relationship: ''owner'''
+        '200':
+          description: Create Contact Group (as Admin)
+          content:
+            application/json:
+              example:
+                created: '{{external_api_host}}/v1/contact-groups/15643'
+                id: 15643
+      requestBody:
+        content:
+          application/json:
+            examples:
+              default:
+                value:
+                  group_name: My Group
+                  owner:
+                    external_id: userExternal1
+              create-contact-group-as-user:
+                value:
+                  group_name: My Group
+  /v1/contact-surveys/{contact_survey_id}:
+    get:
+      operationId: getContactSurvey
+      summary: Get Contact Survey
+      description: Fetch a specific survey specified by ID.
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Get Contact Survey
+          content:
+            application/json:
+              example:
+                id: 69003b93703638cf
+                internal_created_at: '2018-10-23 20:55:21'
+                survey_name: First Time Buyer Funnel
+                version: '1.3'
+                questions:
+                - data_type: text
+                  id: 7d06643723812637
+                  question_text: Any additional information you would like to leave?
+                  sort_order: '3'
+                  system_name: comments
+                - data_type: choice
+                  id: e68569b18b191912
+                  question_text: Are granite countertops a must?
+                  sort_order: '2'
+                  system_name: granite_tops
+                  possible_choice_answers:
+                  - sort_order: '0'
+                    system_name: 'no'
+                    value: Nope
+                  - sort_order: '0'
+                    system_name: 'yes'
+                    value: Absolutely!
+                - data_type: decimal
+                  id: f8781f1a6d2f3ab5
+                  question_text: What is your maximum price range?
+                  sort_order: '1'
+                  system_name: max_price
+      parameters:
+      - name: contact_survey_id
+        in: path
+        required: true
+        schema:
+          type: string
+    patch:
+      operationId: updateContactSurvey
+      summary: Update Contact Survey
+      description: 'Update a survey.
+
+
+        Required Attributes:
+
+
+        At least one questions array, which could be empty.'
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Update Contact Survey
+          content:
+            application/json:
+              example:
+                created: public.totalexpert.net/v1/contact-surveys/69003b93703638cf
+                id: 69003b93703638cf
+      parameters:
+      - name: contact_survey_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              source: Survey Origination System
+              survey_name: First Time Buyer Funnel
+              version: '1.3'
+              questions:
+              - question_text: What is your maximum price range?
+                system_name: max_price
+                data_type: decimal
+                sort_order: '1'
+              - question_text: Any additional information you would like to leave?
+                system_name: comments
+                data_type: text
+                sort_order: '3'
+              - question_text: Are granite countertops a must?
+                system_name: granite_tops
+                data_type: choice
+                sort_order: '2'
+                possible_choice_answers:
+                - value: Absolutely!
+                  system_name: 'yes'
+                - value: Nope
+                  system_name: 'no'
+  /v1/contact-surveys:
+    get:
+      operationId: getContactSurveys
+      summary: Get Contact Surveys
+      description: Fetch a page of surveys. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters.
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Success. See the Total Expert Public API documentation for the response shape.
+      parameters:
+      - name: page[number]
+        in: query
+        required: false
+        schema:
+          type: string
+        example: '1'
+      - name: page[size]
+        in: query
+        required: false
+        schema:
+          type: string
+        example: '10'
+    post:
+      operationId: createContactSurvey
+      summary: Create Contact Survey
+      description: 'Create a survey.
+
+
+        Required Attributes:
+
+
+        source
+
+
+        survey_name
+
+
+        questions
+
+
+        questions.question_text
+
+
+        questions.system_name
+
+
+        questions.data_type'
+      tags:
+      - Contact Endpoints
+      responses:
+        '201':
+          description: Create Contact Survey
+          content:
+            application/json:
+              example:
+                created: public.totalexpert.net/v1/contact-surveys/69003b93703638cf
+                id: 69003b93703638cf
+      requestBody:
+        content:
+          application/json:
+            example:
+              source: Survey Origination System
+              survey_name: First Time Buyer Funnel
+              version: '1.3'
+              questions:
+              - question_text: What is your maximum price range?
+                system_name: max_price
+                data_type: decimal
+                sort_order: '1'
+              - question_text: Any additional information you would like to leave?
+                system_name: comments
+                data_type: text
+                sort_order: '3'
+              - question_text: Are granite countertops a must?
+                system_name: granite_tops
+                data_type: choice
+                sort_order: '2'
+                possible_choice_answers:
+                - value: Absolutely!
+                  system_name: 'yes'
+                - value: Nope
+                  system_name: 'no'
+  /v1/contact-survey-responses/{contact_survey_response_id}:
+    get:
+      operationId: getContactSurveyResponse
+      summary: Get Contact Survey Response
+      description: Fetch a specific survey response specified by ID.
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Get Contact Survey Response
+          content:
+            application/json:
+              example:
+                id: fe20e62940c8a6fb
+                internal_created_at: '2018-10-23 21:10:27'
+                contact:
+                  id: 4
+                question_responses:
+                - response_value: '265000'
+                  question:
+                    data_type: decimal
+                    id: f8781f1a6d2f3ab5
+                    question_text: What is your maximum price range?
+                    sort_order: '1'
+                    system_name: max_price
+                - response_value: Nope
+                  question:
+                    data_type: choice
+                    id: e68569b18b191912
+                    question_text: Are granite countertops a must?
+                    sort_order: '2'
+                    system_name: granite_tops
+                    possible_choice_answers:
+                    - sort_order: '0'
+                      system_name: 'no'
+                      value: Nope
+                    - sort_order: '0'
+                      system_name: 'yes'
+                      value: Absolutely!
+                - response_value: Look forward to working with you!
+                  question:
+                    data_type: text
+                    id: 7d06643723812637
+                    question_text: Any additional information you would like to leave?
+                    sort_order: '3'
+                    system_name: comments
+      parameters:
+      - name: contact_survey_response_id
+        in: path
+        required: true
+        schema:
+          type: string
+  /v1/contact-survey-responses:
+    get:
+      operationId: getContactSurveyResponses
+      summary: Get Contact Survey Responses
+      description: Fetch a page of survey responses. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters.
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Success. See the Total Expert Public API documentation for the response shape.
+      parameters:
+      - name: page[number]
+        in: query
+        required: false
+        schema:
+          type: string
+        example: '1'
+      - name: page[size]
+        in: query
+        required: false
+        schema:
+          type: string
+        example: '10'
+    post:
+      operationId: createContactSurveyResponseAsUser
+      summary: Create Contact Survey Response (As User)
+      description: 'Create a response to a survey. Once created, responses may not be modified.
+
+
+        Required Attributes:
+
+
+        question_responses
+
+
+        Required Relationships:
+
+
+        survey
+
+
+        contact
+
+
+        Alternate documented request: Create Contact Survey Response (As Admin).'
+      tags:
+      - Contact Endpoints
+      responses:
+        '201':
+          description: Create Contact Survey Response
+          content:
+            application/json:
+              example:
+                created: public.totalexpert.net/v1/contact-survey-responses/192c0803946dab25
+                id: 192c0803946dab25
+        '422':
+          description: Unknown contact
+          content:
+            application/json:
+              example:
+                error: 'Unable to find target for relationship: ''contact'''
+      requestBody:
+        content:
+          application/json:
+            examples:
+              default:
+                value:
+                  contact:
+                    id: 4
+                  survey:
+                    id: 69003b93703638cf
+                  question_responses:
+                  - question:
+                      id: f8781f1a6d2f3ab5
+                    response_value: '265000'
+                  - question:
+                      id: e68569b18b191912
+                    response_value: Nope
+                  - question:
+                      id: 7d06643723812637
+                    response_value: Look forward to working with you!
+              create-contact-survey-response-as-admin:
+                value:
+                  contact:
+                    id: 4
+                  survey:
+                    id: 69003b93703638cf
+                  owner:
+                    external_id: userExternal1
+                  question_responses:
+                  - question:
+                      id: f8781f1a6d2f3ab5
+                    response_value: '265000'
+                  - question:
+                      id: e68569b18b191912
+                    response_value: Nope
+                  - question:
+                      id: 7d06643723812637
+                    response_value: Look forward to working with you!
+  /v1/contact-notes/{contact_note_id}:
+    get:
+      operationId: fetchContactNote
+      summary: Fetch Contact Note
+      description: Fetch a contact notes by ID.
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Fetch Contact Note
+          content:
+            application/json:
+              example:
+                id: 14
+                note: My Note Content2
+                title: My Title2
+                type_id: '2'
+                contact:
+                  id: 65489
+                owner:
+                  email: ted@example.com
+                  external_id: userExternal1
+                  id: 65412
+                  username: ted-example
+      parameters:
+      - name: contact_note_id
+        in: path
+        required: true
+        schema:
+          type: string
+    patch:
+      operationId: updateContactNote
+      summary: Update Contact Note
+      description: Update an existing contact note by ID.
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Update Contact Note
+          content:
+            application/json:
+              example: []
+      parameters:
+      - name: contact_note_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              title: My Title2
+              note: My Note Content2
+              type_id: 2
+              contact:
+                first_name: Clark
+                last_name: Gable
+                email: me@you.com
+                source: local
+    delete:
+      operationId: deleteContactNote
+      summary: Delete Contact Note
+      description: Deletes a contact note by ID.
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Delete Contact Note
+          content:
+            application/json:
+              example: []
+      parameters:
+      - name: contact_note_id
+        in: path
+        required: true
+        schema:
+          type: string
+  /v1/contact-notes:
+    get:
+      operationId: fetchContactNotes
+      summary: Fetch Contact Notes
+      description: Fetch a page of contact notes. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters.
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Fetch Contact Notes (as User)
+          content:
+            application/json:
+              example:
+                items:
+                - id: 1
+                  note: Additional information pending
+                  title: Contact info
+                  type_id: '1'
+                  contact:
+                    id: 45613
+                - id: 2
+                  note: This is a note with a link https://www.totalexpert.com
+                  title: Link note
+                  type_id: '1'
+                  contact:
+                    id: 65548
+                - id: 3
+                  note: This needs attention
+                  title: Contact update success
+                  type_id: '2'
+                  contact:
+                    id: 65548
+                - id: 4
+                  note: Failed to push contact
+                  title: Integration Note
+                  type_id: '2'
+                  contact:
+                    id: 65548
+                links:
+                  first: 1
+                  last: 1
+      parameters:
+      - name: page[number]
+        in: query
+        required: false
+        schema:
+          type: string
+        example: '1'
+      - name: page[size]
+        in: query
+        required: false
+        schema:
+          type: string
+        example: '10'
+    post:
+      operationId: createContactNoteAsUser
+      summary: Create Contact Note (as User)
+      description: 'Create a contact note.
+
+
+        Required Attributes:
+
+
+        title
+
+
+        note
+
+
+        type_id
+
+
+        Required Relationships:
+
+
+        contact
+
+
+        Alternate documented request: Create Contact Note (as Admin).'
+      tags:
+      - Contact Endpoints
+      responses:
+        '201':
+          description: Create Contact Note (as User)
+          content:
+            application/json:
+              example:
+                created: '{external_api_host}/v1/contact-notes/14'
+                id: 14
+        '422':
+          description: Contact not found
+          content:
+            application/json:
+              example:
+                error: 'Unable to find target for relationship: ''contact'''
+      requestBody:
+        content:
+          application/json:
+            examples:
+              default:
+                value:
+                  title: My Title
+                  note: My Note Content:<br/>It includes linebreaks <sup>superscripts</sup>, <sub>subscripts</sub>, and even <em>italicized text!!</em>
+                  type_id: 1
+                  contact:
+                    first_name: Clark
+                    last_name: Gable2
+                    email: me@you2.com
+                    source: local
+                  outcome:
+                    outcome_id: 1
+              create-contact-note-as-admin:
+                value:
+                  title: My Title
+                  note: My Note Content:<br/>It includes linebreaks <sup>superscripts</sup>, <sub>subscripts</sub>, and even <em>italicized text!!</em>
+                  type_id: 1
+                  contact:
+                    first_name: Clark
+                    last_name: Gable
+                    email: me@you2.com
+                    source: local
+                  owner:
+                    username: ted
+                  outcome:
+                    outcome_id: 1
+  /v1/contact-recruits/{contact_id}:
+    get:
+      operationId: fetchContactRecruit
+      summary: Fetch Contact Recruit
+      description: Fetch a specific contact specified by ID.
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Fetch Contact Recruit
+          content:
+            application/json:
+              example:
+                address: 1234 Bermuda St
+                address_2: Apt. 3
+                birthday: '1900-01-01'
+                city: Pleasantville
+                classification: ''
+                creation_date: '2017-01-01 11:11:11'
+                email: jlsmith@example.com
+                email_work: jlsmith@otherlender.com
+                employer_address: 1235 Fake Ave.
+                employer_address_2: Ste 5
+                employer_city: Unpleasantville
+                employer_name: Other Lender LLC
+                employer_state: WI
+                employer_zip: '54321'
+                external_id: '101010'
+                first_name: Jane
+                id: 520
+                internal_created_at: '2019-03-21 18:10:48'
+                internal_updated_at: '2019-03-21 18:10:48'
+                last_contacted_date: '2017-01-01 12:12:12'
+                last_name: Smith
+                license_number: Q10101010101011
+                ok_to_call: false
+                ok_to_email: false
+                ok_to_mail: false
+                phone_cell: (763)555-0123
+                phone_home: (612)-555-0123
+                phone_office: (763)555-1234
+                referred_by: ''
+                referred_to: ''
+                source: Recruit Intake System
+                state: MN
+                title: Ms.
+                zip_code: '12345'
+                contact_groups:
+                - group_name: Recruit - Hot
+                  id: 15
+                external_ids:
+                - external_id: abcd
+                  source: Other Recruit Intake System
+                - external_id: '101010'
+                  source: Recruit Intake System
+                external_status:
+                  status_name: Processing
+                owner:
+                  email: john@example.com
+                  external_id: userExternal1
+                  id: 57
+                  username: john-example
+                preferences:
+                  is_silenced: true
+                recruit_info:
+                  background: Jane started as a loan officer...
+                  commission_cap: '26002'
+                  commission_split: 50%
+                  corporate_objective: '1'
+                  has_resume: true
+                  nmls_id: NMLS identifier
+                  resume_url: http:/jlsmith.lender.com/resume
+                  sourced_percentage: '10'
+                  ust_is_complete: true
+                  years_experience: '6'
+                  branch_manager:
+                    email: glen@lender.com
+                    external_id: ''
+                    id: 53
+                    username: glen-lender
+                  division_manager:
+                    email: suzy@lender.com
+                    external_id: ''
+                    id: 53
+                    username: suzy-lender
+                  recruit_status:
+                    status_name: Active
+                  regional_manager:
+                    email: richard@lender.com
+                    external_id: ''
+                    id: 53
+                    username: richard-lender
+                recruit_metrics:
+                - value: '30'
+                  metric:
+                    metric_name: Builders
+                    metric_type: business_source
+                  unit:
+                    unit_name: percent
+                - value: '40'
+                  metric:
+                    metric_name: Realtors
+                    metric_type: business_source
+                  unit:
+                    unit_name: percent
+                - on_date: '2018-01-01 00:00:00'
+                  value: '10123'
+                  metric:
+                    metric_name: Sales Production
+                    metric_type: sales_production
+                  unit:
+                    unit_name: dollars
+                state_licenses:
+                - state_name: MN
+                - state_name: KS
+      parameters:
+      - name: contact_id
+        in: path
+        required: true
+        schema:
+          type: string
+    patch:
+      operationId: updateContactRecruit
+      summary: Update Contact Recruit
+      description: Update an existing contact by ID.
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Remove Metric
+          content:
+            application/json:
+              example: []
+      parameters:
+      - name: contact_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              recruit_metrics:
+              - metric:
+                  metric_name: Builders
+                  metric_type: business_source
+                unit:
+                  unit_name: percent
+                value: '50'
+              - metric:
+                  metric_name: Realtors
+                  metric_type: business_source
+                unit:
+                  unit_name: percent
+                value: '20'
+              - metric:
+                  metric_name: Sales Production
+                  metric_type: sales_production
+                unit:
+                  unit_name: dollars
+                value: '10123'
+                on_date: '2018'
+    delete:
+      operationId: deleteContactRecruit
+      summary: Delete Contact Recruit
+      description: Delete a contact by ID.
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Success. See the Total Expert Public API documentation for the response shape.
+      parameters:
+      - name: contact_id
+        in: path
+        required: true
+        schema:
+          type: string
+  /v1/contact-recruits:
+    get:
+      operationId: fetchContactRecruits
+      summary: Fetch Contact Recruits
+      description: Fetch a page of contacts. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters.
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Fetch Contact Recruits
+          content:
+            application/json:
+              example:
+                items:
+                - address: 1234 Bermuda St
+                  address_2: Apt. 3
+                  birthday: '1900-01-01'
+                  city: Pleasantville
+                  classification: ''
+                  creation_date: '2017-01-01 11:11:11'
+                  email: jlsmith@example.com
+                  email_work: jlsmith@otherlender.com
+                  employer_address: 1235 Fake Ave.
+                  employer_address_2: Ste 5
+                  employer_city: Unpleasantville
+                  employer_name: Other Lender LLC
+                  employer_state: WI
+                  employer_zip: '54321'
+                  external_id: '101010'
+                  first_name: Jane
+                  id: 520
+                  internal_created_at: '2019-03-21 18:10:48'
+                  internal_updated_at: '2019-03-21 18:10:48'
+                  last_contacted_date: '2017-01-01 12:12:12'
+                  last_name: Smith
+                  license_number: Q10101010101011
+                  ok_to_call: false
+                  ok_to_email: false
+                  ok_to_mail: false
+                  phone_cell: (763)555-0123
+                  phone_home: (612)-555-0123
+                  phone_office: (763)555-1234
+                  referred_by: ''
+                  referred_to: ''
+                  source: Recruit Intake System
+                  state: MN
+                  title: Ms.
+                  zip_code: '12345'
+                  contact_groups:
+                  - group_name: Recruit - Hot
+                    id: 15
+                  external_ids:
+                  - external_id: abcd
+                    source: Other Recruit Intake System
+                  - external_id: '101010'
+                    source: Recruit Intake System
+                  external_status:
+                    status_name: Processing
+                  owner:
+                    email: john@example.com
+                    external_id: userExternal1
+                    id: 57
+                    username: john-example
+                  preferences:
+                    is_silenced: true
+                  recruit_info:
+                    background: Jane started as a loan officer...
+                    commission_cap: '26002'
+                    commission_split: 50%
+                    corporate_objective: '1'
+                    has_resume: true
+                    nmls_id: NMLS identifier
+                    resume_url: http:/jlsmith.lender.com/resume
+                    sourced_percentage: '10'
+                    ust_is_complete: true
+                    years_experience: '6'
+                    branch_manager:
+                      email: glen@lender.com
+                      external_id: ''
+                      id: 53
+                      username: glen-lender
+                    division_manager:
+                      email: suzy@lender.com
+                      external_id: ''
+                      id: 53
+                      username: suzy-lender
+                    recruit_status:
+                      status_name: Active
+                    regional_manager:
+                      email: richard@lender.com
+                      external_id: ''
+                      id: 53
+                      username: richard-lender
+                  recruit_metrics:
+                  - value: '30'
+                    metric:
+                      metric_name: Builders
+                      metric_type: business_source
+                    unit:
+                      unit_name: percent
+                  - value: '40'
+                    metric:
+                      metric_name: Realtors
+                      metric_type: business_source
+                    unit:
+                      unit_name: percent
+                  - on_date: '2018-01-01 00:00:00'
+                    value: '10123'
+                    metric:
+                      metric_name: Sales Production
+                      metric_type: sales_production
+                    unit:
+                      unit_name: dollars
+                  state_licenses:
+                  - state_name: MN
+                  - state_name: KS
+                links:
+                  first: 1
+                  last: 1
+      parameters:
+      - name: page[number]
+        in: query
+        required: false
+        schema:
+          type: string
+        example: '1'
+      - name: page[size]
+        in: query
+        required: false
+        schema:
+          type: string
+        example: '10'
+    post:
+      operationId: createContactRecruitAsAdmin
+      summary: Create Contact Recruit (as Admin)
+      description: 'Create a contact.
+
+
+        Required Attributes (one of the following combinations):
+
+
+        source, first_name, last_name, email
+
+
+        source, first_name, last_name, phone_cell
+
+
+        source, first_name, last_name, phone_home
+
+
+        source, first_name, last_name, phone_office
+
+
+        source, first_name, last_name, address, city, state, zip_code
+
+
+        Required Relationships:
+
+
+        owner*
+
+
+        *required if authenticated as an organization admin
+
+
+        Alternate documented request: Create Contact Recruit (as User).'
+      tags:
+      - Contact Endpoints
+      responses:
+        '201':
+          description: Create Contact Recruit (as Admin)
+          content:
+            application/json:
+              example:
+                created: external-api.totaldev.us/v1/contact-recruits/520
+                id: 520
+        '401':
+          description: Insufficient Scope
+          content:
+            application/json:
+              example:
+                error: insufficient_scope
+                error_description: The request requires higher privileges than provided by the access token
+        '200':
+          description: Update Contact Recruit (as Admin)
+          content:
+            application/json:
+              example:
+                duplicate: external-api.totaldev.us/v1/contact-recruits/520
+                id: 520
+      requestBody:
+        content:
+          application/json:
+            examples:
+              default:
+                value:
+                  title: Ms.
+                  first_name: Jane
+                  last_name: Smith
+                  email: jlsmith@example.com
+                  email_work: jlsmith@otherlender.com
+                  address: 1234 Bermuda St
+                  address_2: Apt. 3
+                  city: Pleasantville
+                  state: MN
+                  zip_code: '12345'
+                  phone_cell: (763)555-0123
+                  phone_office: (763)555-1234
+                  phone_home: (612)-555-0123
+                  employer_name: Other Lender LLC
+                  employer_address: 1235 Fake Ave.
+                  employer_address_2: Ste 5
+                  employer_city: Unpleasantville
+                  employer_state: WI
+                  employer_zip: '54321'
+                  license_number: Q10101010101011
+                  source: Recruit Intake System
+                  creation_date: '2017-01-01 11:11:11'
+                  last_contacted_date: '2017-01-01 12:12:12'
+                  external_id: '101010'
+                  birthday: '1970-01-01'
+                  ok_to_mail: 0
+                  ok_to_email: 0
+                  ok_to_call: 0
+                  preferences:
+                    is_silenced: true
+                  owner:
+                    external_id: userExternal1
+                  contact_groups:
+                  - group_name: Recruit - Hot
+                  external_ids:
+                  - source: Recruit Intake System
+                    external_id: '101010'
+                  - source: Other Recruit Intake System
+                    external_id: abcd
+                  external_status:
+                    status_name: Processing
+                  recruit_info:
+                    nmls_id: NMLS identifier
+                    regional_manager:
+                      username: glen-lender
+                    division_manager:
+                      username: suzy-lender
+                    branch_manager:
+                      username: richard-lender
+                    recruit_status:
+                      status_name: Active
+                    corporate_objective: '2306'
+                    sourced_percentage: '10'
+                    commission_cap: '26002'
+                    commission_split: 50%
+                    ust_is_complete: true
+                    background: Jane started as a loan officer...
+                    years_experience: 6
+                    has_resume: true
+                    resume_url: http:/jlsmith.lender.com/resume
+                  state_licenses:
+                  - state_name: minnesota
+                  - state_name: KS
+                  recruit_metrics:
+                  - metric:
+                      metric_name: Builders
+                      metric_type: business_source
+                    unit:
+                      unit_name: percent
+                    value: '30'
+                  - metric:
+                      metric_name: Realtors
+                      metric_type: business_source
+                    unit:
+                      unit_name: percent
+                    value: '40'
+                  - metric:
+                      metric_name: Sales Production
+                      metric_type: sales_production
+                    unit:
+                      unit_name: dollars
+                    value: '10123'
+                    on_date: '2018'
+              create-contact-recruit-as-user:
+                value:
+                  title: Ms.
+                  first_name: Jane
+                  last_name: Smith
+                  email: jlsmith@example.com
+                  email_work: jlsmith@otherlender.com
+                  address: 1234 Bermuda St
+                  address_2: Apt. 3
+                  city: Pleasantville
+                  state: MN
+                  zip_code: '12345'
+                  phone_cell: (763)555-0123
+                  phone_office: (763)555-1234
+                  phone_home: (612)-555-0123
+                  employer_name: Other Lender LLC
+                  employer_address: 1235 Fake Ave.
+                  employer_address_2: Ste 5
+                  employer_city: Unpleasantville
+                  employer_state: WI
+                  employer_zip: '54321'
+                  license_number: Q10101010101011
+                  source: Recruit Intake System
+                  creation_date: '2017-01-01 11:11:11'
+                  last_contacted_date: '2017-01-01 12:12:12'
+                  external_id: '101010'
+                  birthday: '1970-01-01'
+                  ok_to_mail: 0
+                  ok_to_email: 0
+                  ok_to_call: 0
+                  preferences:
+                    is_silenced: true
+                  contact_groups:
+                  - group_name: Recruit - Hot
+                  external_ids:
+                  - source: Recruit Intake System
+                    external_id: '101010'
+                  - source: Other Recruit Intake System
+                    external_id: abcd
+                  external_status:
+                    status_name: Processing
+                  recruit_info:
+                    nmls_id: NMLS identifier
+                    regional_manager:
+                      username: glen-lender
+                    division_manager:
+                      username: suzy-lender
+                    branch_manager:
+                      username: richard-lender
+                    recruit_status:
+                      status_name: Active
+                    corporate_objective: '2306'
+                    sourced_percentage: '10'
+                    commission_cap: '26002'
+                    commission_split: 50%
+                    ust_is_complete: true
+                    background: Jane started as a loan officer...
+                    years_experience: 6
+                    has_resume: true
+                    resume_url: http:/jlsmith.lender.com/resume
+                  state_licenses:
+                  - state_name: minnesota
+                  - state_name: KS
+                  recruit_metrics:
+                  - metric:
+                      metric_name: Builders
+                      metric_type: business_source
+                    unit:
+                      unit_name: percent
+                    value: '30'
+                  - metric:
+                      metric_name: Realtors
+                      metric_type: business_source
+                    unit:
+                      unit_name: percent
+                    value: '40'
+                  - metric:
+                      metric_name: Sales Production
+                      metric_type: sales_production
+                    unit:
+                      unit_name: dollars
+                    value: '10123'
+                    on_date: '2018'
+  /v1/contact-recruit-statuses:
+    get:
+      operationId: fetchContactRecruitStatuses
+      summary: Fetch Contact Recruit Statuses
+      description: ''
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Fetch Contact Recruit Statuses
+          content:
+            application/json:
+              example:
+                items:
+                - status_name: Active
+                - status_name: On Hold
+                - status_name: Decline
+                - status_name: Engaged
+                - status_name: Offer Out
+                links:
+                  first: 1
+                  last: 1
+      parameters:
+      - name: page[number]
+        in: query
+        required: false
+        schema:
+          type: string
+        example: '1'
+      - name: page[size]
+        in: query
+        required: false
+        schema:
+          type: string
+        example: '10'
+  /v1/contact-recruit-metrics:
+    get:
+      operationId: fetchContactRecruitMetrics
+      summary: Fetch Contact Recruit Metrics
+      description: ''
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Fetch Contact Recruit Metrics
+          content:
+            application/json:
+              example:
+                items:
+                - metric_name: Referrals
+                  metric_type: business_source
+                - metric_name: Leads
+                  metric_type: business_source
+                - metric_name: Lead Sources
+                  metric_type: business_source
+                - metric_name: Realtors
+                  metric_type: business_source
+                - metric_name: Sales Production
+                  metric_type: sales_production
+                - metric_name: Builders
+                  metric_type: business_source
+                - metric_name: Conforming
+                  metric_type: product
+                - metric_name: FHA/VA
+                  metric_type: product
+                - metric_name: Jumbo
+                  metric_type: product
+                - metric_name: Broker
+                  metric_type: product
+                links:
+                  first: 1
+                  last: 2
+                  next: 2
+      parameters:
+      - name: page[number]
+        in: query
+        required: false
+        schema:
+          type: string
+        example: '1'
+      - name: page[size]
+        in: query
+        required: false
+        schema:
+          type: string
+        example: '10'
+  /v1/contact-recruit-metric-units:
+    get:
+      operationId: fetchContactRecruitMetricUnits
+      summary: Fetch Contact Recruit Metric Units
+      description: ''
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Fetch Contact Recruit Metric Units
+          content:
+            application/json:
+              example:
+                items:
+                - unit_name: percent
+                - unit_name: dollars
+                - unit_name: loans
+                - unit_name: years
+                links:
+                  first: 1
+                  last: 1
+      parameters:
+      - name: page[number]
+        in: query
+        required: false
+        schema:
+          type: string
+        example: '1'
+      - name: page[size]
+        in: query
+        required: false
+        schema:
+          type: string
+        example: '10'
+  /v1/channels:
+    get:
+      operationId: fetchChannels
+      summary: Fetch Channels
+      description: Fetch a page of channels. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters.
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Success. See the Total Expert Public API documentation for the response shape.
+      parameters:
+      - name: page[number]
+        in: query
+        required: false
+        schema:
+          type: string
+        example: '1'
+  /v1/wlp-access-types:
+    get:
+      operationId: fetchWlpAccessTypes
+      summary: Fetch WLP Access Types
+      description: Fetch a page of wlp access types. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters.
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Success. See the Total Expert Public API documentation for the response shape.
+      parameters:
+      - name: page[number]
+        in: query
+        required: false
+        schema:
+          type: string
+        example: '1'
+  /v1/campaigns:
+    get:
+      operationId: fetchCampaigns
+      summary: Fetch Campaigns
+      description: Fetch a page of campaigns. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters.
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Success. See the Total Expert Public API documentation for the response shape.
+    post:
+      operationId: createCampaign
+      summary: Create Campaign
+      description: 'Create a campaign.
+
+
+        Required Attributes:
+
+
+        name'
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Success. See the Total Expert Public API documentation for the response shape.
+      requestBody:
+        content:
+          application/json:
+            example:
+              name: Campaign Test Name
+  /v1/campaigns/{campaign_id}:
+    get:
+      operationId: fetchCampaign
+      summary: Fetch Campaign
+      description: Fetch a campaign by id.
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Success. See the Total Expert Public API documentation for the response shape.
+      parameters:
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: string
+  /v1/campaign-activity:
+    post:
+      operationId: createCampaignActivity
+      summary: Create Campaign Activity
+      description: 'Create a campaign activity.
+
+
+        Required Attributes:
+
+
+        [none]
+
+
+        Required Relationsips:
+
+
+        contact
+
+
+        campaign'
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Success. See the Total Expert Public API documentation for the response shape.
+      requestBody:
+        content:
+          application/json:
+            example:
+              touched_at: '2019-01-01 10:00:00'
+              owner:
+                id: 50
+              contact:
+                id: '500'
+              campaign:
+                id: 374363f2971dedcddae7502e5f920c35
+    delete:
+      operationId: deleteCampaignActivity
+      summary: Delete Campaign Activity
+      description: Delete a campaign activity record by id.
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Success. See the Total Expert Public API documentation for the response shape.
+    get:
+      operationId: fetchCampaignActivities
+      summary: Fetch Campaign Activities
+      description: Fetch a page of campaign activity records. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters.
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Success. See the Total Expert Public API documentation for the response shape.
+      parameters:
+      - name: page[number]
+        in: query
+        required: false
+        schema:
+          type: string
+        example: '1'
+      - name: page[size]
+        in: query
+        required: false
+        schema:
+          type: string
+        example: '100'
+  /v1/campaign-activity/{campaign_activity_id}:
+    get:
+      operationId: fetchCampaignActivity
+      summary: Fetch Campaign Activity
+      description: Fetch a campaign activity by id.
+      tags:
+      - Contact Endpoints
+      responses:
+        '200':
+          description: Success. See the Total Expert Public API documentation for the response shape.
+      parameters:
+      - name: campaign_activity_id
+        in: path
+        required: true
+        schema:
+          type: string
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0. Obtain a token from POST /v1/token using HTTP Basic (client_id:client_secret base64-encoded) plus a grant_type body. Access tokens are bearer tokens, expires_in 3600.
+      flows:
+        clientCredentials:
+          tokenUrl: https://public.totalexpert.net/v1/token
+          scopes:
+            crm: Documented example scope (Vendor OAuth Integration Guide authorize example)
+            leadInteraction: Lead interaction access (documented in the collection token examples)
+            loanInteraction: Loan interaction access (documented in the collection token examples)
+            leadSurveyInteraction: Lead survey interaction access (documented example in the Vendor OAuth Integration Guide)
+            postLeads: Post leads access (documented example in the Vendor OAuth Integration Guide)
+        authorizationCode:
+          authorizationUrl: https://public.totalexpert.net/v1/authorize
+          tokenUrl: https://public.totalexpert.net/v1/token
+          refreshUrl: https://public.totalexpert.net/v1/token
+          scopes:
+            crm: Documented example scope (Vendor OAuth Integration Guide authorize example)
+            leadInteraction: Lead interaction access (documented in the collection token examples)
+            loanInteraction: Loan interaction access (documented in the collection token examples)
+            leadSurveyInteraction: Lead survey interaction access (documented example in the Vendor OAuth Integration Guide)
+            postLeads: Post leads access (documented example in the Vendor OAuth Integration Guide)
+externalDocs:
+  description: Total Expert Public API documentation (Postman)
+  url: https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
