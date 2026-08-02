@@ -1,0 +1,218 @@
+{
+  "info": {
+    "_postman_id": "5d21af03-6b09-4aa7-b862-13471b23ed27",
+    "name": "Total Expert Public Account Endpoints Authentication API",
+    "description": "The Total Expert REST API allows you to programmatically create, retrieve, update, and delete information through various endpoints.\n\nDocumentation Layout\n\nEach section of this documentation describes a collection of related endpoints that affect a given resource.\n\nWhere applicable, at the top of a section you will find a table listing the attributes for the resource and a second showing its relationships with other resources.\n\nNOTE: If an attribute is marked as 'Assignable', its value can be set via a POST/PATCH. You can also modify the data for an 'Assignable' relationship.\n\nAuthentication in the TE API\n\nInteraction with the TE API is protected with OAuth 2.0. A client ID/secret pair is required to use the API.\n\nThe ID/secret pair is used to request an access token from the '/token' endpoint. This token will need to be present within the header on all calls to the API.\n\nNOTE: See the 'Authentication' endpoint collection for more information. See the 'Heartbeats' endpoint collection for more information on how to test your authentication.\n\nEndpoint Standards\n\nEach endpoint provides interaction with two aspects of an entity:\n\n'Attributes' - Attributes of the entity itself. Includes things like first name, phone number, or birthday of the contact.\nE.g. A 'Contact'\n\n'Relationships' - Describe a relationship between that entity and another entity.\nE.g. A contact that has an owner in the TE System OR a set of contact groups (separate entities with their own endpoint).\n\nAttributes\n\nEach endpoint returns a JSON object with a set of attributes. Each endpoint collection should describe the names and types of attributes available in each endpoint.\n\nData Types\n\nEach attribute has a type. There are four data types in the TE API - Numeric, String, Boolean, and Date.\n\nData Types\n\nType\nDescription\n\nNumeric\nInteger or floating point numbers. Supplied with no surrounding quotes. e.g. { \"loan_rate\":4.5 }\n\nString\nString of characters - supplied surrounded with quotes. e.g. { \"first_name\":\"Clark\" }\n\nBoolean\nTruth value - supplied in one of two ways - see Boolean (String) and Boolean (Numeric) for details\n\nBoolean (String)\nTruth value - supplied as the word \"True\" or \"False\", surrounded by quotes. e.g. { \"first_time_buyer\":\"True\" }\n\nBoolean (Numeric)\nTruth value - supplied as the number 1 or 0, not surrounded by quotes. e.g. { \"first_time_buyer\":0 }\n\nDate\nA date and time - preferred supplied in the format \"YYYY-MM-DD hh:mm:ss\". All dates must be provided in UTC timezone. When returned, the value will be expressed in UTC. To clear a field with a date type, use the value \"0000-00-00 00:00:00\".\n\nPhone Numbers\n\nPhone numbers are accepted in any format. For deduplication, any non-numeric symbols will be stripped out and the numeric phone number will be stored separately. If a numerically identical phone number is used in a different format later, the records are compared using the numeric value only. This applies only to phone numbers with at least 7 digits.\n\nAll phone numbers will also be converted into E164 for use in external services (e.g. Twilio). If a phone number cannot be converted into E164, the number will be marked 'Invalid', and external services that rely on phone numbers will not function.\n\nUniqueness in the TE API\n\nEach type of entity in the TE API can be uniquely identified by a set of attributes. In some cases, multiple options are available to uniquely identify an entity. See each section below for details. These sets of attributes are used to deduplicate entries on creation and to uniquely identify the target in a relationship.\n\nRelationships\n\nRelationships in the TE API are very flexible.\n\n'GET'ing\n\nWhen GETing an entity, a relationship will be returned with only a partial set of attributes that make sense in the context of that endpoint - e.g. the 'contact_groups' relationship on the '/contacts' endpoint will display only the group name of the target contact_group.\n\nPOST and PATCH Requests\n\nWhen setting a relationship (by POST or PATCH), the target entity is specified using one or more attributes that uniquely identify the entity.\n\nThe allowed attributes are listed in the 'Settable Fields' column of each Relationships table. For example, when POSTing to the '/contact-groups' endpoint, either of the following are allowed:\n\n{\n  \"group_name\": \"Hot Leads\",\n  \"owner\":{\"username\": \"alfred\"}\n  }\n  OR\n\n{\n  \"group_name\": \"Hot Leads\",\n  \"owner\":{\"id\": \"123589\"}\n  }\n\nIn cases where an endpoint's relationship supports multiple Settable Fields be aware that the request examples may only make use of one of the attributes though any could be used in its place.\n\nInteracting with the API\n\nAdmin Calls vs User Calls\n\nYou'll notice that many sections of the documentation have samples for POSTs and GETs that are labeled \"As Admin\" or \"As User\".\nWhen using client credentials to access the API, you'll use the \"As Admin\" examples. For Authorization Code access, you'll use the \"As User\" examples.\n\n'GET'ing\n\nThere are two types of GETable endpoints in the TE API: Paging and Individual. Paging endpoints provide lists of entities. E.g. '/contacts' returns a list of contacts.\n\nGetting Individual Entities\n\nIndividual endpoints return specific individual entities, specified by TE ID. E.g. '/contacts/51151' returns the contact with the 'id' attribute '51151' (the TE internal identifier).\n\nGetting Multiple Entities (Paging)\n\nPaging endpoints will return an object with two properties: 'objects' and 'links'. The 'objects' property will be an array of entities in 'pages'. Each page will have a number of entities along with a set of links. The page size and page number can be specified using the '?page' GET parameter. Setting '?page[number]=5' will return the fifth page. Setting '?page[size]=100' will make each page consist of 100 items, instead of the default of 10. Both attributes can be set together. E.g. setting '?page[size]=100&page[number]=6' will return items 501-600.\n\nPaging Links\n\nThe 'links' attribute on a page object will have four attributes, specifying metadata about the number of entities available to page.\n\n'first' will be the page number of the first page of entities (always '1').\n\n'last' will be the page number of the last page of entities.\n\n'next' will be the page number of the next page after the currently requested one. 'next' may be null if there are no subsequent pages.\n\n'prev' will be the page number of the page immediately preceding the current one. 'prev' may be null if there are no preceding pages.\n\n'POST'ing\n\nEntities can be created in the TE system by POSTing to paging endpoints. E.g. sending a POST to '/contacts' will create a contact.\n\nDeduplication\n\nWhen POSTing an entity, the TE API will attempt to 'Deduplicate' by searching for existing entities with similar attributes. If such a duplicate does exist, the TE API will treat the POST as a PATCH to that entity instead. See each section for details on what attributes will be used to search for duplicates.\n\n'PATCH'ing\n\nEntities can be updated in the TE system by PATCHing to individual endpoints. E.g. sending a PATCH to '/contacts/51151' will update the attributes of the contact with TE 'id' of '51151'.\n\n'DELETE'ing\n\nEntities can be deleted only by TE ID. Send a DELETE request to the appropriate individual entity endpoint to delete it.\n\nReturn Codes\n\nWhere applicable, the API will respond with an HTTP status code that indicates what happened during the request. Possible values include:\n\nHTTP CODES\n\nStatus Code\nGeneral Description\n\n200 SUCCESS\nThe operation completed successfully. See the response body for details (if applicable).\n\n201 CREATED\nThe object was created successfully. See the response body for details (if applicable).\n\n400 BAD REQUEST\nThe JSON supplied to the API was malformed and unparseable.\n\n401 UNAUTHORIZED\nThe request's credentials are invalid. This could mean your token has expired and should be renewed. See the response body for details.\n\n403 FORBIDDEN\nAn attempt was made to access a resource for which you do not have permission\n\n405 METHOD NOT ALLOWED\nAn attempt was made to interact with an endpoint in an unsupported manner, e.g. sending a POST to '/contacts/1'\n\n415 UNSUPPORTED MEDIA TYPE\nThe API endpoints expect a content type of 'media/json'\n\n422 UNPROCESSABLE ENTITY\nThe JSON body supplied is valid, but not processable semantically. For example, the 'owner' relationship for a contact refers to a User that does not exist in the TE system.\n\n418 I'M A TEAPOT\nThe API is a teapot (See the 'Heartbeat' section for details).\n\n503 SERVICE UNAVAILABLE\nThe API is unavailable. Please try your request again later. If this message persists, please contact Technical Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T03:17:11.000Z",
+    "updatedAt": "2026-07-28T03:17:11.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-5d21af03-6b09-4aa7-b862-13471b23ed27"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "token",
+          "item": [
+            {
+              "name": "Fetch a Token From Client Credentials Grant",
+              "id": "c98e1c05-1c12-4976-b306-32dd48aed8ff",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"examples\": {\n    \"value\": {\n      \"grant_type\": \"client_credentials\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/token",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "token"
+                  ]
+                },
+                "description": "Supply client credentials to obtain an access token.\n\nIf you are integrating with the Total Expert API from a confidential client you will likely want to use this endpoint. For the client_credentials authorization grant type you will need to make certain that your client is also the resource owner.\n\nAuthorization Header Encoding\n\nShown in the HEADERS table below, the Authorization header field implements the Basic Authentication Schema. The 'basic_auth' value needs to be a base64-encoded string containing your client_id and client_secret. The string that you encode must be in the format:\n\n  yourclientid:yourclientsecret\n\nThe following are examples of methods that can be used to base64-encode a string.\n\nOn BSD/Linux/Mac run:\n\n  echo -n 'yourclientid:yourclientsecret' | openssl base64\n\n  (note - this often injects one or more newlines into the encoded string, remove it before using to authenticate)\n\nFor Windows see:\n\nhttps://support.microsoft.com/en-us/kb/191239\n\nUsing The Token\n\nTo interact with the secure endpoints in the TE API, supply the token in the 'Authorization' header as 'Bearer {Token}'\n\nAlternate documented request: Fetch a Token From Authorization Code.\n\nAlternate documented request: Refresh a Token."
+              },
+              "response": [
+                {
+                  "id": "7a4dcce4-8103-4521-b13a-6bb80c3c4134",
+                  "name": "Fetch a Token (scopes defined)",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"examples\": {\n    \"value\": {\n      \"grant_type\": \"client_credentials\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/token",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "token"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"example\": {\n    \"access_token\": \"407573dd426fe03eec4c63064a4bfbe9525107fa\",\n    \"expires_in\": 3600,\n    \"token_type\": \"bearer\",\n    \"scope\": \"leadInteraction\"\n  }\n}",
+                  "createdAt": "2026-07-28T03:17:12.000Z",
+                  "updatedAt": "2026-07-28T03:17:12.000Z",
+                  "uid": "35240-7a4dcce4-8103-4521-b13a-6bb80c3c4134"
+                },
+                {
+                  "id": "db9bcd2f-c675-4601-b8cf-6630cc50db82",
+                  "name": "Invalid credentials",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"examples\": {\n    \"value\": {\n      \"grant_type\": \"client_credentials\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/token",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "token"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"example\": {\n    \"error\": \"invalid_client\",\n    \"error_description\": \"The client credentials are invalid\"\n  }\n}",
+                  "createdAt": "2026-07-28T03:17:12.000Z",
+                  "updatedAt": "2026-07-28T03:17:12.000Z",
+                  "uid": "35240-db9bcd2f-c675-4601-b8cf-6630cc50db82"
+                }
+              ],
+              "createdAt": "2026-07-28T03:17:12.000Z",
+              "updatedAt": "2026-07-28T03:17:12.000Z",
+              "uid": "35240-c98e1c05-1c12-4976-b306-32dd48aed8ff"
+            }
+          ],
+          "id": "44a9d080-f045-437c-ad33-1bd64627c469",
+          "createdAt": "2026-07-28T03:17:12.000Z",
+          "updatedAt": "2026-07-28T03:17:12.000Z",
+          "uid": "35240-44a9d080-f045-437c-ad33-1bd64627c469"
+        }
+      ],
+      "id": "448abd5f-0b4c-4961-8f59-b2baa53b5104",
+      "createdAt": "2026-07-28T03:17:12.000Z",
+      "updatedAt": "2026-07-28T03:17:12.000Z",
+      "uid": "35240-448abd5f-0b4c-4961-8f59-b2baa53b5104"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "crm leadInteraction loanInteraction leadSurveyInteraction postLeads",
+        "type": "string"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://public.totalexpert.net/v1/token",
+        "type": "string"
+      },
+      {
+        "key": "grant_type",
+        "value": "client_credentials",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://public.totalexpert.net"
+    }
+  ]
+}

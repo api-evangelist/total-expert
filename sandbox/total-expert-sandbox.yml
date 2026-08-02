@@ -1,0 +1,31 @@
+generated: '2026-07-21'
+method: searched
+source: >-
+  https://public.totalexpert.net/v1/docs/Getting+Started.pdf and
+  https://public.totalexpert.net/v1/docs/OAuth+Authorization+Guide.pdf
+  (Total Expert developer portal integration guides)
+description: >-
+  Total Expert provides an isolated API testing environment ("CT Environment")
+  on a dedicated development/sandbox domain, with separate credentials from
+  production. There are no magic test values or test cards; test data is
+  created through the API itself.
+environments:
+- name: CT Environment (development / sandbox)
+  host: https://public.vt.totalexpert.net
+  purpose: API testing environment, isolated from live data, for partners to validate API calls before production.
+  credentials: Separate client ID/secret pair issued for the sandbox; production credentials are issued after validation and appear in the developer portal.
+  limitations:
+  - There is no UI to log in to; validation of data must be done through the API.
+  - Journeys cannot be created, edited, or executed in the CT environment due to the lack of a user interface.
+- name: Production
+  host: https://public.totalexpert.net
+  purpose: Live environment. Partners are moved here after Total Expert validates their calls in CT, initially testing with a mutual client's test users.
+test_data: >-
+  No published magic identifiers or fixtures. Contacts, loans, surveys, and
+  insights are created via the API in the CT environment; deduplication and
+  required-field rules apply the same as production.
+promotion_process:
+- Access to the Developer Portal comes with CT Environment credentials.
+- Total Expert validates your API calls and data access in CT.
+- Production credentials are issued (visible in the developer portal) and the integration is tested with a mutual customer's test user.
+- After validation, documentation/marketing/best practices are captured for rollout to more customers.

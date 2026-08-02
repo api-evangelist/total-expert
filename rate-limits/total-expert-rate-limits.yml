@@ -1,0 +1,32 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Total Expert
+providerId: total-expert
+created: '2026-07-21'
+modified: '2026-07-21'
+generated: '2026-07-21'
+method: searched
+source: https://public.totalexpert.net/v1/docs/Getting+Started.pdf
+tags:
+- Rate Limiting
+- CRM
+- Fintech
+description: >-
+  Total Expert's production environment rate limits API traffic by source IP
+  address (not by client). The token endpoint is limited separately, so cached
+  access tokens (valid 1 hour) are a documented best practice. Exceeding a
+  limit returns HTTP 429.
+responseCodes:
+  throttled: 429
+limits:
+- name: API requests (production)
+  scope: source IP address
+  metric: requests_per_minute
+  limit: 1000
+  timeFrame: minute
+- name: Token requests (POST /v1/token)
+  scope: source IP address
+  metric: requests_per_hour
+  limit: 2
+  timeFrame: hour

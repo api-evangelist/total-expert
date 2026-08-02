@@ -1,0 +1,78 @@
+generated: '2026-07-21'
+method: searched
+source: >-
+  https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
+  (collection-level "Endpoint Standards" documentation) plus the Getting
+  Started and Deduplication guides on the developer portal.
+description: >-
+  Cross-cutting request/response semantics of the Total Expert Public API: a
+  REST/JSON API where every resource exposes paging list endpoints and
+  individual-entity endpoints, POSTs deduplicate into PATCHes, and access is
+  split between "As Admin" (client-credentials) and "As User"
+  (authorization-code) calls.
+
+base_url: https://public.totalexpert.net/v1
+api_style: REST over HTTPS, JSON requests and responses
+
+authentication:
+  scheme: OAuth 2.0 bearer tokens from POST /v1/token (client_credentials, authorization_code, refresh_token grants); HTTP Basic client_id:client_secret on token requests.
+  admin_vs_user: Client-credentials tokens act "As Admin" (must specify owners); authorization-code tokens act "As User".
+  detail: authentication/total-expert-authentication.yml
+
+idempotency:
+  supported: true
+  mechanism: attribute-based deduplication on create (no Idempotency-Key header)
+  description: >-
+    When POSTing an entity, the API attempts to deduplicate by searching for an
+    existing entity with the same identifying attributes (per-resource rules,
+    e.g. contacts match on first/last name plus email, phone, or address, per
+    user). If a duplicate exists, the POST is treated as a PATCH to that entity
+    instead of creating a second record — so retried or repeated creates
+    converge on one record rather than duplicating.
+  docs: https://public.totalexpert.net/v1/docs/Deduplication+Process.pdf
+
+pagination:
+  style: page-number
+  request_params:
+    page[number]: page to return (1-based)
+    page[size]: items per page, default 10 (examples use up to 100)
+  response_fields:
+    objects: array of entities for the page
+    links: 'paging metadata: first (always 1), last, next (nullable), prev (nullable)'
+  example: '?page[size]=100&page[number]=6 returns items 501-600'
+
+filtering_sorting:
+  filter: 'filter= query parameter, comma-separated field=value expressions (e.g. filter=user_id=789,contact_id=456) — documented on lead-opportunities'
+  sort: 'sort= query parameter; prefix a field with - for descending (e.g. sort=-created_at)'
+
+data_types:
+  numeric: integers/floats, unquoted
+  string: quoted
+  boolean: '"True"/"False" (quoted) or 1/0 (unquoted) both accepted'
+  date: '"YYYY-MM-DD hh:mm:ss", always UTC; clear a date field with "0000-00-00 00:00:00"'
+  phone_numbers: accepted in any format, stored numerically for dedup, converted to E164; unconvertible numbers are marked Invalid.
+
+relationships:
+  read: GETs return related entities with a partial attribute set relevant to the endpoint.
+  write: POST/PATCH set a relationship by supplying any documented unique "Settable Field" of the target (e.g. owner by id, username, email, or external id).
+
+versioning:
+  scheme: uri-path
+  current: v1
+  detail: lifecycle/total-expert-lifecycle.yml
+
+error_envelope:
+  media_type: application/json
+  shape: 'HTTP status codes signal the outcome; OAuth failures return {"error": "...", "error_description": "..."}'
+  detail: errors/total-expert-problem-types.yml
+
+rate_limit_signaling:
+  throttled_status: 429
+  limits: 1000 requests/minute (production, per source IP), 2 token requests/hour
+  detail: rate-limits/total-expert-rate-limits.yml
+
+content_negotiation:
+  request_content_type: application/json (415 UNSUPPORTED MEDIA TYPE returned otherwise)
+
+health:
+  heartbeat: GET /v1/heartbeat verifies authentication and API availability; GET /v1/teapot returns 418.

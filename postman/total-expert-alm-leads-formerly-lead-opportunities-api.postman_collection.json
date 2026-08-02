@@ -1,0 +1,364 @@
+{
+  "info": {
+    "_postman_id": "136ebbed-e17d-4eec-89ef-97ff7f092294",
+    "name": "Total Expert Public Account Endpoints ALM Leads (formerly Lead Opportunities) API",
+    "description": "The Total Expert REST API allows you to programmatically create, retrieve, update, and delete information through various endpoints.\n\nDocumentation Layout\n\nEach section of this documentation describes a collection of related endpoints that affect a given resource.\n\nWhere applicable, at the top of a section you will find a table listing the attributes for the resource and a second showing its relationships with other resources.\n\nNOTE: If an attribute is marked as 'Assignable', its value can be set via a POST/PATCH. You can also modify the data for an 'Assignable' relationship.\n\nAuthentication in the TE API\n\nInteraction with the TE API is protected with OAuth 2.0. A client ID/secret pair is required to use the API.\n\nThe ID/secret pair is used to request an access token from the '/token' endpoint. This token will need to be present within the header on all calls to the API.\n\nNOTE: See the 'Authentication' endpoint collection for more information. See the 'Heartbeats' endpoint collection for more information on how to test your authentication.\n\nEndpoint Standards\n\nEach endpoint provides interaction with two aspects of an entity:\n\n'Attributes' - Attributes of the entity itself. Includes things like first name, phone number, or birthday of the contact.\nE.g. A 'Contact'\n\n'Relationships' - Describe a relationship between that entity and another entity.\nE.g. A contact that has an owner in the TE System OR a set of contact groups (separate entities with their own endpoint).\n\nAttributes\n\nEach endpoint returns a JSON object with a set of attributes. Each endpoint collection should describe the names and types of attributes available in each endpoint.\n\nData Types\n\nEach attribute has a type. There are four data types in the TE API - Numeric, String, Boolean, and Date.\n\nData Types\n\nType\nDescription\n\nNumeric\nInteger or floating point numbers. Supplied with no surrounding quotes. e.g. { \"loan_rate\":4.5 }\n\nString\nString of characters - supplied surrounded with quotes. e.g. { \"first_name\":\"Clark\" }\n\nBoolean\nTruth value - supplied in one of two ways - see Boolean (String) and Boolean (Numeric) for details\n\nBoolean (String)\nTruth value - supplied as the word \"True\" or \"False\", surrounded by quotes. e.g. { \"first_time_buyer\":\"True\" }\n\nBoolean (Numeric)\nTruth value - supplied as the number 1 or 0, not surrounded by quotes. e.g. { \"first_time_buyer\":0 }\n\nDate\nA date and time - preferred supplied in the format \"YYYY-MM-DD hh:mm:ss\". All dates must be provided in UTC timezone. When returned, the value will be expressed in UTC. To clear a field with a date type, use the value \"0000-00-00 00:00:00\".\n\nPhone Numbers\n\nPhone numbers are accepted in any format. For deduplication, any non-numeric symbols will be stripped out and the numeric phone number will be stored separately. If a numerically identical phone number is used in a different format later, the records are compared using the numeric value only. This applies only to phone numbers with at least 7 digits.\n\nAll phone numbers will also be converted into E164 for use in external services (e.g. Twilio). If a phone number cannot be converted into E164, the number will be marked 'Invalid', and external services that rely on phone numbers will not function.\n\nUniqueness in the TE API\n\nEach type of entity in the TE API can be uniquely identified by a set of attributes. In some cases, multiple options are available to uniquely identify an entity. See each section below for details. These sets of attributes are used to deduplicate entries on creation and to uniquely identify the target in a relationship.\n\nRelationships\n\nRelationships in the TE API are very flexible.\n\n'GET'ing\n\nWhen GETing an entity, a relationship will be returned with only a partial set of attributes that make sense in the context of that endpoint - e.g. the 'contact_groups' relationship on the '/contacts' endpoint will display only the group name of the target contact_group.\n\nPOST and PATCH Requests\n\nWhen setting a relationship (by POST or PATCH), the target entity is specified using one or more attributes that uniquely identify the entity.\n\nThe allowed attributes are listed in the 'Settable Fields' column of each Relationships table. For example, when POSTing to the '/contact-groups' endpoint, either of the following are allowed:\n\n{\n  \"group_name\": \"Hot Leads\",\n  \"owner\":{\"username\": \"alfred\"}\n  }\n  OR\n\n{\n  \"group_name\": \"Hot Leads\",\n  \"owner\":{\"id\": \"123589\"}\n  }\n\nIn cases where an endpoint's relationship supports multiple Settable Fields be aware that the request examples may only make use of one of the attributes though any could be used in its place.\n\nInteracting with the API\n\nAdmin Calls vs User Calls\n\nYou'll notice that many sections of the documentation have samples for POSTs and GETs that are labeled \"As Admin\" or \"As User\".\nWhen using client credentials to access the API, you'll use the \"As Admin\" examples. For Authorization Code access, you'll use the \"As User\" examples.\n\n'GET'ing\n\nThere are two types of GETable endpoints in the TE API: Paging and Individual. Paging endpoints provide lists of entities. E.g. '/contacts' returns a list of contacts.\n\nGetting Individual Entities\n\nIndividual endpoints return specific individual entities, specified by TE ID. E.g. '/contacts/51151' returns the contact with the 'id' attribute '51151' (the TE internal identifier).\n\nGetting Multiple Entities (Paging)\n\nPaging endpoints will return an object with two properties: 'objects' and 'links'. The 'objects' property will be an array of entities in 'pages'. Each page will have a number of entities along with a set of links. The page size and page number can be specified using the '?page' GET parameter. Setting '?page[number]=5' will return the fifth page. Setting '?page[size]=100' will make each page consist of 100 items, instead of the default of 10. Both attributes can be set together. E.g. setting '?page[size]=100&page[number]=6' will return items 501-600.\n\nPaging Links\n\nThe 'links' attribute on a page object will have four attributes, specifying metadata about the number of entities available to page.\n\n'first' will be the page number of the first page of entities (always '1').\n\n'last' will be the page number of the last page of entities.\n\n'next' will be the page number of the next page after the currently requested one. 'next' may be null if there are no subsequent pages.\n\n'prev' will be the page number of the page immediately preceding the current one. 'prev' may be null if there are no preceding pages.\n\n'POST'ing\n\nEntities can be created in the TE system by POSTing to paging endpoints. E.g. sending a POST to '/contacts' will create a contact.\n\nDeduplication\n\nWhen POSTing an entity, the TE API will attempt to 'Deduplicate' by searching for existing entities with similar attributes. If such a duplicate does exist, the TE API will treat the POST as a PATCH to that entity instead. See each section for details on what attributes will be used to search for duplicates.\n\n'PATCH'ing\n\nEntities can be updated in the TE system by PATCHing to individual endpoints. E.g. sending a PATCH to '/contacts/51151' will update the attributes of the contact with TE 'id' of '51151'.\n\n'DELETE'ing\n\nEntities can be deleted only by TE ID. Send a DELETE request to the appropriate individual entity endpoint to delete it.\n\nReturn Codes\n\nWhere applicable, the API will respond with an HTTP status code that indicates what happened during the request. Possible values include:\n\nHTTP CODES\n\nStatus Code\nGeneral Description\n\n200 SUCCESS\nThe operation completed successfully. See the response body for details (if applicable).\n\n201 CREATED\nThe object was created successfully. See the response body for details (if applicable).\n\n400 BAD REQUEST\nThe JSON supplied to the API was malformed and unparseable.\n\n401 UNAUTHORIZED\nThe request's credentials are invalid. This could mean your token has expired and should be renewed. See the response body for details.\n\n403 FORBIDDEN\nAn attempt was made to access a resource for which you do not have permission\n\n405 METHOD NOT ALLOWED\nAn attempt was made to interact with an endpoint in an unsupported manner, e.g. sending a POST to '/contacts/1'\n\n415 UNSUPPORTED MEDIA TYPE\nThe API endpoints expect a content type of 'media/json'\n\n422 UNPROCESSABLE ENTITY\nThe JSON body supplied is valid, but not processable semantically. For example, the 'owner' relationship for a contact refers to a User that does not exist in the TE system.\n\n418 I'M A TEAPOT\nThe API is a teapot (See the 'Heartbeat' section for details).\n\n503 SERVICE UNAVAILABLE\nThe API is unavailable. Please try your request again later. If this message persists, please contact Technical Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T03:17:10.000Z",
+    "updatedAt": "2026-07-28T03:17:10.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-136ebbed-e17d-4eec-89ef-97ff7f092294"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "leads",
+          "item": [
+            {
+              "name": "{lead_id}",
+              "item": [
+                {
+                  "name": "Fetch Lead Opportunity",
+                  "id": "233dfac2-255e-4d50-a7b9-5e599b0a518f",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/leads/:lead_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "leads",
+                        ":lead_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "95e94988-42f2-4189-a5be-845a1d69e643",
+                          "key": "lead_id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "The GET endpoint returns details about the lead record, including the lead_opportunity details, any existing lead_opportunity_offers, and more.\n\nAttributes unique to GET\n\nowner\n\nDetails about the current owner of the lead, including the following:\n\nattribute\nvalue\n\nemail\nThe user's e-mail address as stored in the Total Expert database\n\nexternal_id\nAn assignable identifier of the user as represented in a third-party system\n\nid\nThe user's internal Total Expert identifier\n\nusername\nThe user's internal Total Expert username\n\nrelated_entities\n\nCurrently returns information about the contact record to which the lead is linked. parent.id represents the contact ID.\n\n\"related_entities\": [\n    {\n        \"relationship_type\": {\n            \"system_name\": \"Contact\"\n        },\n        \"parent\": [\n            {\n                \"id\": \"87987456\"\n            }\n        ]\n    }\n]\n\nExample GET response:\n\n{\n    \"title\": \"Mr.\",\n    \"first_name\": \"John\",\n    \"last_name\": \"Smith\",\n    \"suffix\": \"Jr.\",\n    \"nickname\": \"Johnathon\",\n    \"email\": \"jsmith@gmail.com\",\n    \"address\": \"2744 Imaginary Ave\",\n    \"address_2\": \"Apartment 8\",\n    \"city\": \"Los Angeles\",\n    \"state\": \"CA\",\n    \"zip_code\": 90210,\n    \"phone_cell\": \"5555555555\",\n    \"phone_home\": \"2222222222\",\n    \"phone_office\": \"7777777777\",\n    \"ok_to_email\": 1,\n    \"referred_by\": \"Jane Smith\",\n    \"credit_score\": \"Excellent\",\n    \"source\": \"leadSourceName\",\n    \"assigned_to\": 50,\n    \"owner_id\": 50,\n    \"lead_opportunity\": {\n        \"property_value\": 350000,\n        \"property_county\": \"Alameda\",\n        \"property_zip\": 90010,\n        \"property_state\": \"CA\",\n        \"property_msa\": \"LA\",\n        \"loan_amount\": 325000,\n        \"loan_down_payment\": 25000,\n        \"loan_cash_out\": 0,\n        \"property_type\": \"Single Family\",\n        \"property_use\": \"Owner Occupied\",\n        \"loan_request_type\": \"Purchase\",\n        \"lead_price\": 50,\n        \"tracking_number\": \"123456\",\n        \"annual_income\": 120000,\n        \"first_time_buyer\": \"true\",\n        \"has_agent\": \"true\",\n        \"is_military\": \"false\",\n        \"self_credit_rating\": \"Good\",\n        \"bankruptcy\": \"fales\",\n        \"foreclosure\": \"false\",\n        \"working_with_agent\": \"true\",\n        \"found_home\": \"true\",\n        \"property_purchase_price\": 350000,\n        \"is_fha_eligible\": \"true\",\n        \"is_va_loan\": \"false\",\n        \"present_ltv\": 92.00,\n        \"proposed_ltv\": 92.00,\n        \"term\": \"30 year fixed\",\n        \"estimated_payment\": 1500,\n        \"apr\": 3.789,\n        \"market_value\": 355000,\n        \"rate_offer\": 3.625\n    },\n    \"lead_opportunity_offers\": [\n        {\n            \"offer_id\": 1,\n            \"offer_type\": \"Fixed\",\n            \"loan_program_name\": \"Conf 30 Yr Fixed\",\n            \"loan_amount\": 255000,\n            \"interest_rate\": 3.625,\n            \"term\": \"30 \",\n            \"points\": 0.75,\n            \"investor\": \"Total Expert(308)\",\n            \"lock_term\": 45,\n            \"monthly_payment\": 1367.34,\n            \"down_payment\": 295000,\n            \"apr\": 5.171\n        },\n        {\n            \"offer_id\": 2,\n            \"offer_type\": \"Fixed\",\n            \"loan_program_name\": \"Conf 15 Yr Fixed \",\n            \"loan_amount\": 255000,\n            \"interest_rate\": 4.625,\n            \"term\": \"180\",\n            \"points\": 0.75,\n            \"investor\": \"Total Expert(308)\",\n            \"lock_term\": 30,\n            \"monthly_payment\": 1067.34,\n            \"down_payment\": 295000.00,\n            \"apr\": 6.171\n        }\n    ],\n    \"custom\": [ \n                {\n                    \"field_name\": \"name\",\n                    \"value\": \"value\"\n                }\n    ],\n    \"owner\": {\n                \"email\": \"billfischer@example.com\",\n                \"external_id\": \"\",\n                \"id\": \"218923\",\n                \"username\": \"billfischer-example\"\n            },\n    \"related_entities\": [\n        {\n            \"relationship_type\": {\n                \"system_name\": \"Contact\"\n            },\n            \"parent\": [\n                {\n                    \"id\": \"87987456\"\n                }\n            ]\n        }\n    ]\n}"
+                  },
+                  "response": [
+                    {
+                      "id": "c53e0c32-897b-4df9-9ec6-330d4019f267",
+                      "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/leads/:lead_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "leads",
+                            ":lead_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "lead_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T03:17:11.000Z",
+                      "updatedAt": "2026-07-28T03:17:11.000Z",
+                      "uid": "35240-c53e0c32-897b-4df9-9ec6-330d4019f267"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T03:17:11.000Z",
+                  "updatedAt": "2026-07-28T03:17:11.000Z",
+                  "uid": "35240-233dfac2-255e-4d50-a7b9-5e599b0a518f"
+                },
+                {
+                  "name": "Update Lead Opportunity",
+                  "id": "fda762c7-4cd2-4bea-8d4b-f964cd500615",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"example\": {\n    \"title\": \"Mr.\",\n    \"first_name\": \"John\",\n    \"last_name\": \"Smith\",\n    \"suffix\": \"Jr.\",\n    \"nickname\": \"Johnathon\",\n    \"email\": \"jsmithtest@example.com\",\n    \"address\": \"1234 Fake St\",\n    \"address_2\": \"Apartment 8\",\n    \"city\": \"Los Angeles\",\n    \"state\": \"CA\",\n    \"zip_code\": \"90210\",\n    \"phone_cell\": \"5555555555\",\n    \"phone_home\": \"2222222222\",\n    \"phone_office\": \"7777777777\",\n    \"ok_to_email\": true,\n    \"referred_by\": \"Jane Smith\",\n    \"credit_score\": \"Excellent\",\n    \"source\": \"leadSourceName\",\n    \"assigned_to\": 50,\n    \"owner_id\": 50,\n    \"lead_opportunity\": {\n      \"property_value\": 350000,\n      \"property_county\": \"Alameda\",\n      \"property_zip\": \"90010\",\n      \"property_state\": \"CA\",\n      \"property_msa\": \"LA\",\n      \"loan_amount\": 325000,\n      \"loan_down_payment\": 25000,\n      \"loan_cash_out\": 0,\n      \"property_type\": \"Single Family\",\n      \"property_use\": \"Owner Occupied\",\n      \"loan_request_type\": \"Purchase\",\n      \"lead_price\": 50,\n      \"lead_stage\": 3,\n      \"tracking_number\": \"123456\",\n      \"annual_income\": 120000,\n      \"first_time_buyer\": true,\n      \"has_agent\": true,\n      \"is_military\": false,\n      \"self_credit_rating\": \"Good\",\n      \"assigned_credit_value\": 700,\n      \"bankruptcy\": false,\n      \"foreclosure\": false,\n      \"working_with_agent\": true,\n      \"found_home\": true,\n      \"property_purchase_price\": 350000,\n      \"is_fha_eligible\": true,\n      \"is_va_loan\": false,\n      \"present_ltv\": 92.01,\n      \"proposed_ltv\": 92.01,\n      \"term\": \"30 year fixed\",\n      \"estimated_payment\": 1500,\n      \"apr\": 3.789,\n      \"market_value\": 355000,\n      \"rate_offer\": 3.625,\n      \"contact_phone_extension\": \"55555\",\n      \"consumer_geo_phone_area_code\": \"55555\"\n    },\n    \"lead_opportunity_offers\": [\n      {\n        \"offer_id\": 1,\n        \"offer_type\": \"Fixed\",\n        \"loan_program_name\": \"Conf 30 Yr Fixed \",\n        \"loan_amount\": 255000.01,\n        \"interest_rate\": 3.625,\n        \"term\": \"30\",\n        \"points\": 0.75,\n        \"investor\": \"Total Expert(308)\",\n        \"lock_term\": 45,\n        \"monthly_payment\": 1367.34,\n        \"down_payment\": 295000.99,\n        \"apr\": 5.171\n      },\n      {\n        \"offer_id\": 2,\n        \"offer_type\": \"Fixed\",\n        \"loan_program_name\": \"Conf 15 Yr Fixed \",\n        \"loan_amount\": 255000.01,\n        \"interest_rate\": 4.625,\n        \"term\": \"180\",\n        \"points\": 0.75,\n        \"investor\": \"Total Expert\",\n        \"lock_term\": 30,\n        \"monthly_payment\": 1067.34,\n        \"down_payment\": 295000.01,\n        \"apr\": 6.171\n      }\n    ],\n    \"custom\": [\n      {\n        \"field_name\": \"my_custom_field\",\n        \"value\": \"Super special value\"\n      }\n    ]\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/leads/:lead_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "leads",
+                        ":lead_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "2d60a442-d5d3-48c4-92ca-9e66a685c327",
+                          "key": "lead_id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "The PATCH request accepts any variant of the body specified below, allowing for partial modifications of the existing lead resource. Fields that are\n\nData Types\n\nThe PATCH is sensitive to data types, and will error if types do not align with the types in the request body below.\n\nIf the value of a given attribute does not match the type specified in PATCH validation, the request should fail and tell you why.\n\nAccepted type details:\n\nInteger values, real, positive values only\n\nString values must be wrapped in double quotation marks, as in \"hello there\"\n\nDecimals can be decimal values or integer values\n\nBooleans must be true, false, 0, or 1. Strings 'true' and 'false' are NOT accepted.\n\nUpdating Lead Stage\n\nlead_stage can be updated with an integer, 1 through 5, represneting the following lifecycle stages of a lead:\n\nNew Lead\n\nContacted\n\nApplication\n\nIn Process\n\nClosed\n\nOther values can be updated concurrently with lead_stage.\n\nUpdating Lead Opportunity Offers\n\noffers can also be updated, but for each desired offer update, the offer_id of the given offer must be included, along with at least one other offer attribute\n\n{\n    \"lead_opportunity\": { \n        \"property_value\": 50000000\n    },\n    \"lead_opportunity_offers\": [\n        {\n            \"offer_id\": 1,\n            \"investor\": \"Duckberg Inc\"\n        },\n        {\n            \"offer_id\": 2,\n            \"investor\": \"Duckberg Inc\"\n        },\n    ]\n}\n\nExamples of Partial Modification Requests\n\nAs long as attributes are nested in their correct parent attribute, they will be considered valid for updating.\n\n{\n    \"lead_stage\": 2,\n}\n\n{\n    \"first_name\": \"Scrooge\",\n    \"lead_stage\": 2,\n}\n\n{\n    \"lead_opportunity\": { \n        \"property_value\": 50000000\n    },\n    \"lead_opportunity_offers\": [\n        {\n            \"offer_id\": 2,\n            \"investor\": \"Duckberg Inc\"\n        }\n    ]\n}\n\n{\n    \"first_name\": \"Scrooge\",\n    \"last_name\": \"McDuck\",\n    \"lead_opportunity\": { \n        \"property_value\": 50000000\n    },\n    \"lead_opportunity_offers\": [\n        {\n            \"offer_id\": 2,\n            \"investor\": \"Duckberg Inc\"\n        }\n    ]\n}"
+                  },
+                  "response": [
+                    {
+                      "id": "e8f8a384-faaa-4d6c-972b-80a4f15f91a0",
+                      "name": "Partial Modification",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"example\": {\n    \"title\": \"Mr.\",\n    \"first_name\": \"John\",\n    \"last_name\": \"Smith\",\n    \"suffix\": \"Jr.\",\n    \"nickname\": \"Johnathon\",\n    \"email\": \"jsmithtest@example.com\",\n    \"address\": \"1234 Fake St\",\n    \"address_2\": \"Apartment 8\",\n    \"city\": \"Los Angeles\",\n    \"state\": \"CA\",\n    \"zip_code\": \"90210\",\n    \"phone_cell\": \"5555555555\",\n    \"phone_home\": \"2222222222\",\n    \"phone_office\": \"7777777777\",\n    \"ok_to_email\": true,\n    \"referred_by\": \"Jane Smith\",\n    \"credit_score\": \"Excellent\",\n    \"source\": \"leadSourceName\",\n    \"assigned_to\": 50,\n    \"owner_id\": 50,\n    \"lead_opportunity\": {\n      \"property_value\": 350000,\n      \"property_county\": \"Alameda\",\n      \"property_zip\": \"90010\",\n      \"property_state\": \"CA\",\n      \"property_msa\": \"LA\",\n      \"loan_amount\": 325000,\n      \"loan_down_payment\": 25000,\n      \"loan_cash_out\": 0,\n      \"property_type\": \"Single Family\",\n      \"property_use\": \"Owner Occupied\",\n      \"loan_request_type\": \"Purchase\",\n      \"lead_price\": 50,\n      \"lead_stage\": 3,\n      \"tracking_number\": \"123456\",\n      \"annual_income\": 120000,\n      \"first_time_buyer\": true,\n      \"has_agent\": true,\n      \"is_military\": false,\n      \"self_credit_rating\": \"Good\",\n      \"assigned_credit_value\": 700,\n      \"bankruptcy\": false,\n      \"foreclosure\": false,\n      \"working_with_agent\": true,\n      \"found_home\": true,\n      \"property_purchase_price\": 350000,\n      \"is_fha_eligible\": true,\n      \"is_va_loan\": false,\n      \"present_ltv\": 92.01,\n      \"proposed_ltv\": 92.01,\n      \"term\": \"30 year fixed\",\n      \"estimated_payment\": 1500,\n      \"apr\": 3.789,\n      \"market_value\": 355000,\n      \"rate_offer\": 3.625,\n      \"contact_phone_extension\": \"55555\",\n      \"consumer_geo_phone_area_code\": \"55555\"\n    },\n    \"lead_opportunity_offers\": [\n      {\n        \"offer_id\": 1,\n        \"offer_type\": \"Fixed\",\n        \"loan_program_name\": \"Conf 30 Yr Fixed \",\n        \"loan_amount\": 255000.01,\n        \"interest_rate\": 3.625,\n        \"term\": \"30\",\n        \"points\": 0.75,\n        \"investor\": \"Total Expert(308)\",\n        \"lock_term\": 45,\n        \"monthly_payment\": 1367.34,\n        \"down_payment\": 295000.99,\n        \"apr\": 5.171\n      },\n      {\n        \"offer_id\": 2,\n        \"offer_type\": \"Fixed\",\n        \"loan_program_name\": \"Conf 15 Yr Fixed \",\n        \"loan_amount\": 255000.01,\n        \"interest_rate\": 4.625,\n        \"term\": \"180\",\n        \"points\": 0.75,\n        \"investor\": \"Total Expert\",\n        \"lock_term\": 30,\n        \"monthly_payment\": 1067.34,\n        \"down_payment\": 295000.01,\n        \"apr\": 6.171\n      }\n    ],\n    \"custom\": [\n      {\n        \"field_name\": \"my_custom_field\",\n        \"value\": \"Super special value\"\n      }\n    ]\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/leads/:lead_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "leads",
+                            ":lead_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "lead_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"example\": {\n    \"message\": \"Successfully updated lead.\"\n  }\n}",
+                      "createdAt": "2026-07-28T03:17:11.000Z",
+                      "updatedAt": "2026-07-28T03:17:11.000Z",
+                      "uid": "35240-e8f8a384-faaa-4d6c-972b-80a4f15f91a0"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T03:17:11.000Z",
+                  "updatedAt": "2026-07-28T03:17:11.000Z",
+                  "uid": "35240-fda762c7-4cd2-4bea-8d4b-f964cd500615"
+                }
+              ],
+              "id": "83ca2d92-c391-4ad2-839e-b2cbbc64aa2f",
+              "createdAt": "2026-07-28T03:17:11.000Z",
+              "updatedAt": "2026-07-28T03:17:11.000Z",
+              "uid": "35240-83ca2d92-c391-4ad2-839e-b2cbbc64aa2f"
+            },
+            {
+              "name": "Create Lead Opportunity",
+              "id": "6706f3cc-0529-40f6-9033-8b0ef078bfa0",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"example\": {\n    \"title\": \"Dr.\",\n    \"first_name\": \"Bill\",\n    \"last_name\": \"Nye\",\n    \"email\": \"the_science_guy@aol.com\",\n    \"address\": \"1234 Science Blvd\",\n    \"city\": \"Los Angeles\",\n    \"state\": \"CA\",\n    \"zip_code\": \"90210\",\n    \"phone_cell\": \"2134447777\",\n    \"phone_home\": \"2134447777\",\n    \"phone_office\": \"2134447777\",\n    \"ok_to_email\": true,\n    \"referred_by\": \"Albert Einstein\",\n    \"credit_score\": \"Excellent\",\n    \"source\": \"GoodLeads\",\n    \"owner\": {\n      \"id\": 1234,\n      \"external_id\": \"external-system-123\",\n      \"email\": \"test@example.com\",\n      \"username\": \"testtesterson-te\"\n    },\n    \"lead_opportunity\": {\n      \"property_value\": 850000,\n      \"property_county\": \"Alameda\",\n      \"property_zip\": \"90010\",\n      \"property_state\": \"CA\",\n      \"property_msa\": \"LA\",\n      \"loan_amount\": 850000,\n      \"loan_down_payment\": 25000,\n      \"loan_cash_out\": 0,\n      \"property_type\": \"Single Family\",\n      \"property_use\": \"Owner Occupied\",\n      \"loan_request_type\": \"Purchase\",\n      \"lead_price\": 50,\n      \"tracking_number\": \"123456\",\n      \"annual_income\": 250000,\n      \"first_time_buyer\": true,\n      \"has_agent\": true,\n      \"is_military\": false,\n      \"self_credit_rating\": \"Good\",\n      \"bankruptcy\": false,\n      \"foreclosure\": false,\n      \"working_with_agent\": true,\n      \"found_home\": true,\n      \"property_purchase_price\": 850000,\n      \"is_fha_eligible\": true,\n      \"present_ltv\": 92,\n      \"proposed_ltv\": 92,\n      \"term\": \"30 year fixed\",\n      \"estimated_payment\": 1500,\n      \"apr\": 5.789,\n      \"market_value\": 355000,\n      \"rate_offer\": 3.625\n    },\n    \"lead_opportunity_offers\": [\n      {\n        \"offer_id\": 1,\n        \"offer_type\": \"Fixed\",\n        \"loan_program_name\": \"Conf 30 Yr Fixed \",\n        \"loan_amount\": 855000\n      },\n      {\n        \"offer_id\": 2,\n        \"offer_type\": \"Fixed\",\n        \"loan_program_name\": \"Conf 15 Yr Fixed \",\n        \"loan_amount\": 855000\n      }\n    ],\n    \"custom\": [\n      {\n        \"field_name\": \"my_custom_field\",\n        \"value\": \"Super special value\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/leads",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "leads"
+                  ]
+                },
+                "description": "Leads and Contacts\n\nA POST request for a new lead wil also create a new contact record, but only if a matching contact is not found. A matching contact is one that meets this criteria:\n\nHas a first name identical to the request first_name\n\nHas a last name identical tp the request last_name\n\nHas an e-mail address or phone number field identical to those in the request\n\nIf owner_id is not in the request, the contact meets the above matching criteria and is owned by the same organization\n\nIf an owner_id is in the request, the contact meets the above matching criteria and is owned by the exact same user ID\n\nA successful response from will return the ID of the new lead, and the ID of either the new contact or the existing, matched contact:\n\n{\n    \"contact_id\": 144558,\n    \"lead_id\": 144559\n}\n\nRequired Fields\n\nOne of the following combinations:\n\nfirst_name, last_name, source, email\n\nfirst_name, last_name, source, address, city, state, zip\n\nfirst_name, last_name, source, phone_home\n\nfirst_name, last_name, source, phone_cell\n\nfirst_name, last_name, source, phone_office\n\nOptional fields:\n\nowner_id\n\nAll lead_opportunity fields,\n\nAll lead_opportunity_offers fields\n\ncustom fields\n\nLead Attributes\n\nField\nData Type\nDescription\n\ntile\nstring\nThe contact's honorific/title, e.g. \"Doctor\"\n\nfirst_name\nstring\nThe contact's first name\n\nlast_name\nstring\nThe contact's last name\n\nsuffix\nstring\nThe contact's suffix, e.g. \"Jr.\"\n\nnickname\nstring\nThe contact's preferred name\n\nowner_id\ninteger\nThe Total Expert user ID that owns the contact/lead\n\naddress\nstring\nStreet address portion of contact's current address.\n\naddress_2\nstring\nLine 2 portion of contact's current address.\n\ncity\nstring\nCity portion of contact's current address.\n\nstate\nstring\nState portion of current contact's address. Preferred  \nformat: Two character state abbreviation, e.g. 'CA'\n\nzip_code\nstring\nZip code portion of contact's current address.  \nPreferred format: 5 digit postal code, e.g. '90210'\n\nbirthday\nstring\nContact's birthday, formatted as a date with 1970 as  \nthe year. Preferred format: '1970-MM-DD'\n\ncreation_date\nstring\nDate of creation of this contact. Preferred format:  \n'YYYY-MM-DD HH:mm:ss'\n\nlast_contacted_date\nstring\nDate/time of last interaction with contact. Preferred  \nformat: 'YYYY-MM-DD HH:mm:ss'\n\nemail\nstring\nContact's personal email address.\n\nemail_work\nstring\nContact's work email address.\n\nphone_cell\nstring\nContact's cell phone number, preferred format:  \n'(555)555-1234'\n\nphone_home\nstring\nContact's home phone number, preferred format:  \n'(555)555-1234'\n\nphone_office\nstring\nContact's office phone number, preferred format:  \n'(555)555-1234'\n\nok_to_call\nboolean\nIndicator whether it is OK to call this contact.  \nTrue or 1 - Yes  \nFalse or 0 -No\n\nok_to_email\nboolean\nIndicator whether it is OK to call this contact.  \nTrue or 1 - Yes  \nFalse or 0 -No\n\nok_to_mail\nboolean\nIndicator whether it is OK to call this contact.  \nTrue or 1 - Yes  \nFalse or 0 -No\n\nreferred_by\nstring\nName of person by whom this contact was referred.\n\nsource\nstring\nSource of the contact.\n\ncredit_score\nstring\nTotal Expert credit rating of the lead.  \nAvailable values:  \nExcellent, Good, Fair, Poor, Very Poor.\n\ncredit_score_date\nstring\nDate/time of contact's last received credit score.  \nPreferred format: 'YYYY-MM-DD HH:mm:ss'\n\nOpportunity Attributes\n\nField\nData Type\nDescription\n\nproperty_value\ninteger\n\nproperty_county\nstring\nCounty which the property to be financed is  \nlocated, e.g. Alameda\n\nproperty_zip\nstring\nPostal Code of the property to be financed, e.g.  \n90210\n\nproperty_state\nstring\nState which the property is located. Preferred  \nformat is two character state abbreviation, e.g.  \n'CA'\n\nproperty_msa\nstring\nMetropolitan area which the property is located,  \ne.g. 'Greater Los Angeles'\n\nloan_amount\ninteger\nEstimated loan amount requested, e.g. 250000\n\nloan_down_payment\ninteger\nEstimated down payment requested, e.g. 100000\n\nloan_cash_out\ninteger\nEstimated additional cash out amount requested,  \ne.g. 10000\n\nproperty_type\nstring\nType of property to be financed, e.g. 'Single  \nFamily Dettached'\n\nproperty_use\nstring\nOccupancy of the property to be financed, e.g.  \n'Owner Occupied'\n\nloan_request_type\nstring\nLoan purpose, e.g. \u201cPurchase\u2019 or \u201cCash-out  \nRefinance\u2019\n\nlead_price\nstring\nAmount charged by source to generate lead\n\ntracking_number\nstring\nUnique identifier assigned by the source for the  \nlead\n\nannual_income\ndecimal\nAnnual income of the lead.\n\nfirst_time_buyer\nboolean\nIndicator if lead is a first time home buyer. True or 1  \n= Is a First Time Home Buyer\n\nhas_agent\nboolean\nIndicator if lead is working with a real estate  \nagent. True or 1 = Is working with an Agent\n\nis_military\nboolean\nIndicator if lead is active duty or a veteran. True or 1  \n= is active duty or a veteran\n\nself_credit_rating\nstring\nEstimated credit rating of contact. Preferred  \nvalues: 'Excellent', 'Good', 'Fair', 'Poor', 'Very  \nPoor'\n\nbankruptcy\nboolean\nIndicator if lead has had bankruptcy. True or 1 = has had  \nbankruptcy\n\nforeclosure\nboolean\nIndicator if lead has had foreclosure. True or 1 = has had  \nforeclosure\n\nfound_home\nboolean\nIndicator if lead has located the property they  \nintend to finance. True or 1 = They have located a  \nhome.\n\nproperty_purchase_price\ndecimal\nContracted purchase price of the property to be  \nfinanced, e.g. 350000\n\nis_fha_eligible\nboolean\nIndicator if lead is eligible for FHA product. True or 1 = Is  \neligible for FHA product.\n\nis_va_loan\nboolean\nIndicator of the offer selected is VA eligible.  \nTrue or 1 = VA Offer\n\npresent_ltv\ndecimal\nCurrent Loan To Value ratio of the property to be  \nfinanced. Rounded to the nearest thousandth, e.g.  \n71.123\n\nproposed_ltv\ndecimal\nRequested Loan To Value ratio of the property to  \nbe financed. Rounded to the nearest thousandth,  \ne.g. 74.123\n\nterm\nstring\nRequested or selected term of the offer, e.g. 30  \nyear fixed\n\nestimated_payment\ndecimal\nEstimated payment of the selected offer, e.g.  \n1234.55\n\napr\ndecimal\nAnnual Percentage Rate of the selected offer.  \nRounded to the nearest thousandth, e.g. 3.625\n\nmarket_value\ndecimal\nMarket value of the property to be financed.  \nRounded to the nearest thousandth, e.g.  \n350000.000\n\nrate_offer\ndecimal\nNote Rate of the selected offer. Rounded to the  \nnearest thousandth, e.g. 3.125\n\nOffers Attributes\n\nThe following represents the attributes of one offer object. Offers can be passed in an array [ ].\n\nField\nData Type\nDescription\n\noffer_id\ninteger\n\noffer_type\nstring\nAmortization type of the offer, ex. Fixed\n\nloan_program_name\nstring\nName of the loan program of the offer, ex. Conf 30 Yr  \nFixed\n\nloan_amount\ndecimal\nLoan amount used to generate the offer, ex. 250000\n\ninterest_rate\ndecimal\nInterest rate of the offer, ex. 3.750\n\nterm\nstring\nAmortization term of the offer, ex. 30\n\npoints\ndecimal\nPrice of the offer, ex. 1\n\ninvestor\nstring\nInvestor used to generate the offer, ex. Wells Fargo\n\nlock_term\ninteger\nLock period used to generate the offer, ex. 45\n\nmonthly_payment\ndecimal\nMonthly Principle and Interest payment of the offer\n\ndown_payment\ndecimal\nDown payment used to generate the offer\n\napr\ndecimal\nAnnual Percentage Rate of the offer\n\nCustom Field Attributes\n\nThe optional custom attribute, if specified, should contain one or more objects, each object representing one custom field name and its value. The custom fields should be wrapped in an array:\n\n\"custom\": [\n        {\n            \"field_name\": \"first_datetime\", \n            \"value\": \"07/21/2023 00:00:00\"\n        },\n        {\n            \"field_name\": \"date\", \n            \"value\": \"10/30/2023\"\n        }\n    ]\n\nA custom field definition of type \"contact\" that matches the given field_name must already exist for the POST to succeed. A POST request will not create new, adhoc custom field definitions.\n\nAttributes of a custom field\n\nField\nData Type\nDescription\n\nfield_name\nstring\nThe system name of the custom field.\n\nvalue\nvariable, according to definition\nA custom value matching the data type of the custom field definition."
+              },
+              "response": [
+                {
+                  "id": "ddcd18ba-91b8-4fd3-8ead-3e323a85a4b3",
+                  "name": "With Owner",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"example\": {\n    \"title\": \"Dr.\",\n    \"first_name\": \"Bill\",\n    \"last_name\": \"Nye\",\n    \"email\": \"the_science_guy@aol.com\",\n    \"address\": \"1234 Science Blvd\",\n    \"city\": \"Los Angeles\",\n    \"state\": \"CA\",\n    \"zip_code\": \"90210\",\n    \"phone_cell\": \"2134447777\",\n    \"phone_home\": \"2134447777\",\n    \"phone_office\": \"2134447777\",\n    \"ok_to_email\": true,\n    \"referred_by\": \"Albert Einstein\",\n    \"credit_score\": \"Excellent\",\n    \"source\": \"GoodLeads\",\n    \"owner\": {\n      \"id\": 1234,\n      \"external_id\": \"external-system-123\",\n      \"email\": \"test@example.com\",\n      \"username\": \"testtesterson-te\"\n    },\n    \"lead_opportunity\": {\n      \"property_value\": 850000,\n      \"property_county\": \"Alameda\",\n      \"property_zip\": \"90010\",\n      \"property_state\": \"CA\",\n      \"property_msa\": \"LA\",\n      \"loan_amount\": 850000,\n      \"loan_down_payment\": 25000,\n      \"loan_cash_out\": 0,\n      \"property_type\": \"Single Family\",\n      \"property_use\": \"Owner Occupied\",\n      \"loan_request_type\": \"Purchase\",\n      \"lead_price\": 50,\n      \"tracking_number\": \"123456\",\n      \"annual_income\": 250000,\n      \"first_time_buyer\": true,\n      \"has_agent\": true,\n      \"is_military\": false,\n      \"self_credit_rating\": \"Good\",\n      \"bankruptcy\": false,\n      \"foreclosure\": false,\n      \"working_with_agent\": true,\n      \"found_home\": true,\n      \"property_purchase_price\": 850000,\n      \"is_fha_eligible\": true,\n      \"present_ltv\": 92,\n      \"proposed_ltv\": 92,\n      \"term\": \"30 year fixed\",\n      \"estimated_payment\": 1500,\n      \"apr\": 5.789,\n      \"market_value\": 355000,\n      \"rate_offer\": 3.625\n    },\n    \"lead_opportunity_offers\": [\n      {\n        \"offer_id\": 1,\n        \"offer_type\": \"Fixed\",\n        \"loan_program_name\": \"Conf 30 Yr Fixed \",\n        \"loan_amount\": 855000\n      },\n      {\n        \"offer_id\": 2,\n        \"offer_type\": \"Fixed\",\n        \"loan_program_name\": \"Conf 15 Yr Fixed \",\n        \"loan_amount\": 855000\n      }\n    ],\n    \"custom\": [\n      {\n        \"field_name\": \"my_custom_field\",\n        \"value\": \"Super special value\"\n      }\n    ]\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/leads",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "leads"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"example\": {\n    \"contact_id\": 58,\n    \"lead_id\": 61\n  }\n}",
+                  "createdAt": "2026-07-28T03:17:11.000Z",
+                  "updatedAt": "2026-07-28T03:17:11.000Z",
+                  "uid": "35240-ddcd18ba-91b8-4fd3-8ead-3e323a85a4b3"
+                }
+              ],
+              "createdAt": "2026-07-28T03:17:11.000Z",
+              "updatedAt": "2026-07-28T03:17:11.000Z",
+              "uid": "35240-6706f3cc-0529-40f6-9033-8b0ef078bfa0"
+            }
+          ],
+          "id": "9c4ac81b-1892-4663-9a1f-b3bc9444dfd1",
+          "createdAt": "2026-07-28T03:17:11.000Z",
+          "updatedAt": "2026-07-28T03:17:11.000Z",
+          "uid": "35240-9c4ac81b-1892-4663-9a1f-b3bc9444dfd1"
+        }
+      ],
+      "id": "5c2ca544-73df-420a-8d4c-dfc857af4ec9",
+      "createdAt": "2026-07-28T03:17:11.000Z",
+      "updatedAt": "2026-07-28T03:17:11.000Z",
+      "uid": "35240-5c2ca544-73df-420a-8d4c-dfc857af4ec9"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "crm leadInteraction loanInteraction leadSurveyInteraction postLeads",
+        "type": "string"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://public.totalexpert.net/v1/token",
+        "type": "string"
+      },
+      {
+        "key": "grant_type",
+        "value": "client_credentials",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://public.totalexpert.net"
+    }
+  ]
+}

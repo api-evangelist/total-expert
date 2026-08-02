@@ -1,0 +1,15 @@
+generated: '2026-07-21'
+method: generated
+skills:
+- file: total-expert-sync-contacts.md
+  name: Sync contacts into Total Expert
+  api: openapi/total-expert-openapi.yml
+  operations: [fetchATokenFromClientCredentialsGrant, fetchHeartbeat, fetchContacts, fetchContact, createContactAsAdmin, updateContact, fetchContactGroups]
+- file: total-expert-subscribe-webhooks.md
+  name: Subscribe to Total Expert webhooks
+  api: openapi/total-expert-openapi.yml
+  operations: [fetchWebhookActions, createWebhookSubscription, fetchWebhookSubscriptions, updateWebhookSubscription, deleteWebhookSubscription]
+- file: total-expert-capture-survey-insights.md
+  name: Capture surveys and insights for a contact
+  api: openapi/total-expert-openapi.yml
+  operations: [createContactSurvey, getContactSurveys, createContactSurveyResponseAsUser, createContactAsAdmin, createInsightAsAdmin, fetchInsightTypes]

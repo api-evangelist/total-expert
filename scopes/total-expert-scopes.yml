@@ -1,0 +1,60 @@
+generated: '2026-07-21'
+method: searched
+source: openapi/total-expert-openapi.yml
+docs: https://public.totalexpert.net/v1/docs/OAuth+Authorization+Guide.pdf
+notes: >-
+  Total Expert does not publish a full scope registry. The /v1/authorize
+  endpoint takes a required space-delimited `scope` parameter, and the token
+  response echoes the granted `scope` list. The scope strings below are the
+  ones the provider documents: crm, leadSurveyInteraction and postLeads appear
+  in the Vendor OAuth Integration Guide examples; leadInteraction and
+  loanInteraction appear in the Postman collection token examples. Integrations
+  are provisioned scopes per client by Total Expert.
+schemes:
+- name: oauth2
+  source: openapi/total-expert-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://public.totalexpert.net/v1/token
+  - flow: authorizationCode
+    authorizationUrl: https://public.totalexpert.net/v1/authorize
+    tokenUrl: https://public.totalexpert.net/v1/token
+  description: OAuth 2.0. Obtain a token from POST /v1/token using HTTP Basic (client_id:client_secret
+    base64-encoded) plus a grant_type body. Access tokens are bearer tokens, expires_in 3600.
+scopes:
+- scope: crm
+  description: Documented example scope (Vendor OAuth Integration Guide authorize example)
+  flows:
+  - authorizationCode
+  - clientCredentials
+  sources:
+  - openapi/total-expert-openapi.yml
+- scope: leadInteraction
+  description: Lead interaction access (documented in the collection token examples)
+  flows:
+  - authorizationCode
+  - clientCredentials
+  sources:
+  - openapi/total-expert-openapi.yml
+- scope: leadSurveyInteraction
+  description: Lead survey interaction access (documented example in the Vendor OAuth Integration
+    Guide)
+  flows:
+  - authorizationCode
+  - clientCredentials
+  sources:
+  - openapi/total-expert-openapi.yml
+- scope: loanInteraction
+  description: Loan interaction access (documented in the collection token examples)
+  flows:
+  - authorizationCode
+  - clientCredentials
+  sources:
+  - openapi/total-expert-openapi.yml
+- scope: postLeads
+  description: Post leads access (documented example in the Vendor OAuth Integration Guide)
+  flows:
+  - authorizationCode
+  - clientCredentials
+  sources:
+  - openapi/total-expert-openapi.yml

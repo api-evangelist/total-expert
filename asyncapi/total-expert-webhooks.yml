@@ -1,0 +1,44 @@
+generated: '2026-07-21'
+method: searched
+source: >-
+  https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
+  (Webhooks section of the Total Expert Public API documentation)
+spec_type: Webhooks
+notes: >-
+  Total Expert publishes no AsyncAPI document. This captures its documented
+  webhook surface: organizations subscribe an HTTPS endpoint to a set of
+  actions and receive POST notifications when those actions occur.
+subscription:
+  create: POST /v1/webhook-subscriptions (see openapi/total-expert-openapi.yml#createWebhookSubscription)
+  list_actions: GET /v1/webhook-actions returns the full list of subscribable actions (openapi/total-expert-openapi.yml#fetchWebhookActions)
+  manage:
+  - openapi/total-expert-openapi.yml#fetchWebhookSubscriptions
+  - openapi/total-expert-openapi.yml#fetchWebhookSubscription
+  - openapi/total-expert-openapi.yml#updateWebhookSubscription
+  - openapi/total-expert-openapi.yml#deleteWebhookSubscription
+  requirements:
+  - url: Notification target. Must be HTTPS protected by a valid certificate.
+  - actions: List of actions to subscribe to. An action comprises an 'entity' and a 'verb' (e.g. item CONTACT, action CREATED); fetch the full list from /v1/webhook-actions.
+  - secret: Included in every notification for authenticity. A randomly generated 32-64 char hex string is suggested (up to 255 chars supported); rotate via PATCH on the subscription.
+  scope: Each organization can have several webhooks; each webhook can register multiple actions. remove_actions is a special POST/PATCH attribute for unsubscribing actions.
+notification:
+  transport: HTTP POST to the subscribed URL
+  body:
+    item: Name of the subscribed item, e.g. 'CONTACT'
+    action: Name of the subscribed verb, e.g. 'CREATED'
+    id: The database ID of the item
+    hashValue: HEX string representing the contents of the affected record
+    secret: The secret specified on the subscription
+  hash_semantics: >-
+    hashValue is unchanged when a notification fires without an actual data
+    change (e.g. a no-op save in the UI), so repeated notifications with the
+    same hash can safely be ignored. Compare only against the most recent
+    notification received.
+  delivery_limits: >-
+    Notifications fire only for contact records associated with your
+    organization; co-marketers of organizational contacts do not receive
+    notifications.
+use_cases:
+- Keep an external CRM in sync with contacts/leads created or updated directly in Total Expert.
+- Propagate contact deletions/archivals to a mirrored database.
+- Sync email opt-outs so downstream systems stop communicating with opted-out contacts.

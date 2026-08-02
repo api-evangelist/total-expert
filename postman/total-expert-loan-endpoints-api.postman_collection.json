@@ -1,0 +1,1555 @@
+{
+  "info": {
+    "_postman_id": "37d570f8-3c56-4096-b08a-867ae70f5af6",
+    "name": "Total Expert Public Account Endpoints Loan Endpoints API",
+    "description": "The Total Expert REST API allows you to programmatically create, retrieve, update, and delete information through various endpoints.\n\nDocumentation Layout\n\nEach section of this documentation describes a collection of related endpoints that affect a given resource.\n\nWhere applicable, at the top of a section you will find a table listing the attributes for the resource and a second showing its relationships with other resources.\n\nNOTE: If an attribute is marked as 'Assignable', its value can be set via a POST/PATCH. You can also modify the data for an 'Assignable' relationship.\n\nAuthentication in the TE API\n\nInteraction with the TE API is protected with OAuth 2.0. A client ID/secret pair is required to use the API.\n\nThe ID/secret pair is used to request an access token from the '/token' endpoint. This token will need to be present within the header on all calls to the API.\n\nNOTE: See the 'Authentication' endpoint collection for more information. See the 'Heartbeats' endpoint collection for more information on how to test your authentication.\n\nEndpoint Standards\n\nEach endpoint provides interaction with two aspects of an entity:\n\n'Attributes' - Attributes of the entity itself. Includes things like first name, phone number, or birthday of the contact.\nE.g. A 'Contact'\n\n'Relationships' - Describe a relationship between that entity and another entity.\nE.g. A contact that has an owner in the TE System OR a set of contact groups (separate entities with their own endpoint).\n\nAttributes\n\nEach endpoint returns a JSON object with a set of attributes. Each endpoint collection should describe the names and types of attributes available in each endpoint.\n\nData Types\n\nEach attribute has a type. There are four data types in the TE API - Numeric, String, Boolean, and Date.\n\nData Types\n\nType\nDescription\n\nNumeric\nInteger or floating point numbers. Supplied with no surrounding quotes. e.g. { \"loan_rate\":4.5 }\n\nString\nString of characters - supplied surrounded with quotes. e.g. { \"first_name\":\"Clark\" }\n\nBoolean\nTruth value - supplied in one of two ways - see Boolean (String) and Boolean (Numeric) for details\n\nBoolean (String)\nTruth value - supplied as the word \"True\" or \"False\", surrounded by quotes. e.g. { \"first_time_buyer\":\"True\" }\n\nBoolean (Numeric)\nTruth value - supplied as the number 1 or 0, not surrounded by quotes. e.g. { \"first_time_buyer\":0 }\n\nDate\nA date and time - preferred supplied in the format \"YYYY-MM-DD hh:mm:ss\". All dates must be provided in UTC timezone. When returned, the value will be expressed in UTC. To clear a field with a date type, use the value \"0000-00-00 00:00:00\".\n\nPhone Numbers\n\nPhone numbers are accepted in any format. For deduplication, any non-numeric symbols will be stripped out and the numeric phone number will be stored separately. If a numerically identical phone number is used in a different format later, the records are compared using the numeric value only. This applies only to phone numbers with at least 7 digits.\n\nAll phone numbers will also be converted into E164 for use in external services (e.g. Twilio). If a phone number cannot be converted into E164, the number will be marked 'Invalid', and external services that rely on phone numbers will not function.\n\nUniqueness in the TE API\n\nEach type of entity in the TE API can be uniquely identified by a set of attributes. In some cases, multiple options are available to uniquely identify an entity. See each section below for details. These sets of attributes are used to deduplicate entries on creation and to uniquely identify the target in a relationship.\n\nRelationships\n\nRelationships in the TE API are very flexible.\n\n'GET'ing\n\nWhen GETing an entity, a relationship will be returned with only a partial set of attributes that make sense in the context of that endpoint - e.g. the 'contact_groups' relationship on the '/contacts' endpoint will display only the group name of the target contact_group.\n\nPOST and PATCH Requests\n\nWhen setting a relationship (by POST or PATCH), the target entity is specified using one or more attributes that uniquely identify the entity.\n\nThe allowed attributes are listed in the 'Settable Fields' column of each Relationships table. For example, when POSTing to the '/contact-groups' endpoint, either of the following are allowed:\n\n{\n  \"group_name\": \"Hot Leads\",\n  \"owner\":{\"username\": \"alfred\"}\n  }\n  OR\n\n{\n  \"group_name\": \"Hot Leads\",\n  \"owner\":{\"id\": \"123589\"}\n  }\n\nIn cases where an endpoint's relationship supports multiple Settable Fields be aware that the request examples may only make use of one of the attributes though any could be used in its place.\n\nInteracting with the API\n\nAdmin Calls vs User Calls\n\nYou'll notice that many sections of the documentation have samples for POSTs and GETs that are labeled \"As Admin\" or \"As User\".\nWhen using client credentials to access the API, you'll use the \"As Admin\" examples. For Authorization Code access, you'll use the \"As User\" examples.\n\n'GET'ing\n\nThere are two types of GETable endpoints in the TE API: Paging and Individual. Paging endpoints provide lists of entities. E.g. '/contacts' returns a list of contacts.\n\nGetting Individual Entities\n\nIndividual endpoints return specific individual entities, specified by TE ID. E.g. '/contacts/51151' returns the contact with the 'id' attribute '51151' (the TE internal identifier).\n\nGetting Multiple Entities (Paging)\n\nPaging endpoints will return an object with two properties: 'objects' and 'links'. The 'objects' property will be an array of entities in 'pages'. Each page will have a number of entities along with a set of links. The page size and page number can be specified using the '?page' GET parameter. Setting '?page[number]=5' will return the fifth page. Setting '?page[size]=100' will make each page consist of 100 items, instead of the default of 10. Both attributes can be set together. E.g. setting '?page[size]=100&page[number]=6' will return items 501-600.\n\nPaging Links\n\nThe 'links' attribute on a page object will have four attributes, specifying metadata about the number of entities available to page.\n\n'first' will be the page number of the first page of entities (always '1').\n\n'last' will be the page number of the last page of entities.\n\n'next' will be the page number of the next page after the currently requested one. 'next' may be null if there are no subsequent pages.\n\n'prev' will be the page number of the page immediately preceding the current one. 'prev' may be null if there are no preceding pages.\n\n'POST'ing\n\nEntities can be created in the TE system by POSTing to paging endpoints. E.g. sending a POST to '/contacts' will create a contact.\n\nDeduplication\n\nWhen POSTing an entity, the TE API will attempt to 'Deduplicate' by searching for existing entities with similar attributes. If such a duplicate does exist, the TE API will treat the POST as a PATCH to that entity instead. See each section for details on what attributes will be used to search for duplicates.\n\n'PATCH'ing\n\nEntities can be updated in the TE system by PATCHing to individual endpoints. E.g. sending a PATCH to '/contacts/51151' will update the attributes of the contact with TE 'id' of '51151'.\n\n'DELETE'ing\n\nEntities can be deleted only by TE ID. Send a DELETE request to the appropriate individual entity endpoint to delete it.\n\nReturn Codes\n\nWhere applicable, the API will respond with an HTTP status code that indicates what happened during the request. Possible values include:\n\nHTTP CODES\n\nStatus Code\nGeneral Description\n\n200 SUCCESS\nThe operation completed successfully. See the response body for details (if applicable).\n\n201 CREATED\nThe object was created successfully. See the response body for details (if applicable).\n\n400 BAD REQUEST\nThe JSON supplied to the API was malformed and unparseable.\n\n401 UNAUTHORIZED\nThe request's credentials are invalid. This could mean your token has expired and should be renewed. See the response body for details.\n\n403 FORBIDDEN\nAn attempt was made to access a resource for which you do not have permission\n\n405 METHOD NOT ALLOWED\nAn attempt was made to interact with an endpoint in an unsupported manner, e.g. sending a POST to '/contacts/1'\n\n415 UNSUPPORTED MEDIA TYPE\nThe API endpoints expect a content type of 'media/json'\n\n422 UNPROCESSABLE ENTITY\nThe JSON body supplied is valid, but not processable semantically. For example, the 'owner' relationship for a contact refers to a User that does not exist in the TE system.\n\n418 I'M A TEAPOT\nThe API is a teapot (See the 'Heartbeat' section for details).\n\n503 SERVICE UNAVAILABLE\nThe API is unavailable. Please try your request again later. If this message persists, please contact Technical Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T03:17:24.000Z",
+    "updatedAt": "2026-07-28T03:17:24.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-37d570f8-3c56-4096-b08a-867ae70f5af6"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "loans",
+          "item": [
+            {
+              "name": "{loan_id}",
+              "item": [
+                {
+                  "name": "Fetch Loan",
+                  "id": "d4ad379a-bde0-4848-ab58-c157b3391201",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/loans/:loan_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "loans",
+                        ":loan_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "5aa4d7ab-0fae-4e80-9524-837546ef4daa",
+                          "key": "loan_id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Fetch a specific loan type specified by ID."
+                  },
+                  "response": [
+                    {
+                      "id": "be8325ff-3534-4936-967e-38367d11c611",
+                      "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/loans/:loan_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "loans",
+                            ":loan_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "loan_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T03:17:24.000Z",
+                      "updatedAt": "2026-07-28T03:17:24.000Z",
+                      "uid": "35240-be8325ff-3534-4936-967e-38367d11c611"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T03:17:24.000Z",
+                  "updatedAt": "2026-07-28T03:17:24.000Z",
+                  "uid": "35240-d4ad379a-bde0-4848-ab58-c157b3391201"
+                },
+                {
+                  "name": "Update Loan ",
+                  "id": "0ad22efb-7fe7-4953-85d7-a4d07d7da7e9",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"example\": {\n    \"external_id\": \"2161006\",\n    \"loan_number\": \"2161006\",\n    \"loan_rate\": \"4.00\",\n    \"loan_term\": 360,\n    \"appraised_value\": \"450000.00\",\n    \"is_first_time_buyer\": 0,\n    \"address\": \"446 Second St\",\n    \"city\": \"Middlesex\",\n    \"state\": \"NJ\",\n    \"zip_code\": 8846,\n    \"loan_amount\": \"357904.00\",\n    \"loan_to_value_combined\": \"86.24\",\n    \"occupancy_type\": \"Owner\",\n    \"lock_status\": \"Locked\",\n    \"escrow_waived\": 0,\n    \"application_date\": \"2016-07-27 00:00:00\",\n    \"appraisal_ordered_date\": \"2017-04-21 00:00:00\",\n    \"appraisal_received_date\": \"2017-04-28 00:00:00\",\n    \"closing_date\": \"2017-05-19 00:00:00\",\n    \"created_date\": \"2017-06-06 15:51:19\",\n    \"last_modified_date\": \"2017-05-15 06:55:00\",\n    \"first_payment_date\": \"2017-06-01 00:00:00\",\n    \"lock_date\": \"2017-04-26 00:00:00\",\n    \"lock_expiration_date\": \"2017-05-25 00:00:00\",\n    \"processing_start_date\": \"2016-08-05 00:00:00\",\n    \"underwriting_submission_date\": \"2016-08-02 00:00:00\",\n    \"internal_created_at\": \"2017-06-06 15:51:19\",\n    \"internal_updated_at\": \"2017-06-06 15:51:20\",\n    \"coborrower\": {\n      \"id\": 1186\n    },\n    \"loan_program\": {\n      \"loan_program\": \"30-year Fixed\"\n    },\n    \"loan_purpose\": {\n      \"loan_purpose\": \"New\"\n    },\n    \"loan_status\": {\n      \"loan_status\": \"In review\"\n    },\n    \"loan_type\": {\n      \"loan_type\": \"Conventional Fixed Rate\"\n    },\n    \"account_class\": {\n      \"class_name\": \"mortgage\",\n      \"class_type\": \"LOAN\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/loans/:loan_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "loans",
+                        ":loan_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "514a512c-438d-4e5e-90d5-e4e9e9358a1e",
+                          "key": "loan_id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Update an existing loan by ID."
+                  },
+                  "response": [
+                    {
+                      "id": "9ab44c82-5eb8-4bc8-ba38-a8452a09019c",
+                      "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"example\": {\n    \"external_id\": \"2161006\",\n    \"loan_number\": \"2161006\",\n    \"loan_rate\": \"4.00\",\n    \"loan_term\": 360,\n    \"appraised_value\": \"450000.00\",\n    \"is_first_time_buyer\": 0,\n    \"address\": \"446 Second St\",\n    \"city\": \"Middlesex\",\n    \"state\": \"NJ\",\n    \"zip_code\": 8846,\n    \"loan_amount\": \"357904.00\",\n    \"loan_to_value_combined\": \"86.24\",\n    \"occupancy_type\": \"Owner\",\n    \"lock_status\": \"Locked\",\n    \"escrow_waived\": 0,\n    \"application_date\": \"2016-07-27 00:00:00\",\n    \"appraisal_ordered_date\": \"2017-04-21 00:00:00\",\n    \"appraisal_received_date\": \"2017-04-28 00:00:00\",\n    \"closing_date\": \"2017-05-19 00:00:00\",\n    \"created_date\": \"2017-06-06 15:51:19\",\n    \"last_modified_date\": \"2017-05-15 06:55:00\",\n    \"first_payment_date\": \"2017-06-01 00:00:00\",\n    \"lock_date\": \"2017-04-26 00:00:00\",\n    \"lock_expiration_date\": \"2017-05-25 00:00:00\",\n    \"processing_start_date\": \"2016-08-05 00:00:00\",\n    \"underwriting_submission_date\": \"2016-08-02 00:00:00\",\n    \"internal_created_at\": \"2017-06-06 15:51:19\",\n    \"internal_updated_at\": \"2017-06-06 15:51:20\",\n    \"coborrower\": {\n      \"id\": 1186\n    },\n    \"loan_program\": {\n      \"loan_program\": \"30-year Fixed\"\n    },\n    \"loan_purpose\": {\n      \"loan_purpose\": \"New\"\n    },\n    \"loan_status\": {\n      \"loan_status\": \"In review\"\n    },\n    \"loan_type\": {\n      \"loan_type\": \"Conventional Fixed Rate\"\n    },\n    \"account_class\": {\n      \"class_name\": \"mortgage\",\n      \"class_type\": \"LOAN\"\n    }\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/loans/:loan_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "loans",
+                            ":loan_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "loan_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T03:17:24.000Z",
+                      "updatedAt": "2026-07-28T03:17:24.000Z",
+                      "uid": "35240-9ab44c82-5eb8-4bc8-ba38-a8452a09019c"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T03:17:24.000Z",
+                  "updatedAt": "2026-07-28T03:17:24.000Z",
+                  "uid": "35240-0ad22efb-7fe7-4953-85d7-a4d07d7da7e9"
+                },
+                {
+                  "name": "Delete Loan",
+                  "id": "932e70f0-b7ac-4ea2-a400-81a08ea5734b",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/loans/:loan_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "loans",
+                        ":loan_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "fe9787e3-73c3-41aa-9303-7135755577bc",
+                          "key": "loan_id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Deletes a loan by ID."
+                  },
+                  "response": [
+                    {
+                      "id": "c2918b66-75ce-4ddf-9d00-3c7cb748194b",
+                      "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/loans/:loan_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "loans",
+                            ":loan_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "loan_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T03:17:24.000Z",
+                      "updatedAt": "2026-07-28T03:17:24.000Z",
+                      "uid": "35240-c2918b66-75ce-4ddf-9d00-3c7cb748194b"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T03:17:24.000Z",
+                  "updatedAt": "2026-07-28T03:17:24.000Z",
+                  "uid": "35240-932e70f0-b7ac-4ea2-a400-81a08ea5734b"
+                }
+              ],
+              "id": "e4cd83db-ea01-4c92-86ea-1e8c7eabd2c2",
+              "createdAt": "2026-07-28T03:17:24.000Z",
+              "updatedAt": "2026-07-28T03:17:24.000Z",
+              "uid": "35240-e4cd83db-ea01-4c92-86ea-1e8c7eabd2c2"
+            },
+            {
+              "name": "Fetch Loans",
+              "id": "a26f777c-5942-489a-8d20-1a4c138eb358",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/loans?page[number]=<string>&page[size]=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "loans"
+                  ],
+                  "query": [
+                    {
+                      "key": "page[number]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "description": "Fetch a page of loans. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters."
+              },
+              "response": [
+                {
+                  "id": "cb50c24a-ce6f-4568-bc3b-3d2dbf603883",
+                  "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/loans?page[number]=<string>&page[size]=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "loans"
+                      ],
+                      "query": [
+                        {
+                          "key": "page[number]",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "page[size]",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T03:17:24.000Z",
+                  "updatedAt": "2026-07-28T03:17:24.000Z",
+                  "uid": "35240-cb50c24a-ce6f-4568-bc3b-3d2dbf603883"
+                }
+              ],
+              "createdAt": "2026-07-28T03:17:24.000Z",
+              "updatedAt": "2026-07-28T03:17:24.000Z",
+              "uid": "35240-a26f777c-5942-489a-8d20-1a4c138eb358"
+            },
+            {
+              "name": "Create Loan (as Admin)",
+              "id": "d6d79bf2-ff01-430a-a3cc-96ca909531fe",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"examples\": {\n    \"value\": {\n      \"external_id\": \"2161010\",\n      \"loan_number\": \"2161010\",\n      \"address\": \"446 Second St\",\n      \"city\": \"Middlesex\",\n      \"state\": \"NJ\",\n      \"zip_code\": 8846,\n      \"owner\": {\n        \"username\": \"jsmith\"\n      },\n      \"borrower\": {\n        \"source\": \"PCLender\",\n        \"first_name\": \"Jenny\",\n        \"last_name\": \"Kristoff\",\n        \"email\": \"jennyK@example.com\",\n        \"custom\": [\n          {\n            \"field_name\": \"custom_string\",\n            \"value\": \"the custom field string value\"\n          }\n        ]\n      },\n      \"coborrower\": {\n        \"source\": \"PCLender\",\n        \"first_name\": \"Anthony\",\n        \"last_name\": \"Kristoff\",\n        \"email\": \"anthonyK@example.com\"\n      },\n      \"loan_program\": {\n        \"loan_program\": \"10-year Fixed\"\n      },\n      \"loan_purpose\": {\n        \"loan_purpose\": \"Refinance\"\n      },\n      \"loan_status\": {\n        \"loan_status\": \"Pending\"\n      },\n      \"loan_type\": {\n        \"loan_type\": \"Conventional Fixed Rate\"\n      },\n      \"loan_subordinate_financing_type\": {\n        \"loan_subordinate_financing_type\": \"HELOC\"\n      },\n      \"buyers_agent\": {\n        \"source\": \"PCLender\",\n        \"first_name\": \"Jay\",\n        \"last_name\": \"Jenkel\",\n        \"email\": \"jagent@example.com\"\n      },\n      \"sellers_agent\": {\n        \"source\": \"PCLender\",\n        \"first_name\": \"Fred\",\n        \"last_name\": \"Ingle\",\n        \"email\": \"fseller@example.com\"\n      },\n      \"settlement_agent\": {\n        \"source\": \"PCLender\",\n        \"first_name\": \"Angie\",\n        \"last_name\": \"Deedle\",\n        \"email\": \"asettlement@example.com\"\n      },\n      \"account_class\": {\n        \"class_name\": \"mortgage\",\n        \"class_type\": \"LOAN\"\n      },\n      \"custom\": [\n        {\n          \"field_name\": \"custom_string\",\n          \"value\": \"the custom field string value\"\n        }\n      ]\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/loans",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "loans"
+                  ]
+                },
+                "description": "Create a loan.\n\nRequired Attributes:\n\nexternal_id\n\nRequired Relationships:\n\nowner\n\nborrower\nMust have required fields for contact creation, found here: Create Contact (as Admin)\n\nany other required loan participant roles, which can be found using the Fetch Loan Participant Roles request (requires describeSchema scope to access)\n\nAlternate documented request: Create Loan (as User)."
+              },
+              "response": [
+                {
+                  "id": "840ba4bb-7850-448f-8090-95d84f884a22",
+                  "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"examples\": {\n    \"value\": {\n      \"external_id\": \"2161010\",\n      \"loan_number\": \"2161010\",\n      \"address\": \"446 Second St\",\n      \"city\": \"Middlesex\",\n      \"state\": \"NJ\",\n      \"zip_code\": 8846,\n      \"owner\": {\n        \"username\": \"jsmith\"\n      },\n      \"borrower\": {\n        \"source\": \"PCLender\",\n        \"first_name\": \"Jenny\",\n        \"last_name\": \"Kristoff\",\n        \"email\": \"jennyK@example.com\",\n        \"custom\": [\n          {\n            \"field_name\": \"custom_string\",\n            \"value\": \"the custom field string value\"\n          }\n        ]\n      },\n      \"coborrower\": {\n        \"source\": \"PCLender\",\n        \"first_name\": \"Anthony\",\n        \"last_name\": \"Kristoff\",\n        \"email\": \"anthonyK@example.com\"\n      },\n      \"loan_program\": {\n        \"loan_program\": \"10-year Fixed\"\n      },\n      \"loan_purpose\": {\n        \"loan_purpose\": \"Refinance\"\n      },\n      \"loan_status\": {\n        \"loan_status\": \"Pending\"\n      },\n      \"loan_type\": {\n        \"loan_type\": \"Conventional Fixed Rate\"\n      },\n      \"loan_subordinate_financing_type\": {\n        \"loan_subordinate_financing_type\": \"HELOC\"\n      },\n      \"buyers_agent\": {\n        \"source\": \"PCLender\",\n        \"first_name\": \"Jay\",\n        \"last_name\": \"Jenkel\",\n        \"email\": \"jagent@example.com\"\n      },\n      \"sellers_agent\": {\n        \"source\": \"PCLender\",\n        \"first_name\": \"Fred\",\n        \"last_name\": \"Ingle\",\n        \"email\": \"fseller@example.com\"\n      },\n      \"settlement_agent\": {\n        \"source\": \"PCLender\",\n        \"first_name\": \"Angie\",\n        \"last_name\": \"Deedle\",\n        \"email\": \"asettlement@example.com\"\n      },\n      \"account_class\": {\n        \"class_name\": \"mortgage\",\n        \"class_type\": \"LOAN\"\n      },\n      \"custom\": [\n        {\n          \"field_name\": \"custom_string\",\n          \"value\": \"the custom field string value\"\n        }\n      ]\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/loans",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "loans"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T03:17:24.000Z",
+                  "updatedAt": "2026-07-28T03:17:24.000Z",
+                  "uid": "35240-840ba4bb-7850-448f-8090-95d84f884a22"
+                }
+              ],
+              "createdAt": "2026-07-28T03:17:24.000Z",
+              "updatedAt": "2026-07-28T03:17:24.000Z",
+              "uid": "35240-d6d79bf2-ff01-430a-a3cc-96ca909531fe"
+            }
+          ],
+          "id": "73466ee3-e1ec-45b5-aa6f-8c22febbe2fd",
+          "createdAt": "2026-07-28T03:17:24.000Z",
+          "updatedAt": "2026-07-28T03:17:24.000Z",
+          "uid": "35240-73466ee3-e1ec-45b5-aa6f-8c22febbe2fd"
+        },
+        {
+          "name": "loan-types",
+          "item": [
+            {
+              "name": "{type_id}",
+              "item": [
+                {
+                  "name": "Fetch Loan Type",
+                  "id": "c98fe92c-25cd-43bb-b48d-48307694d92d",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/loan-types/:type_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "loan-types",
+                        ":type_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "82c86bbe-2a9b-4bd0-9388-c856f4e63829",
+                          "key": "type_id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Fetch a specific loan type specified by ID."
+                  },
+                  "response": [
+                    {
+                      "id": "4e859aba-316f-4772-b7af-7fc91f6b3e1c",
+                      "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/loan-types/:type_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "loan-types",
+                            ":type_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "type_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T03:17:24.000Z",
+                      "updatedAt": "2026-07-28T03:17:24.000Z",
+                      "uid": "35240-4e859aba-316f-4772-b7af-7fc91f6b3e1c"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T03:17:24.000Z",
+                  "updatedAt": "2026-07-28T03:17:24.000Z",
+                  "uid": "35240-c98fe92c-25cd-43bb-b48d-48307694d92d"
+                }
+              ],
+              "id": "7ce2e25a-2b79-4008-8dc2-a61e5d2d5f3c",
+              "createdAt": "2026-07-28T03:17:24.000Z",
+              "updatedAt": "2026-07-28T03:17:24.000Z",
+              "uid": "35240-7ce2e25a-2b79-4008-8dc2-a61e5d2d5f3c"
+            },
+            {
+              "name": "Fetch Loan Types",
+              "id": "cb3bb7bc-676c-4fae-afbd-8227e5194539",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/loan-types?page[number]=<string>&page[size]=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "loan-types"
+                  ],
+                  "query": [
+                    {
+                      "key": "page[number]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "description": "Fetch a page of loan types. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters."
+              },
+              "response": [
+                {
+                  "id": "ba43cb8e-0218-4383-9eb1-e8bf8cfa55c3",
+                  "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/loan-types?page[number]=<string>&page[size]=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "loan-types"
+                      ],
+                      "query": [
+                        {
+                          "key": "page[number]",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "page[size]",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T03:17:24.000Z",
+                  "updatedAt": "2026-07-28T03:17:24.000Z",
+                  "uid": "35240-ba43cb8e-0218-4383-9eb1-e8bf8cfa55c3"
+                }
+              ],
+              "createdAt": "2026-07-28T03:17:24.000Z",
+              "updatedAt": "2026-07-28T03:17:24.000Z",
+              "uid": "35240-cb3bb7bc-676c-4fae-afbd-8227e5194539"
+            },
+            {
+              "name": "Create Loan Type",
+              "id": "1e853987-f558-496c-b67c-8312bdbe22a1",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"example\": {\n    \"loan_type\": \"Conventional Fixed Rate\",\n    \"account_class\": {\n      \"class_name\": \"mortgage\",\n      \"class_type\": \"LOAN\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/loan-types",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "loan-types"
+                  ]
+                },
+                "description": "Create a loan type.\nRequired Attributes:\n\nloan_type\n\nRequired Relationships:\n\nowning_organization*\n\n*required if authenticated as an TE admin"
+              },
+              "response": [
+                {
+                  "id": "8723b1d3-dd42-4aad-a5f3-73bff8a12e13",
+                  "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"example\": {\n    \"loan_type\": \"Conventional Fixed Rate\",\n    \"account_class\": {\n      \"class_name\": \"mortgage\",\n      \"class_type\": \"LOAN\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/loan-types",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "loan-types"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T03:17:24.000Z",
+                  "updatedAt": "2026-07-28T03:17:24.000Z",
+                  "uid": "35240-8723b1d3-dd42-4aad-a5f3-73bff8a12e13"
+                }
+              ],
+              "createdAt": "2026-07-28T03:17:24.000Z",
+              "updatedAt": "2026-07-28T03:17:24.000Z",
+              "uid": "35240-1e853987-f558-496c-b67c-8312bdbe22a1"
+            }
+          ],
+          "id": "668d712e-4eee-4f54-8ef7-eede29e7a440",
+          "createdAt": "2026-07-28T03:17:24.000Z",
+          "updatedAt": "2026-07-28T03:17:24.000Z",
+          "uid": "35240-668d712e-4eee-4f54-8ef7-eede29e7a440"
+        },
+        {
+          "name": "loan-statuses",
+          "item": [
+            {
+              "name": "{status_id}",
+              "item": [
+                {
+                  "name": "Fetch Loan Status",
+                  "id": "771b7a98-df25-48ec-811d-c1d59e3b0323",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/loan-statuses/:status_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "loan-statuses",
+                        ":status_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "9ba2f1d8-07cf-48c4-ab48-60cfede63be9",
+                          "key": "status_id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Fetch a specific loan status specified by ID."
+                  },
+                  "response": [
+                    {
+                      "id": "7eb06a35-f7a8-4bda-bf1d-6f6c4264c587",
+                      "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/loan-statuses/:status_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "loan-statuses",
+                            ":status_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "status_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T03:17:24.000Z",
+                      "updatedAt": "2026-07-28T03:17:24.000Z",
+                      "uid": "35240-7eb06a35-f7a8-4bda-bf1d-6f6c4264c587"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T03:17:24.000Z",
+                  "updatedAt": "2026-07-28T03:17:24.000Z",
+                  "uid": "35240-771b7a98-df25-48ec-811d-c1d59e3b0323"
+                }
+              ],
+              "id": "4e58cafc-e27a-4eb6-a7a2-15d3a0adff62",
+              "createdAt": "2026-07-28T03:17:24.000Z",
+              "updatedAt": "2026-07-28T03:17:24.000Z",
+              "uid": "35240-4e58cafc-e27a-4eb6-a7a2-15d3a0adff62"
+            },
+            {
+              "name": "Fetch Loan Statuses",
+              "id": "cf5f23bc-a2fe-48ac-9a8e-00ac5878938d",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/loan-statuses?page[number]=<string>&page[size]=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "loan-statuses"
+                  ],
+                  "query": [
+                    {
+                      "key": "page[number]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "description": "Fetch a page of loan statuses. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters."
+              },
+              "response": [
+                {
+                  "id": "08986a09-769a-4fc7-a48c-f34739b0a50d",
+                  "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/loan-statuses?page[number]=<string>&page[size]=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "loan-statuses"
+                      ],
+                      "query": [
+                        {
+                          "key": "page[number]",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "page[size]",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T03:17:24.000Z",
+                  "updatedAt": "2026-07-28T03:17:24.000Z",
+                  "uid": "35240-08986a09-769a-4fc7-a48c-f34739b0a50d"
+                }
+              ],
+              "createdAt": "2026-07-28T03:17:24.000Z",
+              "updatedAt": "2026-07-28T03:17:24.000Z",
+              "uid": "35240-cf5f23bc-a2fe-48ac-9a8e-00ac5878938d"
+            },
+            {
+              "name": "Create Loan Status",
+              "id": "caffcdc3-9af0-4f2a-95bf-7c52943b83e5",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"example\": {\n    \"loan_status\": \"Pending\",\n    \"account_class\": {\n      \"class_name\": \"mortgage\",\n      \"class_type\": \"LOAN\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/loan-statuses",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "loan-statuses"
+                  ]
+                },
+                "description": "Create a loan status.\nRequired Attributes:\n\nloan_status\n\nRequired Relationships:\n\nowning_organization*\n\n*required if authenticated as an TE admin"
+              },
+              "response": [
+                {
+                  "id": "2ad41002-dfd5-4ef0-a00a-a4610ff17669",
+                  "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"example\": {\n    \"loan_status\": \"Pending\",\n    \"account_class\": {\n      \"class_name\": \"mortgage\",\n      \"class_type\": \"LOAN\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/loan-statuses",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "loan-statuses"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T03:17:24.000Z",
+                  "updatedAt": "2026-07-28T03:17:24.000Z",
+                  "uid": "35240-2ad41002-dfd5-4ef0-a00a-a4610ff17669"
+                }
+              ],
+              "createdAt": "2026-07-28T03:17:24.000Z",
+              "updatedAt": "2026-07-28T03:17:24.000Z",
+              "uid": "35240-caffcdc3-9af0-4f2a-95bf-7c52943b83e5"
+            }
+          ],
+          "id": "18a2ccd4-80bd-4566-aea2-735770f739b5",
+          "createdAt": "2026-07-28T03:17:24.000Z",
+          "updatedAt": "2026-07-28T03:17:24.000Z",
+          "uid": "35240-18a2ccd4-80bd-4566-aea2-735770f739b5"
+        },
+        {
+          "name": "loan-purposes",
+          "item": [
+            {
+              "name": "{purpose_id}",
+              "item": [
+                {
+                  "name": "Fetch Loan Purpose",
+                  "id": "ef434ad4-f599-4130-94cf-5789e1205fa8",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/loan-purposes/:purpose_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "loan-purposes",
+                        ":purpose_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "06c2cd57-0cae-4580-b807-201e6fb3a370",
+                          "key": "purpose_id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Fetch a specific loan purpose specified by ID."
+                  },
+                  "response": [
+                    {
+                      "id": "e1934734-af91-4e75-893a-57c2eaca61e5",
+                      "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/loan-purposes/:purpose_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "loan-purposes",
+                            ":purpose_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "purpose_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T03:17:24.000Z",
+                      "updatedAt": "2026-07-28T03:17:24.000Z",
+                      "uid": "35240-e1934734-af91-4e75-893a-57c2eaca61e5"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T03:17:24.000Z",
+                  "updatedAt": "2026-07-28T03:17:24.000Z",
+                  "uid": "35240-ef434ad4-f599-4130-94cf-5789e1205fa8"
+                }
+              ],
+              "id": "d9cade4f-c028-47e6-ba72-812812cdf03c",
+              "createdAt": "2026-07-28T03:17:24.000Z",
+              "updatedAt": "2026-07-28T03:17:24.000Z",
+              "uid": "35240-d9cade4f-c028-47e6-ba72-812812cdf03c"
+            },
+            {
+              "name": "Fetch Loan Purposes",
+              "id": "e3d4aacf-5343-4269-b48c-4f4b8daead88",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/loan-purposes?page[number]=<string>&page[size]=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "loan-purposes"
+                  ],
+                  "query": [
+                    {
+                      "key": "page[number]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "description": "Fetch a page of loan purposes. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters."
+              },
+              "response": [
+                {
+                  "id": "8e9ae109-cfe5-44b7-97c2-0753882129b0",
+                  "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/loan-purposes?page[number]=<string>&page[size]=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "loan-purposes"
+                      ],
+                      "query": [
+                        {
+                          "key": "page[number]",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "page[size]",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T03:17:24.000Z",
+                  "updatedAt": "2026-07-28T03:17:24.000Z",
+                  "uid": "35240-8e9ae109-cfe5-44b7-97c2-0753882129b0"
+                }
+              ],
+              "createdAt": "2026-07-28T03:17:24.000Z",
+              "updatedAt": "2026-07-28T03:17:24.000Z",
+              "uid": "35240-e3d4aacf-5343-4269-b48c-4f4b8daead88"
+            },
+            {
+              "name": "Create Loan Purpose",
+              "id": "ba88a8a3-64b1-4e44-8b34-da308ecec9f7",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"example\": {\n    \"loan_purpose\": \"Refinance\",\n    \"account_class\": {\n      \"class_name\": \"mortgage\",\n      \"class_type\": \"LOAN\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/loan-purposes",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "loan-purposes"
+                  ]
+                },
+                "description": "Create a loan purpose.\nRequired Attributes:\n\nloan_purpose\n\nRequired Relationships:\n\nowning_organization*\n\n*required if authenticated as an TE admin"
+              },
+              "response": [
+                {
+                  "id": "65a9b0ed-a404-45db-b0b2-80c30582aa14",
+                  "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"example\": {\n    \"loan_purpose\": \"Refinance\",\n    \"account_class\": {\n      \"class_name\": \"mortgage\",\n      \"class_type\": \"LOAN\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/loan-purposes",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "loan-purposes"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T03:17:24.000Z",
+                  "updatedAt": "2026-07-28T03:17:24.000Z",
+                  "uid": "35240-65a9b0ed-a404-45db-b0b2-80c30582aa14"
+                }
+              ],
+              "createdAt": "2026-07-28T03:17:24.000Z",
+              "updatedAt": "2026-07-28T03:17:24.000Z",
+              "uid": "35240-ba88a8a3-64b1-4e44-8b34-da308ecec9f7"
+            }
+          ],
+          "id": "573aec5e-418a-4a15-a16b-f156f885397b",
+          "createdAt": "2026-07-28T03:17:24.000Z",
+          "updatedAt": "2026-07-28T03:17:24.000Z",
+          "uid": "35240-573aec5e-418a-4a15-a16b-f156f885397b"
+        },
+        {
+          "name": "loan-programs",
+          "item": [
+            {
+              "name": "{program_id}",
+              "item": [
+                {
+                  "name": "Fetch Loan Program",
+                  "id": "6c67153c-065f-4483-8314-bfd3d1f008f5",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/loan-programs/:program_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "loan-programs",
+                        ":program_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "460b1b0d-4d1e-42a9-a2c3-78413424707f",
+                          "key": "program_id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Fetch a specific loan program specified by TE ID."
+                  },
+                  "response": [
+                    {
+                      "id": "7d35a1b3-9125-4272-b3ae-136ab3f9c31b",
+                      "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/loan-programs/:program_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "loan-programs",
+                            ":program_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "program_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T03:17:24.000Z",
+                      "updatedAt": "2026-07-28T03:17:24.000Z",
+                      "uid": "35240-7d35a1b3-9125-4272-b3ae-136ab3f9c31b"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T03:17:24.000Z",
+                  "updatedAt": "2026-07-28T03:17:24.000Z",
+                  "uid": "35240-6c67153c-065f-4483-8314-bfd3d1f008f5"
+                }
+              ],
+              "id": "21d85388-88b1-4712-9603-c9ca319399d1",
+              "createdAt": "2026-07-28T03:17:24.000Z",
+              "updatedAt": "2026-07-28T03:17:24.000Z",
+              "uid": "35240-21d85388-88b1-4712-9603-c9ca319399d1"
+            },
+            {
+              "name": "Fetch Loan Programs",
+              "id": "106c13b4-fc99-440a-aaae-07810fa3a16d",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/loan-programs?page[number]=<string>&page[size]=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "loan-programs"
+                  ],
+                  "query": [
+                    {
+                      "key": "page[number]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "description": "Fetch a page of loan programs. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters."
+              },
+              "response": [
+                {
+                  "id": "b864866c-97b4-4b8e-a9db-f1b58c39cace",
+                  "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/loan-programs?page[number]=<string>&page[size]=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "loan-programs"
+                      ],
+                      "query": [
+                        {
+                          "key": "page[number]",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "page[size]",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T03:17:24.000Z",
+                  "updatedAt": "2026-07-28T03:17:24.000Z",
+                  "uid": "35240-b864866c-97b4-4b8e-a9db-f1b58c39cace"
+                }
+              ],
+              "createdAt": "2026-07-28T03:17:24.000Z",
+              "updatedAt": "2026-07-28T03:17:24.000Z",
+              "uid": "35240-106c13b4-fc99-440a-aaae-07810fa3a16d"
+            },
+            {
+              "name": "Create Loan Program",
+              "id": "6dafc674-021d-4dd6-9d40-83ad7e9c4001",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"example\": {\n    \"loan_program\": \"10-year Fixed\",\n    \"account_class\": {\n      \"class_name\": \"mortgage\",\n      \"class_type\": \"LOAN\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/loan-programs",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "loan-programs"
+                  ]
+                },
+                "description": "Create a loan program.\nRequired Attributes:\n\nloan_program\n\nRequired Relationships:\n\nowning_organization*\n\n*required if authenticated as an TE admin"
+              },
+              "response": [
+                {
+                  "id": "6d2b1376-703f-45f9-864f-3d2e0f34cd1d",
+                  "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"example\": {\n    \"loan_program\": \"10-year Fixed\",\n    \"account_class\": {\n      \"class_name\": \"mortgage\",\n      \"class_type\": \"LOAN\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/loan-programs",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "loan-programs"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T03:17:24.000Z",
+                  "updatedAt": "2026-07-28T03:17:24.000Z",
+                  "uid": "35240-6d2b1376-703f-45f9-864f-3d2e0f34cd1d"
+                }
+              ],
+              "createdAt": "2026-07-28T03:17:24.000Z",
+              "updatedAt": "2026-07-28T03:17:24.000Z",
+              "uid": "35240-6dafc674-021d-4dd6-9d40-83ad7e9c4001"
+            }
+          ],
+          "id": "0db12096-5142-4bf6-950d-8a7391f34ab3",
+          "createdAt": "2026-07-28T03:17:24.000Z",
+          "updatedAt": "2026-07-28T03:17:24.000Z",
+          "uid": "35240-0db12096-5142-4bf6-950d-8a7391f34ab3"
+        }
+      ],
+      "id": "e90fb90a-0334-4cc9-8aec-f348a8764373",
+      "createdAt": "2026-07-28T03:17:24.000Z",
+      "updatedAt": "2026-07-28T03:17:24.000Z",
+      "uid": "35240-e90fb90a-0334-4cc9-8aec-f348a8764373"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "crm leadInteraction loanInteraction leadSurveyInteraction postLeads",
+        "type": "string"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://public.totalexpert.net/v1/token",
+        "type": "string"
+      },
+      {
+        "key": "grant_type",
+        "value": "client_credentials",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://public.totalexpert.net"
+    }
+  ]
+}

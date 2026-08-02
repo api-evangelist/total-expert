@@ -1,0 +1,42 @@
+generated: '2026-07-21'
+method: searched
+source: >-
+  Derived from openapi/total-expert-openapi.yml and the provider's published
+  documentation; compliance claims from https://www.totalexpert.com/security.
+standards:
+- id: oauth2
+  conforms: true
+  evidence: OAuth 2.0 client_credentials, authorization_code, and refresh_token grants at /v1/authorize and /v1/token (Vendor OAuth Integration Guide).
+- id: oidc
+  conforms: false
+  evidence: No /.well-known/openid-configuration discovery document (404/403 on all hosts); plain OAuth 2.0, not OpenID Connect.
+- id: rfc8414-authorization-server-metadata
+  conforms: false
+  evidence: /.well-known/oauth-authorization-server not published.
+- id: json:api
+  conforms: false
+  evidence: 'Uses JSON:API-style page[number]/page[size] query parameters, but the response envelope is a custom objects/links shape, not JSON:API documents.'
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: Errors are plain HTTP status codes with custom JSON bodies (error/error_description for OAuth), not application/problem+json.
+- id: pagination
+  conforms: true
+  evidence: Documented page-number pagination (page[number]/page[size], links first/last/next/prev) on all paging endpoints.
+- id: idempotency
+  conforms: true
+  evidence: Attribute-based deduplication treats a duplicate POST as a PATCH to the existing entity (Deduplication Process guide); no Idempotency-Key header.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt not published on any host.
+- id: soc2
+  conforms: true
+  evidence: '"Total Expert is American Institute of CPAs (AICPA) SOC2 compliant" — https://www.totalexpert.com/security.'
+- id: iso27001
+  conforms: true
+  evidence: A-LIGN ISO 27001 Certified badge displayed on https://www.totalexpert.com/security.
+- id: fapi
+  conforms: false
+  evidence: No FAPI profile claims; standard OAuth 2.0 only.
+- id: scim
+  conforms: false
+  evidence: User/team management is a proprietary /v1/users surface, not SCIM 2.0 paths.

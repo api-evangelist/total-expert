@@ -1,0 +1,20 @@
+generated: '2026-07-21'
+method: searched
+source: npm registry search + PyPI + GitHub org github.com/TotalExpert
+notes: >-
+  Total Expert ships no first-party client libraries. Its GitHub org
+  (github.com/TotalExpert) contains only forks of third-party projects
+  (element-ui, simplesamlphp, PHRETS, etc.). The only registry package found is
+  a community-maintained Node.js wrapper. PyPI (totalexpert, total-expert),
+  Maven Central, NuGet, RubyGems, Packagist, crates.io and pkg.go.dev returned
+  no Total Expert client libraries.
+packages:
+- language: javascript
+  registry: npm
+  name: total-expert-node
+  url: https://www.npmjs.com/package/total-expert-node
+  install: npm install total-expert-node
+  official: false
+  maintainer: community (peoplesmortgage/total-expert-node on GitHub)
+  description: A functional, fully typed wrapper around the Total Expert API (community-maintained).
+  repository: https://github.com/peoplesmortgage/total-expert-node

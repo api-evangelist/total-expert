@@ -1,0 +1,36 @@
+# generated: '2026-07-21'
+# method: generated
+# source: overlay of API Evangelist enhancements onto openapi/total-expert-openapi.yml
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Total Expert Public API
+  version: 1.0.0
+extends: openapi/total-expert-openapi.yml
+actions:
+- target: $.info
+  update:
+    x-apievangelist:
+      provider: total-expert
+      profile: https://raw.githubusercontent.com/api-evangelist/total-expert/refs/heads/main/apis.yml
+      derived_from: https://documenter.getpostman.com/api/collections/1929166/6Z2RYyU
+      notes: >-
+        OpenAPI derived by API Evangelist from the provider-published Postman
+        collection; Total Expert does not publish an OpenAPI document.
+- target: $.info
+  update:
+    x-rate-limits:
+      requests_per_minute: 1000
+      token_requests_per_hour: 2
+      throttled_status: 429
+      source: https://public.totalexpert.net/v1/docs/Getting+Started.pdf
+- target: $.info
+  update:
+    x-conventions:
+      pagination: page[number]/page[size], envelope objects+links (first/last/next/prev)
+      deduplication: POST of a duplicate entity is treated as a PATCH
+      detail: conventions/total-expert-conventions.yml
+- target: $.components.securitySchemes.oauth2
+  update:
+    x-token-ttl-seconds: 3600
+    x-refresh-token-ttl: 2 weeks
+    x-sandbox-host: https://public.vt.totalexpert.net

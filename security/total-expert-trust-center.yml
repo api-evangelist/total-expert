@@ -1,0 +1,16 @@
+generated: '2026-07-21'
+method: searched
+probe: true
+url: https://www.totalexpert.com/security
+certifications: [SOC 2, ISO 27001]
+notes: >-
+  No dedicated trust-center subdomain (trust.totalexpert.com does not resolve;
+  the automated probe recorded no hit because the security page is a marketing
+  page). The published security page states Total Expert is AICPA SOC2
+  compliant and displays an A-LIGN ISO 27001 Certified badge, and describes
+  audit trails, access controls, TCPA/CAN-SPAM compliance workflows, and
+  AWS Well-Architected alignment.
+evidence:
+- source: https://www.totalexpert.com/security
+  keywords: [SOC2, SOC 2, ISO 27001, audit trails, compliance]
+  detail: '"Total Expert is American Institute of CPAs (AICPA) SOC2 compliant, which means the design and operating effectiveness of our controls meet rigorous standards." Page also embeds an "A-LIGN ISO 27001 Certified Badge" image.'

@@ -1,0 +1,44 @@
+generated: '2026-07-21'
+method: searched
+source: openapi/total-expert-openapi.yml
+docs: https://public.totalexpert.net/v1/docs/OAuth+Authorization+Guide.pdf
+summary:
+  types:
+  - oauth2
+  oauth2_flows:
+  - authorizationCode
+  - clientCredentials
+schemes:
+- name: oauth2
+  type: oauth2
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://public.totalexpert.net/v1/token
+    scopes: 5
+  - flow: authorizationCode
+    authorizationUrl: https://public.totalexpert.net/v1/authorize
+    tokenUrl: https://public.totalexpert.net/v1/token
+    scopes: 5
+  description: >-
+    OAuth 2.0. Obtain a token from POST /v1/token using HTTP Basic
+    (client_id:client_secret base64-encoded) plus a grant_type body. Access
+    tokens are bearer tokens, expires_in 3600.
+  sources:
+  - openapi/total-expert-openapi.yml
+notes:
+  token_request_auth: >-
+    All /v1/token requests carry an Authorization header implementing HTTP Basic:
+    base64("clientId:clientSecret"), per the Vendor OAuth Integration Guide.
+  grant_types: [client_credentials, authorization_code, refresh_token]
+  access_token_ttl: 3600 seconds (1 hour); best practice is to cache the token since the token endpoint is rate limited to 2 requests per hour.
+  refresh_token_ttl: up to 2 weeks (Getting Started guide)
+  admin_vs_user: >-
+    Client-credentials tokens make calls "As Admin"; authorization-code (user
+    login) tokens make calls "As User". Many endpoints document both request
+    shapes.
+  environments: >-
+    Production tokens come from public.totalexpert.net; the isolated
+    development/sandbox domain public.vt.totalexpert.net exposes the same
+    /v1/authorize and /v1/token endpoints with separate credentials.
+  redirect_uri: Must be preregistered with Total Expert and associated with the client ID/secret.
+  developer_portal: https://developer.totalexpert.net (credentials are issued and listed under /credentials)

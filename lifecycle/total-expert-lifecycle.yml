@@ -1,0 +1,25 @@
+generated: '2026-07-21'
+method: searched
+source: >-
+  https://status.totalexpert.com (Atlassian Statuspage) + the Postman
+  collection documentation (deprecated-field notes) + developer portal guides.
+versioning:
+  scheme: uri-path
+  current: v1
+  notes: All public endpoints live under /v1/; no version headers or date-based versioning are documented.
+deprecation:
+  policy_url: null
+  sunset_header: false
+  notes: >-
+    No formal deprecation policy or RFC 8594 Sunset support is published.
+    The API docs mark individual features deprecated in place: the contact
+    owner_id property is deprecated in favor of the owner relationship, and
+    the SMS opt statuses REQUESTED and OPTED_OUT are deprecated (requests
+    passing them perform no update). The "ALM Leads" endpoints are labeled
+    "formerly Lead Opportunities".
+status_page: https://status.totalexpert.com
+sla: null
+deprecated_operations: []
+support:
+  email: support@totalexpertinc.com
+  phone: 1-866-952-4606

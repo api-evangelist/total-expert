@@ -1,0 +1,172 @@
+generated: '2026-07-21'
+method: derived
+source: >-
+  openapi/total-expert-openapi.yml + the relationship tables in the Total
+  Expert Public API documentation (Postman collection) and Getting Started
+  guide.
+description: >-
+  Entity graph of the Total Expert Public API. Contacts are the hub: owned by
+  users, organized into groups, enriched by notes, surveys, insights, and
+  lead opportunities, and tied to loans and campaign activity. Ids are plain
+  numeric Total Expert internal ids ("TE ID"); relationships are set by any
+  documented unique attribute of the target (id, username, email, external id).
+entities:
+- name: Contact
+  endpoint: /v1/contacts
+  notes: Deduplicated per user on first/last name + source + (email | address | phone). Agents additionally match on employer info.
+- name: ContactGroup
+  endpoint: /v1/contact-groups
+- name: ContactNote
+  endpoint: /v1/contact-notes
+- name: ContactSurvey
+  endpoint: /v1/contact-surveys
+- name: ContactSurveyResponse
+  endpoint: /v1/contact-survey-responses
+- name: ContactRecruit
+  endpoint: /v1/contact-recruits
+- name: Campaign
+  endpoint: /v1/campaigns
+- name: CampaignActivity
+  endpoint: /v1/campaign-activity
+- name: Insight
+  endpoint: /v1/insights
+- name: InsightType
+  endpoint: /v1/insight-types
+- name: User
+  endpoint: /v1/users
+- name: UserRole
+  endpoint: /v1/user-roles
+- name: Team
+  endpoint: /v1/teams
+- name: Permission
+  endpoint: /v1/permissions
+- name: Entity
+  endpoint: /v1/entities
+- name: Loan
+  endpoint: /v1/loans
+- name: LoanType
+  endpoint: /v1/loan-types
+- name: LoanStatus
+  endpoint: /v1/loan-statuses
+- name: LoanPurpose
+  endpoint: /v1/loan-purposes
+- name: LoanProgram
+  endpoint: /v1/loan-programs
+- name: Account
+  endpoint: /v1/accounts
+- name: AccountType
+  endpoint: /v1/account-types
+- name: AccountStatus
+  endpoint: /v1/account-statuses
+- name: LeadOpportunity
+  endpoint: /v1/lead-opportunities
+- name: Lead (ALM)
+  endpoint: /v1/leads
+  notes: ALM Leads, formerly Lead Opportunities.
+- name: Scenario
+  endpoint: /v1/scenarios
+- name: EmailUnsubscribe
+  endpoint: /v1/email-unsubscribes
+- name: WebhookSubscription
+  endpoint: /v1/webhook-subscriptions
+relationships:
+- from: Contact
+  to: User
+  kind: belongs_to
+  via: owner
+  notes: Settable by id, username, email, or external id; owner_id is deprecated in favor of this relationship. Required when calling as Admin.
+- from: Contact
+  to: ContactGroup
+  kind: has_many
+  via: contact_groups
+  notes: Customers can define Required Groups that must be included when creating contacts.
+- from: Contact
+  to: Entity
+  kind: belongs_to
+  via: entity
+  notes: Contacts can be created with an Entity (documented "Create Contact (as Admin) with Entity").
+- from: ContactNote
+  to: Contact
+  kind: belongs_to
+  via: contact
+- from: ContactSurveyResponse
+  to: ContactSurvey
+  kind: belongs_to
+  via: survey
+  notes: Create the survey first; use returned survey/question ids to build responses.
+- from: ContactSurveyResponse
+  to: Contact
+  kind: belongs_to
+  via: contact
+  notes: Submit contact data first to obtain the TE contact id to associate.
+- from: CampaignActivity
+  to: Campaign
+  kind: belongs_to
+  via: campaign
+- from: CampaignActivity
+  to: Contact
+  kind: belongs_to
+  via: contact
+- from: Insight
+  to: Contact
+  kind: belongs_to
+  via: contact
+- from: Insight
+  to: InsightType
+  kind: belongs_to
+  via: insight_type
+- from: User
+  to: UserRole
+  kind: has_one
+  via: role
+  notes: Role permissions readable at /v1/role-permissions/{roleId}.
+- from: Team
+  to: User
+  kind: has_many
+  via: users
+- from: Loan
+  to: Contact
+  kind: has_many
+  via: participants
+  notes: Participant roles enumerated by GET /v1/schema/participant-roles.
+- from: Loan
+  to: LoanType
+  kind: belongs_to
+  via: loan_type
+- from: Loan
+  to: LoanStatus
+  kind: belongs_to
+  via: loan_status
+- from: Loan
+  to: LoanPurpose
+  kind: belongs_to
+  via: loan_purpose
+- from: Loan
+  to: LoanProgram
+  kind: belongs_to
+  via: loan_program
+- from: Account
+  to: AccountType
+  kind: belongs_to
+  via: account_type
+- from: Account
+  to: AccountStatus
+  kind: belongs_to
+  via: account_status
+- from: LeadOpportunity
+  to: Contact
+  kind: belongs_to
+  via: contact_id
+  notes: Filterable with filter=contact_id=...
+- from: LeadOpportunity
+  to: User
+  kind: belongs_to
+  via: user_id
+- from: WebhookSubscription
+  to: WebhookAction
+  kind: has_many
+  via: actions
+  notes: remove_actions unsubscribes; actions enumerated at /v1/webhook-actions.
+schema_endpoints:
+- GET /v1/schema/custom-fields — organization custom-field schema
+- GET /v1/schema/participant-roles — loan participant role schema

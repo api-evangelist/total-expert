@@ -1,0 +1,54 @@
+generated: '2026-07-21'
+method: searched
+source: >-
+  https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
+  ("Return Codes" table in the collection documentation) + Getting Started
+  guide (429) + Vendor OAuth Integration Guide (OAuth error shape).
+format: http-status-catalog
+notes: >-
+  Errors are signaled with plain HTTP status codes and JSON bodies (not RFC
+  9457 problem+json). OAuth failures return {"error", "error_description"};
+  authorize-flow failures are delivered to the redirect URI as
+  error/error_description query parameters.
+problems:
+- status: 200
+  title: SUCCESS
+  detail: The operation completed successfully. See the response body for details (if applicable).
+- status: 201
+  title: CREATED
+  detail: The object was created successfully. See the response body for details (if applicable).
+- status: 400
+  title: BAD REQUEST
+  detail: The JSON supplied to the API was malformed and unparseable.
+- status: 401
+  title: UNAUTHORIZED
+  detail: The request's credentials are invalid. This could mean your token has expired and should be renewed. See the response body for details.
+  remediation: Refresh or re-fetch the access token (tokens expire after 1 hour).
+- status: 403
+  title: FORBIDDEN
+  detail: An attempt was made to access a resource for which you do not have permission.
+- status: 405
+  title: METHOD NOT ALLOWED
+  detail: An attempt was made to interact with an endpoint in an unsupported manner, e.g. sending a POST to '/contacts/1'.
+- status: 415
+  title: UNSUPPORTED MEDIA TYPE
+  detail: The API endpoints expect a JSON content type.
+- status: 418
+  title: I'M A TEAPOT
+  detail: The API is a teapot (see the Heartbeat section). GET /v1/teapot returns {"code":"418 I'm a teapot","status":"short and stout"}.
+- status: 422
+  title: UNPROCESSABLE ENTITY
+  detail: The JSON body supplied is valid, but not processable semantically. For example, the 'owner' relationship for a contact refers to a User that does not exist in the TE system.
+- status: 429
+  title: TOO MANY REQUESTS
+  detail: Rate limit exceeded (1000 requests/minute per source IP in production; 2 token requests/hour).
+  remediation: Back off and retry; cache access tokens rather than re-requesting them.
+- status: 503
+  title: SERVICE UNAVAILABLE
+  detail: The API is unavailable. Please try your request again later. If this message persists, contact Technical Support.
+oauth_errors:
+  token_endpoint: 'Failed token requests include "error" and "error_description" in the JSON response body.'
+  authorize_redirect: 'Failed logins redirect to the registered redirect_uri with error, error_description, and state query parameters (e.g. error=access_denied).'
+documented_error_scenarios:
+- openapi/total-expert-openapi.yml#missingRequiredFields
+- openapi/total-expert-openapi.yml#invalidFilterExpression

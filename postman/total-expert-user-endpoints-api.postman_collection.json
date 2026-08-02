@@ -1,0 +1,1306 @@
+{
+  "info": {
+    "_postman_id": "c7936d1f-cbc1-49e5-8ca9-8c2ee73350aa",
+    "name": "Total Expert Public Account Endpoints User Endpoints API",
+    "description": "The Total Expert REST API allows you to programmatically create, retrieve, update, and delete information through various endpoints.\n\nDocumentation Layout\n\nEach section of this documentation describes a collection of related endpoints that affect a given resource.\n\nWhere applicable, at the top of a section you will find a table listing the attributes for the resource and a second showing its relationships with other resources.\n\nNOTE: If an attribute is marked as 'Assignable', its value can be set via a POST/PATCH. You can also modify the data for an 'Assignable' relationship.\n\nAuthentication in the TE API\n\nInteraction with the TE API is protected with OAuth 2.0. A client ID/secret pair is required to use the API.\n\nThe ID/secret pair is used to request an access token from the '/token' endpoint. This token will need to be present within the header on all calls to the API.\n\nNOTE: See the 'Authentication' endpoint collection for more information. See the 'Heartbeats' endpoint collection for more information on how to test your authentication.\n\nEndpoint Standards\n\nEach endpoint provides interaction with two aspects of an entity:\n\n'Attributes' - Attributes of the entity itself. Includes things like first name, phone number, or birthday of the contact.\nE.g. A 'Contact'\n\n'Relationships' - Describe a relationship between that entity and another entity.\nE.g. A contact that has an owner in the TE System OR a set of contact groups (separate entities with their own endpoint).\n\nAttributes\n\nEach endpoint returns a JSON object with a set of attributes. Each endpoint collection should describe the names and types of attributes available in each endpoint.\n\nData Types\n\nEach attribute has a type. There are four data types in the TE API - Numeric, String, Boolean, and Date.\n\nData Types\n\nType\nDescription\n\nNumeric\nInteger or floating point numbers. Supplied with no surrounding quotes. e.g. { \"loan_rate\":4.5 }\n\nString\nString of characters - supplied surrounded with quotes. e.g. { \"first_name\":\"Clark\" }\n\nBoolean\nTruth value - supplied in one of two ways - see Boolean (String) and Boolean (Numeric) for details\n\nBoolean (String)\nTruth value - supplied as the word \"True\" or \"False\", surrounded by quotes. e.g. { \"first_time_buyer\":\"True\" }\n\nBoolean (Numeric)\nTruth value - supplied as the number 1 or 0, not surrounded by quotes. e.g. { \"first_time_buyer\":0 }\n\nDate\nA date and time - preferred supplied in the format \"YYYY-MM-DD hh:mm:ss\". All dates must be provided in UTC timezone. When returned, the value will be expressed in UTC. To clear a field with a date type, use the value \"0000-00-00 00:00:00\".\n\nPhone Numbers\n\nPhone numbers are accepted in any format. For deduplication, any non-numeric symbols will be stripped out and the numeric phone number will be stored separately. If a numerically identical phone number is used in a different format later, the records are compared using the numeric value only. This applies only to phone numbers with at least 7 digits.\n\nAll phone numbers will also be converted into E164 for use in external services (e.g. Twilio). If a phone number cannot be converted into E164, the number will be marked 'Invalid', and external services that rely on phone numbers will not function.\n\nUniqueness in the TE API\n\nEach type of entity in the TE API can be uniquely identified by a set of attributes. In some cases, multiple options are available to uniquely identify an entity. See each section below for details. These sets of attributes are used to deduplicate entries on creation and to uniquely identify the target in a relationship.\n\nRelationships\n\nRelationships in the TE API are very flexible.\n\n'GET'ing\n\nWhen GETing an entity, a relationship will be returned with only a partial set of attributes that make sense in the context of that endpoint - e.g. the 'contact_groups' relationship on the '/contacts' endpoint will display only the group name of the target contact_group.\n\nPOST and PATCH Requests\n\nWhen setting a relationship (by POST or PATCH), the target entity is specified using one or more attributes that uniquely identify the entity.\n\nThe allowed attributes are listed in the 'Settable Fields' column of each Relationships table. For example, when POSTing to the '/contact-groups' endpoint, either of the following are allowed:\n\n{\n  \"group_name\": \"Hot Leads\",\n  \"owner\":{\"username\": \"alfred\"}\n  }\n  OR\n\n{\n  \"group_name\": \"Hot Leads\",\n  \"owner\":{\"id\": \"123589\"}\n  }\n\nIn cases where an endpoint's relationship supports multiple Settable Fields be aware that the request examples may only make use of one of the attributes though any could be used in its place.\n\nInteracting with the API\n\nAdmin Calls vs User Calls\n\nYou'll notice that many sections of the documentation have samples for POSTs and GETs that are labeled \"As Admin\" or \"As User\".\nWhen using client credentials to access the API, you'll use the \"As Admin\" examples. For Authorization Code access, you'll use the \"As User\" examples.\n\n'GET'ing\n\nThere are two types of GETable endpoints in the TE API: Paging and Individual. Paging endpoints provide lists of entities. E.g. '/contacts' returns a list of contacts.\n\nGetting Individual Entities\n\nIndividual endpoints return specific individual entities, specified by TE ID. E.g. '/contacts/51151' returns the contact with the 'id' attribute '51151' (the TE internal identifier).\n\nGetting Multiple Entities (Paging)\n\nPaging endpoints will return an object with two properties: 'objects' and 'links'. The 'objects' property will be an array of entities in 'pages'. Each page will have a number of entities along with a set of links. The page size and page number can be specified using the '?page' GET parameter. Setting '?page[number]=5' will return the fifth page. Setting '?page[size]=100' will make each page consist of 100 items, instead of the default of 10. Both attributes can be set together. E.g. setting '?page[size]=100&page[number]=6' will return items 501-600.\n\nPaging Links\n\nThe 'links' attribute on a page object will have four attributes, specifying metadata about the number of entities available to page.\n\n'first' will be the page number of the first page of entities (always '1').\n\n'last' will be the page number of the last page of entities.\n\n'next' will be the page number of the next page after the currently requested one. 'next' may be null if there are no subsequent pages.\n\n'prev' will be the page number of the page immediately preceding the current one. 'prev' may be null if there are no preceding pages.\n\n'POST'ing\n\nEntities can be created in the TE system by POSTing to paging endpoints. E.g. sending a POST to '/contacts' will create a contact.\n\nDeduplication\n\nWhen POSTing an entity, the TE API will attempt to 'Deduplicate' by searching for existing entities with similar attributes. If such a duplicate does exist, the TE API will treat the POST as a PATCH to that entity instead. See each section for details on what attributes will be used to search for duplicates.\n\n'PATCH'ing\n\nEntities can be updated in the TE system by PATCHing to individual endpoints. E.g. sending a PATCH to '/contacts/51151' will update the attributes of the contact with TE 'id' of '51151'.\n\n'DELETE'ing\n\nEntities can be deleted only by TE ID. Send a DELETE request to the appropriate individual entity endpoint to delete it.\n\nReturn Codes\n\nWhere applicable, the API will respond with an HTTP status code that indicates what happened during the request. Possible values include:\n\nHTTP CODES\n\nStatus Code\nGeneral Description\n\n200 SUCCESS\nThe operation completed successfully. See the response body for details (if applicable).\n\n201 CREATED\nThe object was created successfully. See the response body for details (if applicable).\n\n400 BAD REQUEST\nThe JSON supplied to the API was malformed and unparseable.\n\n401 UNAUTHORIZED\nThe request's credentials are invalid. This could mean your token has expired and should be renewed. See the response body for details.\n\n403 FORBIDDEN\nAn attempt was made to access a resource for which you do not have permission\n\n405 METHOD NOT ALLOWED\nAn attempt was made to interact with an endpoint in an unsupported manner, e.g. sending a POST to '/contacts/1'\n\n415 UNSUPPORTED MEDIA TYPE\nThe API endpoints expect a content type of 'media/json'\n\n422 UNPROCESSABLE ENTITY\nThe JSON body supplied is valid, but not processable semantically. For example, the 'owner' relationship for a contact refers to a User that does not exist in the TE system.\n\n418 I'M A TEAPOT\nThe API is a teapot (See the 'Heartbeat' section for details).\n\n503 SERVICE UNAVAILABLE\nThe API is unavailable. Please try your request again later. If this message persists, please contact Technical Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T03:17:32.000Z",
+    "updatedAt": "2026-07-28T03:17:33.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-c7936d1f-cbc1-49e5-8ca9-8c2ee73350aa"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "users",
+          "item": [
+            {
+              "name": "{user_id}",
+              "item": [
+                {
+                  "name": "Fetch User",
+                  "id": "ce99269d-6b29-47a8-ac70-dbdca1045b32",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/users/:user_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "users",
+                        ":user_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "4af62cd1-39c2-42b0-82dc-17e7dde841c0",
+                          "key": "user_id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Fetch a specific user by ID."
+                  },
+                  "response": [
+                    {
+                      "id": "1f1eefbc-9741-457e-a5b0-9f468cf7c293",
+                      "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/users/:user_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "users",
+                            ":user_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "user_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T03:17:33.000Z",
+                      "updatedAt": "2026-07-28T03:17:33.000Z",
+                      "uid": "35240-1f1eefbc-9741-457e-a5b0-9f468cf7c293"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T03:17:33.000Z",
+                  "updatedAt": "2026-07-28T03:17:33.000Z",
+                  "uid": "35240-ce99269d-6b29-47a8-ac70-dbdca1045b32"
+                },
+                {
+                  "name": "Update User",
+                  "id": "80e63f53-795a-4afb-bb5d-bb427689a867",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"example\": {\n    \"info\": {\n      \"job_title\": \"Manager\"\n    },\n    \"settings_marketing\": {\n      \"weekly_spend_threshold\": \"400\"\n    },\n    \"licenses\": [\n      {\n        \"license_name\": \"MN\",\n        \"content\": \"LIC 12345\"\n      }\n    ],\n    \"remove_licenses\": [\n      {\n        \"license_name\": \"IA\",\n        \"content\": \"LIC 54321\"\n      }\n    ],\n    \"disclaimers\": [\n      {\n        \"disclaimer_name\": \"Flyer Disclaimer\",\n        \"content\": \"Subject to change\",\n        \"type\": {\n          \"name\": \"Print Disclaimer\"\n        }\n      }\n    ],\n    \"remove_disclaimers\": [\n      {\n        \"disclaimer_name\": \"New Customer Email Disclaimer\",\n        \"content\": \"Subject to change\",\n        \"type\": {\n          \"name\": \"Email Disclaimer\"\n        }\n      }\n    ],\n    \"teams\": [\n      {\n        \"team_name\": \"Fred's Team\",\n        \"managers\": [\n          {\n            \"username\": \"freddy\"\n          }\n        ]\n      }\n    ],\n    \"remove_teams\": [\n      {\n        \"team_name\": \"Alice Sunny's Team\",\n        \"managers\": [\n          {\n            \"username\": \"alice\"\n          }\n        ]\n      }\n    ]\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/users/:user_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "users",
+                        ":user_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "37810885-e82f-45dc-b5b8-bfbf194cb107",
+                          "key": "user_id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Update a user"
+                  },
+                  "response": [
+                    {
+                      "id": "dacfa3cb-3ab3-4bd8-8940-ba7742be4976",
+                      "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"example\": {\n    \"info\": {\n      \"job_title\": \"Manager\"\n    },\n    \"settings_marketing\": {\n      \"weekly_spend_threshold\": \"400\"\n    },\n    \"licenses\": [\n      {\n        \"license_name\": \"MN\",\n        \"content\": \"LIC 12345\"\n      }\n    ],\n    \"remove_licenses\": [\n      {\n        \"license_name\": \"IA\",\n        \"content\": \"LIC 54321\"\n      }\n    ],\n    \"disclaimers\": [\n      {\n        \"disclaimer_name\": \"Flyer Disclaimer\",\n        \"content\": \"Subject to change\",\n        \"type\": {\n          \"name\": \"Print Disclaimer\"\n        }\n      }\n    ],\n    \"remove_disclaimers\": [\n      {\n        \"disclaimer_name\": \"New Customer Email Disclaimer\",\n        \"content\": \"Subject to change\",\n        \"type\": {\n          \"name\": \"Email Disclaimer\"\n        }\n      }\n    ],\n    \"teams\": [\n      {\n        \"team_name\": \"Fred's Team\",\n        \"managers\": [\n          {\n            \"username\": \"freddy\"\n          }\n        ]\n      }\n    ],\n    \"remove_teams\": [\n      {\n        \"team_name\": \"Alice Sunny's Team\",\n        \"managers\": [\n          {\n            \"username\": \"alice\"\n          }\n        ]\n      }\n    ]\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/users/:user_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "users",
+                            ":user_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "user_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T03:17:33.000Z",
+                      "updatedAt": "2026-07-28T03:17:33.000Z",
+                      "uid": "35240-dacfa3cb-3ab3-4bd8-8940-ba7742be4976"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T03:17:33.000Z",
+                  "updatedAt": "2026-07-28T03:17:33.000Z",
+                  "uid": "35240-80e63f53-795a-4afb-bb5d-bb427689a867"
+                }
+              ],
+              "id": "a47bd9c8-6705-45b5-a4a7-bce36cee297f",
+              "createdAt": "2026-07-28T03:17:33.000Z",
+              "updatedAt": "2026-07-28T03:17:33.000Z",
+              "uid": "35240-a47bd9c8-6705-45b5-a4a7-bce36cee297f"
+            },
+            {
+              "name": "Fetch Users",
+              "id": "f5cb3617-8d5b-47d5-aea8-0038a131721d",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/users?page[number]=<string>&page[size]=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "users"
+                  ],
+                  "query": [
+                    {
+                      "key": "page[number]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "description": "Fetch a page of users. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters."
+              },
+              "response": [
+                {
+                  "id": "3a508edc-f670-4abb-b519-77ba471f4932",
+                  "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/users?page[number]=<string>&page[size]=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "users"
+                      ],
+                      "query": [
+                        {
+                          "key": "page[number]",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "page[size]",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T03:17:33.000Z",
+                  "updatedAt": "2026-07-28T03:17:33.000Z",
+                  "uid": "35240-3a508edc-f670-4abb-b519-77ba471f4932"
+                }
+              ],
+              "createdAt": "2026-07-28T03:17:33.000Z",
+              "updatedAt": "2026-07-28T03:17:33.000Z",
+              "uid": "35240-f5cb3617-8d5b-47d5-aea8-0038a131721d"
+            },
+            {
+              "name": "Create Users",
+              "id": "061f3335-1fed-4613-b807-61f455cf58e2",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "null",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/users",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "users"
+                  ]
+                },
+                "description": "Create a user.\n\nRequired Attributes:\n\nemail\n\ntype\n\nRequired Relationships:\n\ninfo\n\nrole"
+              },
+              "response": [
+                {
+                  "id": "67ace136-91a1-4fc3-9241-7511e2a36b5c",
+                  "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "null",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/users",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "users"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T03:17:33.000Z",
+                  "updatedAt": "2026-07-28T03:17:33.000Z",
+                  "uid": "35240-67ace136-91a1-4fc3-9241-7511e2a36b5c"
+                }
+              ],
+              "createdAt": "2026-07-28T03:17:33.000Z",
+              "updatedAt": "2026-07-28T03:17:33.000Z",
+              "uid": "35240-061f3335-1fed-4613-b807-61f455cf58e2"
+            }
+          ],
+          "id": "7bb79224-6fc6-4cd6-b339-6c1af45951d2",
+          "createdAt": "2026-07-28T03:17:33.000Z",
+          "updatedAt": "2026-07-28T03:17:33.000Z",
+          "uid": "35240-7bb79224-6fc6-4cd6-b339-6c1af45951d2"
+        },
+        {
+          "name": "user-roles",
+          "item": [
+            {
+              "name": "{user_role_id}",
+              "item": [
+                {
+                  "name": "Fetch User Role",
+                  "id": "14f5bcc7-4f88-4bec-9839-a456e011fe98",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/user-roles/:user_role_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "user-roles",
+                        ":user_role_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "f1207af0-acf5-41b3-a20c-a6d53e010c4a",
+                          "key": "user_role_id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Fetch a specific user role specified by ID."
+                  },
+                  "response": [
+                    {
+                      "id": "d955b67e-2070-46c6-9147-df05e1704ddc",
+                      "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/user-roles/:user_role_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "user-roles",
+                            ":user_role_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "user_role_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T03:17:33.000Z",
+                      "updatedAt": "2026-07-28T03:17:33.000Z",
+                      "uid": "35240-d955b67e-2070-46c6-9147-df05e1704ddc"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T03:17:33.000Z",
+                  "updatedAt": "2026-07-28T03:17:33.000Z",
+                  "uid": "35240-14f5bcc7-4f88-4bec-9839-a456e011fe98"
+                }
+              ],
+              "id": "0f52e5ef-1aab-4ca6-82ad-5f1cded1aac2",
+              "createdAt": "2026-07-28T03:17:33.000Z",
+              "updatedAt": "2026-07-28T03:17:33.000Z",
+              "uid": "35240-0f52e5ef-1aab-4ca6-82ad-5f1cded1aac2"
+            },
+            {
+              "name": "Fetch User Roles",
+              "id": "d6678b6f-f442-4d4c-b9f0-883f6d62047b",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/user-roles?page[number]=<string>&page[size]=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "user-roles"
+                  ],
+                  "query": [
+                    {
+                      "key": "page[number]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "description": "Fetch a page of user roles. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters."
+              },
+              "response": [
+                {
+                  "id": "ce69ae14-21ad-41d0-b4ed-3c061e048822",
+                  "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/user-roles?page[number]=<string>&page[size]=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "user-roles"
+                      ],
+                      "query": [
+                        {
+                          "key": "page[number]",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "page[size]",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T03:17:33.000Z",
+                  "updatedAt": "2026-07-28T03:17:33.000Z",
+                  "uid": "35240-ce69ae14-21ad-41d0-b4ed-3c061e048822"
+                }
+              ],
+              "createdAt": "2026-07-28T03:17:33.000Z",
+              "updatedAt": "2026-07-28T03:17:33.000Z",
+              "uid": "35240-d6678b6f-f442-4d4c-b9f0-883f6d62047b"
+            }
+          ],
+          "id": "acb5c467-377b-46de-89e3-61b0105291b2",
+          "createdAt": "2026-07-28T03:17:33.000Z",
+          "updatedAt": "2026-07-28T03:17:33.000Z",
+          "uid": "35240-acb5c467-377b-46de-89e3-61b0105291b2"
+        },
+        {
+          "name": "role-permissions",
+          "item": [
+            {
+              "name": "{role_id}",
+              "item": [
+                {
+                  "name": "Fetch Permissions for User Role",
+                  "id": "aebab21b-df1a-4dfe-8ae1-6f2ffb29b4f0",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/role-permissions/:role_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "role-permissions",
+                        ":role_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "c3e90247-7f19-4a95-8681-7e312616ae22",
+                          "key": "role_id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "434bffe4-73a9-4bf1-918d-099578a610b9",
+                      "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/role-permissions/:role_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "role-permissions",
+                            ":role_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "role_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T03:17:33.000Z",
+                      "updatedAt": "2026-07-28T03:17:33.000Z",
+                      "uid": "35240-434bffe4-73a9-4bf1-918d-099578a610b9"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T03:17:33.000Z",
+                  "updatedAt": "2026-07-28T03:17:33.000Z",
+                  "uid": "35240-aebab21b-df1a-4dfe-8ae1-6f2ffb29b4f0"
+                }
+              ],
+              "id": "e567787c-d27f-482c-8df4-4b100e8ebf70",
+              "createdAt": "2026-07-28T03:17:33.000Z",
+              "updatedAt": "2026-07-28T03:17:33.000Z",
+              "uid": "35240-e567787c-d27f-482c-8df4-4b100e8ebf70"
+            }
+          ],
+          "id": "b4dd99a2-ab86-4fbd-81d0-47017138713d",
+          "createdAt": "2026-07-28T03:17:33.000Z",
+          "updatedAt": "2026-07-28T03:17:33.000Z",
+          "uid": "35240-b4dd99a2-ab86-4fbd-81d0-47017138713d"
+        },
+        {
+          "name": "teams",
+          "item": [
+            {
+              "name": "{team_id}",
+              "item": [
+                {
+                  "name": "Fetch Team",
+                  "id": "e87decf1-7244-427d-9f7d-d89bf4f399ed",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/teams/:team_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "teams",
+                        ":team_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "2527d83b-8c03-469f-b939-79a7cd337d02",
+                          "key": "team_id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Fetch a team by ID."
+                  },
+                  "response": [
+                    {
+                      "id": "804d3ed1-e242-4182-98d2-303f0e2786f3",
+                      "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/teams/:team_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "teams",
+                            ":team_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "team_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T03:17:33.000Z",
+                      "updatedAt": "2026-07-28T03:17:33.000Z",
+                      "uid": "35240-804d3ed1-e242-4182-98d2-303f0e2786f3"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T03:17:33.000Z",
+                  "updatedAt": "2026-07-28T03:17:33.000Z",
+                  "uid": "35240-e87decf1-7244-427d-9f7d-d89bf4f399ed"
+                },
+                {
+                  "name": "Update Team",
+                  "id": "a69d9a89-c7da-4d01-8b67-63e8440a0ca3",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"example\": {\n    \"remove_managers\": [\n      {\n        \"username\": \"rickyg\"\n      }\n    ]\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/teams/:team_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "teams",
+                        ":team_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "a0948793-e486-4e53-86e1-5ea84de1a1a0",
+                          "key": "team_id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Update an existing team by ID."
+                  },
+                  "response": [
+                    {
+                      "id": "55d04290-64c2-483f-9ab0-7955dd8b036f",
+                      "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"example\": {\n    \"remove_managers\": [\n      {\n        \"username\": \"rickyg\"\n      }\n    ]\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/teams/:team_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "teams",
+                            ":team_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "team_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T03:17:33.000Z",
+                      "updatedAt": "2026-07-28T03:17:33.000Z",
+                      "uid": "35240-55d04290-64c2-483f-9ab0-7955dd8b036f"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T03:17:33.000Z",
+                  "updatedAt": "2026-07-28T03:17:33.000Z",
+                  "uid": "35240-a69d9a89-c7da-4d01-8b67-63e8440a0ca3"
+                },
+                {
+                  "name": "Delete Team",
+                  "id": "06a1ccb3-3abc-4922-97a3-2466c3e994a5",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/teams/:team_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "teams",
+                        ":team_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "00a9b05a-b841-4ee6-b705-f1f676187b6a",
+                          "key": "team_id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Deletes a team by ID."
+                  },
+                  "response": [
+                    {
+                      "id": "8700e1f5-1464-4ba6-8d3e-dcb84dd2296f",
+                      "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/teams/:team_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "teams",
+                            ":team_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "team_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T03:17:33.000Z",
+                      "updatedAt": "2026-07-28T03:17:33.000Z",
+                      "uid": "35240-8700e1f5-1464-4ba6-8d3e-dcb84dd2296f"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T03:17:33.000Z",
+                  "updatedAt": "2026-07-28T03:17:33.000Z",
+                  "uid": "35240-06a1ccb3-3abc-4922-97a3-2466c3e994a5"
+                }
+              ],
+              "id": "c2486d20-7993-4ad1-afc2-43cc71a511ce",
+              "createdAt": "2026-07-28T03:17:33.000Z",
+              "updatedAt": "2026-07-28T03:17:33.000Z",
+              "uid": "35240-c2486d20-7993-4ad1-afc2-43cc71a511ce"
+            },
+            {
+              "name": "Fetch Teams",
+              "id": "31340e75-b8b4-4a43-988f-1ca84c41971f",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/teams?page[number]=<string>&page[size]=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "teams"
+                  ],
+                  "query": [
+                    {
+                      "key": "page[number]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "description": "Fetch a page of teams. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters."
+              },
+              "response": [
+                {
+                  "id": "d46bfe80-26d4-4388-83f2-6a5363e2591b",
+                  "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/teams?page[number]=<string>&page[size]=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "teams"
+                      ],
+                      "query": [
+                        {
+                          "key": "page[number]",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "page[size]",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T03:17:33.000Z",
+                  "updatedAt": "2026-07-28T03:17:33.000Z",
+                  "uid": "35240-d46bfe80-26d4-4388-83f2-6a5363e2591b"
+                }
+              ],
+              "createdAt": "2026-07-28T03:17:33.000Z",
+              "updatedAt": "2026-07-28T03:17:33.000Z",
+              "uid": "35240-31340e75-b8b4-4a43-988f-1ca84c41971f"
+            },
+            {
+              "name": "Create Team",
+              "id": "e209a826-9984-48b2-a836-ce5023cb1c3f",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"example\": {\n    \"team_name\": \"Harry N's Team\",\n    \"managers\": [\n      {\n        \"username\": \"harryn\"\n      },\n      {\n        \"username\": \"rickyg\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/teams",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "teams"
+                  ]
+                },
+                "description": "Create a Team.\n\nRequired Attributes:\n\nteam_name"
+              },
+              "response": [
+                {
+                  "id": "4ab76de3-2674-47d2-8f21-66cc10d52fe1",
+                  "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"example\": {\n    \"team_name\": \"Harry N's Team\",\n    \"managers\": [\n      {\n        \"username\": \"harryn\"\n      },\n      {\n        \"username\": \"rickyg\"\n      }\n    ]\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/teams",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "teams"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T03:17:33.000Z",
+                  "updatedAt": "2026-07-28T03:17:33.000Z",
+                  "uid": "35240-4ab76de3-2674-47d2-8f21-66cc10d52fe1"
+                }
+              ],
+              "createdAt": "2026-07-28T03:17:33.000Z",
+              "updatedAt": "2026-07-28T03:17:33.000Z",
+              "uid": "35240-e209a826-9984-48b2-a836-ce5023cb1c3f"
+            }
+          ],
+          "id": "f15f1131-2518-4421-91ea-7fb25649d28c",
+          "createdAt": "2026-07-28T03:17:33.000Z",
+          "updatedAt": "2026-07-28T03:17:33.000Z",
+          "uid": "35240-f15f1131-2518-4421-91ea-7fb25649d28c"
+        },
+        {
+          "name": "permissions",
+          "item": [
+            {
+              "name": "{permission_id}",
+              "item": [
+                {
+                  "name": "Fetch Permission",
+                  "id": "7bff3a75-a1e0-4870-9035-d96834970002",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/permissions/:permission_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "permissions",
+                        ":permission_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "a4254c47-3707-435b-8257-cadd446431aa",
+                          "key": "permission_id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "cc520154-aaf4-40c6-9984-7ed81549bab4",
+                      "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/permissions/:permission_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "permissions",
+                            ":permission_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "permission_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T03:17:33.000Z",
+                      "updatedAt": "2026-07-28T03:17:33.000Z",
+                      "uid": "35240-cc520154-aaf4-40c6-9984-7ed81549bab4"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T03:17:33.000Z",
+                  "updatedAt": "2026-07-28T03:17:33.000Z",
+                  "uid": "35240-7bff3a75-a1e0-4870-9035-d96834970002"
+                }
+              ],
+              "id": "80d9ca7b-ef74-4943-bd40-9e4b50704b79",
+              "createdAt": "2026-07-28T03:17:33.000Z",
+              "updatedAt": "2026-07-28T03:17:33.000Z",
+              "uid": "35240-80d9ca7b-ef74-4943-bd40-9e4b50704b79"
+            },
+            {
+              "name": "Fetch Permissions",
+              "id": "b61d2469-2337-482d-8a73-6df1bf86b65b",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/permissions?page[number]=<string>&page[size]=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "permissions"
+                  ],
+                  "query": [
+                    {
+                      "key": "page[number]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "f9eb4ec7-6cd7-4c96-87ab-b9d3c529aa08",
+                  "name": "Success. See the Total Expert Public API documentation for the response shape.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/permissions?page[number]=<string>&page[size]=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "permissions"
+                      ],
+                      "query": [
+                        {
+                          "key": "page[number]",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "page[size]",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T03:17:33.000Z",
+                  "updatedAt": "2026-07-28T03:17:33.000Z",
+                  "uid": "35240-f9eb4ec7-6cd7-4c96-87ab-b9d3c529aa08"
+                }
+              ],
+              "createdAt": "2026-07-28T03:17:33.000Z",
+              "updatedAt": "2026-07-28T03:17:33.000Z",
+              "uid": "35240-b61d2469-2337-482d-8a73-6df1bf86b65b"
+            }
+          ],
+          "id": "c84f669a-8300-48b8-a85f-ab3b3ab28a81",
+          "createdAt": "2026-07-28T03:17:33.000Z",
+          "updatedAt": "2026-07-28T03:17:33.000Z",
+          "uid": "35240-c84f669a-8300-48b8-a85f-ab3b3ab28a81"
+        }
+      ],
+      "id": "1377f3a0-ca0a-4de7-b9b1-25bba385c624",
+      "createdAt": "2026-07-28T03:17:33.000Z",
+      "updatedAt": "2026-07-28T03:17:33.000Z",
+      "uid": "35240-1377f3a0-ca0a-4de7-b9b1-25bba385c624"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "crm leadInteraction loanInteraction leadSurveyInteraction postLeads",
+        "type": "string"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://public.totalexpert.net/v1/token",
+        "type": "string"
+      },
+      {
+        "key": "grant_type",
+        "value": "client_credentials",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://public.totalexpert.net"
+    }
+  ]
+}

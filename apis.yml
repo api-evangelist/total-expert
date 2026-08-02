@@ -1,9 +1,28 @@
 aid: total-expert
 name: Total Expert
-description: 'Total Expert is a company surfaced as a portfolio company of emergence-capital and added
-  to the API Evangelist network as a stub for enrichment. Sector: fintech. This profile is a lead awaiting
-  the enrichment pipeline.'
+description: >-
+  Total Expert is a fintech CRM and customer-engagement platform built for
+  banks, credit unions, lenders, and mortgage companies. Its Public API is a
+  REST/JSON surface at public.totalexpert.net/v1, secured with OAuth 2.0
+  (client-credentials for admin integrations, authorization-code for
+  user-level access), covering contacts, leads, loans, insights, surveys,
+  campaigns, users, teams, accounts, and webhook subscriptions, with
+  documented deduplication, pagination, and rate-limit contracts and an
+  isolated sandbox environment for integration partners.
 url: https://raw.githubusercontent.com/api-evangelist/total-expert/refs/heads/main/apis.yml
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://developer.totalexpert.net/img/Total-Expert-Logo-Color.png
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
@@ -11,17 +30,335 @@ x-backed-by:
 x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
+x-enrichment:
+  date: '2026-07-21'
+  status: enriched
+  artifacts_added: 23
+  pass: local-v1
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-21'
 tags:
 - Company
 - Fintech
-apis: []
+- CRM
+- Marketing Automation
+- Mortgage
+- Banking
+- Lending
+- Customer Engagement
+apis:
+- aid: total-expert:total-expert-account-endpoints-api
+  name: Total Expert Account Endpoints API
+  description: The Account Endpoints API from Total Expert — 7 operation(s) for account endpoints.
+  humanURL: https://developer.totalexpert.net
+  baseURL: https://public.totalexpert.net/v1
+  tags:
+  - Account Endpoints
+  properties:
+  - type: OpenAPI
+    url: openapi/total-expert-account-endpoints-api-openapi.yml
+  - type: Documentation
+    url: https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
+  - type: PostmanCollection
+    url: postman/total-expert-public-api.postman_collection.json
+- aid: total-expert:total-expert-activity-endpoints-api
+  name: Total Expert Activity Endpoints API
+  description: The Activity Endpoints API from Total Expert — 2 operation(s) for activity endpoints.
+  humanURL: https://developer.totalexpert.net
+  baseURL: https://public.totalexpert.net/v1
+  tags:
+  - Activity Endpoints
+  properties:
+  - type: OpenAPI
+    url: openapi/total-expert-activity-endpoints-api-openapi.yml
+  - type: Documentation
+    url: https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
+  - type: PostmanCollection
+    url: postman/total-expert-public-api.postman_collection.json
+- aid: total-expert:total-expert-alm-leads-formerly-lead-opportunities-api
+  name: Total Expert ALM Leads (formerly Lead Opportunities) API
+  description: >-
+    The ALM Leads (formerly Lead Opportunities) API from Total Expert — 2 operation(s) for alm leads (formerly
+    lead opportunities).
+  humanURL: https://developer.totalexpert.net
+  baseURL: https://public.totalexpert.net/v1
+  tags:
+  - ALM Leads (formerly Lead Opportunities)
+  properties:
+  - type: OpenAPI
+    url: openapi/total-expert-alm-leads-formerly-lead-opportunities-api-openapi.yml
+  - type: Documentation
+    url: https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
+  - type: PostmanCollection
+    url: postman/total-expert-public-api.postman_collection.json
+- aid: total-expert:total-expert-authentication-api
+  name: Total Expert Authentication API
+  description: The Authentication API from Total Expert — 1 operation(s) for authentication.
+  humanURL: https://developer.totalexpert.net
+  baseURL: https://public.totalexpert.net/v1
+  tags:
+  - Authentication
+  properties:
+  - type: OpenAPI
+    url: openapi/total-expert-authentication-api-openapi.yml
+  - type: Documentation
+    url: https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
+  - type: PostmanCollection
+    url: postman/total-expert-public-api.postman_collection.json
+- aid: total-expert:total-expert-contact-endpoints-api
+  name: Total Expert Contact Endpoints API
+  description: The Contact Endpoints API from Total Expert — 21 operation(s) for contact endpoints.
+  humanURL: https://developer.totalexpert.net
+  baseURL: https://public.totalexpert.net/v1
+  tags:
+  - Contact Endpoints
+  properties:
+  - type: OpenAPI
+    url: openapi/total-expert-contact-endpoints-api-openapi.yml
+  - type: Documentation
+    url: https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
+  - type: PostmanCollection
+    url: postman/total-expert-public-api.postman_collection.json
+- aid: total-expert:total-expert-email-apis-api
+  name: Total Expert Email APIs API
+  description: The Email APIs API from Total Expert — 4 operation(s) for email apis.
+  humanURL: https://developer.totalexpert.net
+  baseURL: https://public.totalexpert.net/v1
+  tags:
+  - Email APIs
+  properties:
+  - type: OpenAPI
+    url: openapi/total-expert-email-apis-api-openapi.yml
+  - type: Documentation
+    url: https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
+  - type: PostmanCollection
+    url: postman/total-expert-public-api.postman_collection.json
+- aid: total-expert:total-expert-email-unsubscribes-api
+  name: Total Expert Email Unsubscribes API
+  description: The Email Unsubscribes API from Total Expert — 3 operation(s) for email unsubscribes.
+  humanURL: https://developer.totalexpert.net
+  baseURL: https://public.totalexpert.net/v1
+  tags:
+  - Email Unsubscribes
+  properties:
+  - type: OpenAPI
+    url: openapi/total-expert-email-unsubscribes-api-openapi.yml
+  - type: Documentation
+    url: https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
+  - type: PostmanCollection
+    url: postman/total-expert-public-api.postman_collection.json
+- aid: total-expert:total-expert-entities-api
+  name: Total Expert Entities API
+  description: The Entities API from Total Expert — 3 operation(s) for entities.
+  humanURL: https://developer.totalexpert.net
+  baseURL: https://public.totalexpert.net/v1
+  tags:
+  - Entities
+  properties:
+  - type: OpenAPI
+    url: openapi/total-expert-entities-api-openapi.yml
+  - type: Documentation
+    url: https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
+  - type: PostmanCollection
+    url: postman/total-expert-public-api.postman_collection.json
+- aid: total-expert:total-expert-heartbeat-api
+  name: Total Expert Heartbeat API
+  description: The Heartbeat API from Total Expert — 2 operation(s) for heartbeat.
+  humanURL: https://developer.totalexpert.net
+  baseURL: https://public.totalexpert.net/v1
+  tags:
+  - Heartbeat
+  properties:
+  - type: OpenAPI
+    url: openapi/total-expert-heartbeat-api-openapi.yml
+  - type: Documentation
+    url: https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
+  - type: PostmanCollection
+    url: postman/total-expert-public-api.postman_collection.json
+- aid: total-expert:total-expert-insight-endpoints-api
+  name: Total Expert Insight Endpoints API
+  description: The Insight Endpoints API from Total Expert — 3 operation(s) for insight endpoints.
+  humanURL: https://developer.totalexpert.net
+  baseURL: https://public.totalexpert.net/v1
+  tags:
+  - Insight Endpoints
+  properties:
+  - type: OpenAPI
+    url: openapi/total-expert-insight-endpoints-api-openapi.yml
+  - type: Documentation
+    url: https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
+  - type: PostmanCollection
+    url: postman/total-expert-public-api.postman_collection.json
+- aid: total-expert:total-expert-lead-opportunities-new-api
+  name: Total Expert Lead Opportunities (New) API
+  description: >-
+    The Lead Opportunities (New) API from Total Expert — 2 operation(s) for lead opportunities (new).
+  humanURL: https://developer.totalexpert.net
+  baseURL: https://public.totalexpert.net/v1
+  tags:
+  - Lead Opportunities (New)
+  properties:
+  - type: OpenAPI
+    url: openapi/total-expert-lead-opportunities-new-api-openapi.yml
+  - type: Documentation
+    url: https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
+  - type: PostmanCollection
+    url: postman/total-expert-public-api.postman_collection.json
+- aid: total-expert:total-expert-loan-endpoints-api
+  name: Total Expert Loan Endpoints API
+  description: The Loan Endpoints API from Total Expert — 10 operation(s) for loan endpoints.
+  humanURL: https://developer.totalexpert.net
+  baseURL: https://public.totalexpert.net/v1
+  tags:
+  - Loan Endpoints
+  properties:
+  - type: OpenAPI
+    url: openapi/total-expert-loan-endpoints-api-openapi.yml
+  - type: Documentation
+    url: https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
+  - type: PostmanCollection
+    url: postman/total-expert-public-api.postman_collection.json
+- aid: total-expert:total-expert-scenarios-api
+  name: Total Expert Scenarios API
+  description: The Scenarios API from Total Expert — 2 operation(s) for scenarios.
+  humanURL: https://developer.totalexpert.net
+  baseURL: https://public.totalexpert.net/v1
+  tags:
+  - Scenarios
+  properties:
+  - type: OpenAPI
+    url: openapi/total-expert-scenarios-api-openapi.yml
+  - type: Documentation
+    url: https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
+  - type: PostmanCollection
+    url: postman/total-expert-public-api.postman_collection.json
+- aid: total-expert:total-expert-schema-endpoints-api
+  name: Total Expert Schema Endpoints API
+  description: The Schema Endpoints API from Total Expert — 2 operation(s) for schema endpoints.
+  humanURL: https://developer.totalexpert.net
+  baseURL: https://public.totalexpert.net/v1
+  tags:
+  - Schema Endpoints
+  properties:
+  - type: OpenAPI
+    url: openapi/total-expert-schema-endpoints-api-openapi.yml
+  - type: Documentation
+    url: https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
+  - type: PostmanCollection
+    url: postman/total-expert-public-api.postman_collection.json
+- aid: total-expert:total-expert-sms-opting-api
+  name: Total Expert SMS Opting API
+  description: The SMS Opting API from Total Expert — 2 operation(s) for sms opting.
+  humanURL: https://developer.totalexpert.net
+  baseURL: https://public.totalexpert.net/v1
+  tags:
+  - SMS Opting
+  properties:
+  - type: OpenAPI
+    url: openapi/total-expert-sms-opting-api-openapi.yml
+  - type: Documentation
+    url: https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
+  - type: PostmanCollection
+    url: postman/total-expert-public-api.postman_collection.json
+- aid: total-expert:total-expert-user-endpoints-api
+  name: Total Expert User Endpoints API
+  description: The User Endpoints API from Total Expert — 9 operation(s) for user endpoints.
+  humanURL: https://developer.totalexpert.net
+  baseURL: https://public.totalexpert.net/v1
+  tags:
+  - User Endpoints
+  properties:
+  - type: OpenAPI
+    url: openapi/total-expert-user-endpoints-api-openapi.yml
+  - type: Documentation
+    url: https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
+  - type: PostmanCollection
+    url: postman/total-expert-public-api.postman_collection.json
+- aid: total-expert:total-expert-webhooks-api
+  name: Total Expert Webhooks API
+  description: The Webhooks API from Total Expert — 3 operation(s) for webhooks.
+  humanURL: https://developer.totalexpert.net
+  baseURL: https://public.totalexpert.net/v1
+  tags:
+  - Webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/total-expert-webhooks-api-openapi.yml
+  - type: Documentation
+    url: https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
+  - type: PostmanCollection
+    url: postman/total-expert-public-api.postman_collection.json
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: PostmanWorkspace
+  url: https://www.postman.com/kinlaneapi/total-expert/overview
 - type: Website
-  url: https://totalexpert.com
+  url: https://www.totalexpert.com
+- type: DeveloperPortal
+  url: https://developer.totalexpert.net
+- type: Documentation
+  url: https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
+- type: APIReference
+  url: https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
+- type: GettingStarted
+  url: https://public.totalexpert.net/v1/docs/Getting+Started.pdf
+- type: Postman
+  url: https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
+- type: Support
+  url: https://www.totalexpert.com/services/support
+- type: Blog
+  url: https://www.totalexpert.com/resources/blog
+- type: GitHubOrganization
+  url: https://github.com/TotalExpert
+- type: StatusPage
+  url: https://status.totalexpert.com
+- type: TermsOfService
+  url: https://www.totalexpert.com/terms-of-service
+- type: PrivacyPolicy
+  url: https://www.totalexpert.com/privacy-policy
+- type: Compliance
+  url: https://www.totalexpert.com/security
+- type: TrustCenter
+  url: security/total-expert-trust-center.yml
+- type: Authentication
+  url: authentication/total-expert-authentication.yml
+- type: OAuthScopes
+  url: scopes/total-expert-scopes.yml
+- type: AgenticAccess
+  url: agentic-access/total-expert-agentic-access.yml
+- type: DomainSecurity
+  url: security/total-expert-domain-security.yml
+- type: Packages
+  url: packages/total-expert-packages.yml
+- type: WellKnown
+  url: well-known/total-expert-well-known.yml
+- type: MCPServer
+  url: mcp/total-expert-mcp.yml
+- type: LLMsTxt
+  url: llms/total-expert-llms.txt
+- type: Overlay
+  url: overlays/total-expert-openapi-overlay.yaml
+- type: Conformance
+  url: conformance/total-expert-conformance.yml
+- type: ErrorCatalog
+  url: errors/total-expert-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/total-expert-lifecycle.yml
+- type: Sandbox
+  url: sandbox/total-expert-sandbox.yml
+- type: Conventions
+  url: conventions/total-expert-conventions.yml
+- type: Idempotency
+  url: conventions/total-expert-conventions.yml
+- type: RateLimits
+  url: rate-limits/total-expert-rate-limits.yml
+- type: Webhooks
+  url: asyncapi/total-expert-webhooks.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: DataModel
+  url: data-model/total-expert-data-model.yml
