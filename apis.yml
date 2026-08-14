@@ -31,12 +31,12 @@ x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 x-enrichment:
-  date: '2026-07-21'
+  date: '2026-08-13'
   status: enriched
-  artifacts_added: 23
+  artifacts_added: 4
   pass: local-v1
 created: '2026-07-17'
-modified: '2026-07-21'
+modified: '2026-08-13'
 tags:
 - Company
 - Fintech
@@ -334,8 +334,6 @@ common:
   url: security/total-expert-domain-security.yml
 - type: Packages
   url: packages/total-expert-packages.yml
-- type: WellKnown
-  url: well-known/total-expert-well-known.yml
 - type: MCPServer
   url: mcp/total-expert-mcp.yml
 - type: LLMsTxt
@@ -362,3 +360,17 @@ common:
   url: skills/_index.yml
 - type: DataModel
   url: data-model/total-expert-data-model.yml
+- type: ChangeLog
+  url: changelog/total-expert-changelog.yml
+- type: ReleaseNotes
+  url: https://totalexpert.freshdesk.com/support/solutions/22000109162
+- type: Plans
+  url: plans/total-expert-plans-pricing.yml
+- type: Components
+  url: components/total-expert-components.yml
+- type: Vocabulary
+  url: vocabulary/total-expert-te-connect-ppe-schema.yml
+- type: HelpCenter
+  url: https://totalexpert.freshdesk.com/support/home
+- type: Login
+  url: https://totalexpert.net/login
