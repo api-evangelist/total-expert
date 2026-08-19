@@ -1,0 +1,40 @@
+generated: '2026-08-13'
+method: searched
+source: https://www.totalexpert.com/sitemap.xml + https://www.totalexpert.com/book-a-demo
+provider: Total Expert
+providerId: total-expert
+plan_count: 0
+currency: null
+description: >-
+  Total Expert publishes no pricing. There is no /pricing or /plans page, and no
+  pricing page appears anywhere in the 895-URL public sitemap. The only
+  commercial entry points are a demo request and a contact form; the platform is
+  sold as an enterprise contract to banks, credit unions, lenders and mortgage
+  companies, and the Public API is bundled with the platform rather than metered
+  or sold separately. Nothing in the developer documentation attaches a price,
+  a quota, or a paid tier to API access.
+plans: []
+commercial_model:
+  type: enterprise-contact-sales
+  self_serve_signup: false
+  free_tier: false
+  trial_published: false
+  api_metered: false
+  api_included_with_platform: true
+  entry_points:
+  - {name: Book a demo, url: 'https://www.totalexpert.com/book-a-demo', status: 200}
+  - {name: Contact us, url: 'https://www.totalexpert.com/contact-us'}
+  - {name: AWS Marketplace listing, url: 'https://www.totalexpert.com/company/news/total-expert-is-now-available-in-aws-marketplace', note: 'Total Expert announced availability in AWS Marketplace; the listing itself is the private-offer/contract channel, not a public price.'}
+api_access_gating:
+  note: >-
+    API credentials (client ID/secret) are issued by Total Expert per
+    integration, not self-served. Sandbox ("CT Environment") credentials are
+    issued separately and production credentials follow validation — see
+    sandbox/total-expert-sandbox.yml.
+x-evidence:
+  fetched: '2026-08-13'
+  urls:
+  - {url: 'https://www.totalexpert.com/pricing', http_status: 404}
+  - {url: 'https://www.totalexpert.com/plans', http_status: 404}
+  - {url: 'https://www.totalexpert.com/sitemap.xml', http_status: 200}
+  - {url: 'https://www.totalexpert.com/book-a-demo', http_status: 200}

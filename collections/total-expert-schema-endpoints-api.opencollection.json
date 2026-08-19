@@ -1,0 +1,51 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Total Expert Public Account Endpoints Schema Endpoints API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://public.totalexpert.net/v1/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Schema Endpoints",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch Custom Field Schema",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/schema/custom-fields"
+          },
+          "docs": "Fetch the schema of the custom fields defined for your organization.\n\nAttributes\n\nField\nAssignable\nType\nDescription\n\ndisplay_name\nNo\nstring\nField name that will be displayed in the TE platform\n\ninternal_created_at\nNo\nstring\nDate of creation of this custom field in TE systems. Format: 'YYYY-MM-DD HH:mm:ss'\n\ninternal_updated_at\nNo\nstring\nDate of last change to this custom field in TE systems. Format: 'YYYY-MM-DD HH:mm:ss'\n\nrelated_entity\nNo\nrelationship\nContains two fields that specify the type of"
+        },
+        {
+          "info": {
+            "name": "Fetch Loan Participant Roles Schema",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/schema/participant-roles"
+          },
+          "docs": "Fetch the schema of the loan participant roles defined for your organization.\n\nAttributes\n\nField\nAssignable\nType\nDescription\n\ndisplay_name\nNo\nstring\nRole display name\n\nrequired\nNo\ntinyint\nTo describe the role is required\n\nsystem_name\nNo\nstring\nRole system name\n\naccount_class\nNo\nrelationship\nContains two fields that specify the account classification the custom field is tied to: class_name, which is a custom string, and class_type (Possible values: LOAN, ACCOUNT)\n\nrole_type\nNo\nrelationship\nContai"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

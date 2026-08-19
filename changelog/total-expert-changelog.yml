@@ -1,0 +1,103 @@
+generated: '2026-08-13'
+method: searched
+source: https://totalexpert.freshdesk.com/support/solutions/22000109162
+provider: Total Expert
+providerId: total-expert
+description: >-
+  Total Expert publishes a dated, monthly platform changelog as the "Release
+  Resources" section of its public Freshdesk help center. It is a product
+  changelog rather than an API changelog: there is no per-endpoint diff, no
+  version identifier on the Public API (which stays at /v1), and no deprecation
+  schedule. API-affecting items appear inside the product narrative — the Lead
+  Management API, Outbound Data Connector payload changes, and integration
+  additions are all announced here and nowhere else machine-readable.
+scheme: calendar-monthly
+current_version: v1
+current_release: 2026 August Release
+cadence: monthly, with occasional seasonal ("Spring"/"Summer"/"Fall") consolidated releases
+formats:
+  release_notes: https://totalexpert.freshdesk.com/support/solutions/22000109162
+  executive_summaries: >-
+    Each monthly release also ships an "Executive Summary" article and a
+    "Product Update - Deck" in the same Release Resources section.
+notes: >-
+  Dates below are the help-center article "Modified on" timestamps, which are
+  the only dates the provider exposes on these articles. Highlights are
+  summarized from the published article bodies. Requires no login — the
+  Freshdesk help center is public, unlike developer.totalexpert.net which is a
+  login wall.
+breaking_change_policy:
+  published: false
+  note: >-
+    No breaking-change or deprecation policy is published alongside the release
+    notes. See lifecycle/total-expert-lifecycle.yml.
+entries:
+- version: 2026 August Release
+  date: '2026-08-12'
+  url: https://totalexpert.freshdesk.com/support/solutions/articles/22000296279-2026-august-release-notes
+  breaking: false
+  highlights:
+  - AI Scenario Assistant — monitors an LO's database for refinance and purchase opportunities, prices scenarios through the connected PPE, and drafts outreach.
+  - Purchase Scenario extends the AI Scenario Assistant architecture to pre-approval / estimated-purchase-price contacts.
+  - Further Lead Management enhancements layered on Pipeline Views, Enrichment & Insights, Rate Quotes and Engage SMS.
+  - '"Small Changes. Big Impact" batch of Content and Journeys updates.'
+- version: 2026 July Release
+  date: '2026-07-14'
+  url: https://totalexpert.freshdesk.com/support/solutions/articles/22000295978-2026-july-release-notes
+  breaking: false
+  highlights:
+  - 'Referral Partner Management — the free-text "Referred By" field becomes a structured contact relationship, usable by existing Lead Created / Lead Stage Change journey triggers.'
+  - Zapier, Evocalize and YLopo can now deliver leads programmatically through the Lead Management API.
+  - Loan data added to Pipeline Views; Reporting Center updates replacing custom report requests.
+  - Engage SMS adds Group Messaging; Tidalwave joins the Expert Partner Network.
+- version: 2026 June Release
+  date: '2026-06-08'
+  url: https://totalexpert.freshdesk.com/support/solutions/articles/22000295615-2026-june-release-notes
+  breaking: false
+  highlights:
+  - LOS-driven lead stage updates — a loan status change in the connected LOS advances the Total Expert lead stage automatically.
+  - 'Lead Entity Support in Outbound Data Connector payloads: loan purpose, property information and lead ID can now be pushed to third-party systems.'
+  - UTM parameters and additional standard fields added to the Lead Management object.
+  - Credit & Debt Enrichment surfaces tradeline data on contact records; Lead Management arrives in the mobile app.
+- version: 2026 May Release
+  date: '2026-05-13'
+  url: https://totalexpert.freshdesk.com/support/solutions/articles/22000295360-2026-may-release-notes
+  breaking: false
+  highlights:
+  - Routing policy can bypass distribution when an incoming lead matches a contact already owned inside that policy.
+  - Lead Source list filtered by role; outcome-to-stage indicators shown before confirming an outcome.
+  - Audit trail now captures deleted lead notes and outcomes.
+  - New RETR integration delivering home value reports to past borrowers.
+- version: 2026 April Release
+  date: '2026-04-08'
+  url: https://totalexpert.freshdesk.com/support/solutions/articles/22000294922-2026-april-release-notes
+  breaking: false
+  highlights:
+  - 'Property Zip Code routing filter (up to 100 zips per filter, exact or prefix; bypassed when a lead carries no property zip).'
+  - 'Lead Volume routing filter — per-user active-lead threshold per routing policy, maximum and default 250 active leads.'
+  - Outcome-based lead stage mapping advances a lead automatically when an outcome is logged.
+- version: 2026 March Release
+  date: '2026-03-09'
+  url: https://totalexpert.freshdesk.com/support/solutions/articles/22000294604-2026-march-release-notes
+  breaking: false
+  highlights:
+  - Reporting Center generally available to all admins (introduced February 2026).
+  - 'External API for lead aggregation — a standardized API to centralize leads from third-party vendors, websites and other external systems.'
+  - Improvements across mobile security, image management, integrations, content tools and platform reliability.
+archive:
+- {version: 2026 February Release, url: 'https://totalexpert.freshdesk.com/support/solutions/articles/22000294124-2026-february-release-notes'}
+- {version: 2026 January Release, url: 'https://totalexpert.freshdesk.com/support/solutions/articles/22000293810-2026-january-release-notes'}
+- {version: 2025 Fall Release, url: 'https://totalexpert.freshdesk.com/support/solutions/articles/22000293229-2025-fall-release-notes'}
+- {version: 2025 October Release, url: 'https://totalexpert.freshdesk.com/support/solutions/articles/22000292636-2025-october-release-notes'}
+- {version: 2025 September Release, url: 'https://totalexpert.freshdesk.com/support/solutions/articles/22000292413-2025-september-release-notes'}
+- {version: 2025 Summer Release, url: 'https://totalexpert.freshdesk.com/support/solutions/articles/22000292108-2025-summer-release-notes'}
+- {version: 2025 July Release, url: 'https://totalexpert.freshdesk.com/support/solutions/articles/22000291699-2025-july-release-notes'}
+- {version: 2025 June Release, url: 'https://totalexpert.freshdesk.com/support/solutions/articles/22000291243-2025-june-release-notes'}
+- {version: 2025 Spring Release, url: 'https://totalexpert.freshdesk.com/support/solutions/articles/22000290961-2025-spring-release-notes'}
+- {version: April 2025 Release, url: 'https://totalexpert.freshdesk.com/support/solutions/articles/22000290530-april-2025-release-notes'}
+- {version: March 2025 Release, url: 'https://totalexpert.freshdesk.com/support/solutions/articles/22000290659-march-2025-release-notes'}
+x-evidence:
+  fetched: '2026-08-13'
+  urls:
+  - {url: 'https://totalexpert.freshdesk.com/support/solutions/22000109162', http_status: 200}
+  - {url: 'https://totalexpert.freshdesk.com/support/solutions/articles/22000296279-2026-august-release-notes', http_status: 200}

@@ -1,13 +1,16 @@
-generated: '2026-07-21'
+generated: '2026-08-13'
 method: searched
-source: npm registry search + PyPI + GitHub org github.com/TotalExpert
+source: npm registry search + registry.npmjs.org metadata + PyPI + GitHub org github.com/TotalExpert
 notes: >-
   Total Expert ships no first-party client libraries. Its GitHub org
   (github.com/TotalExpert) contains only forks of third-party projects
   (element-ui, simplesamlphp, PHRETS, etc.). The only registry package found is
   a community-maintained Node.js wrapper. PyPI (totalexpert, total-expert),
   Maven Central, NuGet, RubyGems, Packagist, crates.io and pkg.go.dev returned
-  no Total Expert client libraries.
+  no Total Expert client libraries. Total Expert's own client-side integration
+  story is a hosted iframe rather than an installable package — see
+  components/total-expert-components.yml.
+official_sdk_count: 0
 packages:
 - language: javascript
   registry: npm
@@ -18,3 +21,21 @@ packages:
   maintainer: community (peoplesmortgage/total-expert-node on GitHub)
   description: A functional, fully typed wrapper around the Total Expert API (community-maintained).
   repository: https://github.com/peoplesmortgage/total-expert-node
+  version: 0.2.0
+  published: '2021-02-17'
+  versions_published: 2
+  currency_note: >-
+    Read from registry.npmjs.org on 2026-08-13. Latest release 0.2.0 is more than
+    five years old and only two versions have ever shipped, while the Public API
+    has continued to change (Lead Management API, Outbound Data Connector lead
+    entity support, 2025-2026 releases). Treat as abandoned; it is not
+    first-party and Total Expert does not endorse it.
+registries_checked:
+- {registry: npm, query: 'total expert / totalexpert', result: 'one community package (total-expert-node)'}
+- {registry: pypi, query: 'totalexpert, total-expert', result: none}
+- {registry: maven-central, result: none}
+- {registry: nuget, result: none}
+- {registry: rubygems, result: none}
+- {registry: packagist, result: none}
+- {registry: crates.io, result: none}
+- {registry: pkg.go.dev, result: none}

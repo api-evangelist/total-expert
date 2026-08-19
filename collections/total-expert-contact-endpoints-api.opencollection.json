@@ -1,0 +1,778 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Total Expert Public Account Endpoints Contact Endpoints API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://public.totalexpert.net/v1/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Contact Endpoints",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch Contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/contacts/:contact_id",
+            "params": [
+              {
+                "name": "contact_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a specific contact specified by ID."
+        },
+        {
+          "info": {
+            "name": "Update Contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://public.totalexpert.net/v1/contacts/:contact_id",
+            "params": [
+              {
+                "name": "contact_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing contact by ID."
+        },
+        {
+          "info": {
+            "name": "Delete Contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://public.totalexpert.net/v1/contacts/:contact_id",
+            "params": [
+              {
+                "name": "contact_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a contact by ID."
+        },
+        {
+          "info": {
+            "name": "Fetch Contacts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/contacts",
+            "params": [
+              {
+                "name": "page[number]",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "page[size]",
+                "value": "10",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Fetch a page of contacts. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters."
+        },
+        {
+          "info": {
+            "name": "Create Contact (as Admin)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://public.totalexpert.net/v1/contacts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a contact.\n\nRequired Attributes (one of the following combinations):\n\nsource, first_name, last_name, email\n\nsource, first_name, last_name, phone_cell\n\nsource, first_name, last_name, phone_home\n\nsource, first_name, last_name, phone_office\n\nsource, first_name, last_name, address, city, state, zip_code\n\nRequired Relationships:\n\nowner*\n\n*required if authenticated as an organization admin\n\nAlternate documented request: Create Contact (as User).\n\nAlternate documented request: Create Contact (as"
+        },
+        {
+          "info": {
+            "name": "Grant Consent on Update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://public.totalexpert.net/v1/contacts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Alternate documented request: Revoke Consent."
+        },
+        {
+          "info": {
+            "name": "Fetch Contact Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/contact-groups/:contact_group_id",
+            "params": [
+              {
+                "name": "contact_group_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a contact group by ID."
+        },
+        {
+          "info": {
+            "name": "Update Contact Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://public.totalexpert.net/v1/contact-groups/:contact_group_id",
+            "params": [
+              {
+                "name": "contact_group_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing contact group by ID."
+        },
+        {
+          "info": {
+            "name": "Delete Contact Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://public.totalexpert.net/v1/contact-groups/:contact_group_id",
+            "params": [
+              {
+                "name": "contact_group_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a contact group by ID."
+        },
+        {
+          "info": {
+            "name": "Fetch Contact Groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/contact-groups",
+            "params": [
+              {
+                "name": "page[number]",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "page[size]",
+                "value": "100",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Fetch a page of contact groups. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters."
+        },
+        {
+          "info": {
+            "name": "Create Contact Group (as Admin)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://public.totalexpert.net/v1/contact-groups",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a contact group.\n\nRequired Attributes:\n\ngroup_name\n\nRequired Relationships:\n\nowner*\n\n*required if authenticated as an organization admin\n\nAlternate documented request: Create Contact Group (as User)."
+        },
+        {
+          "info": {
+            "name": "Get Contact Survey",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/contact-surveys/:contact_survey_id",
+            "params": [
+              {
+                "name": "contact_survey_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a specific survey specified by ID."
+        },
+        {
+          "info": {
+            "name": "Update Contact Survey",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://public.totalexpert.net/v1/contact-surveys/:contact_survey_id",
+            "params": [
+              {
+                "name": "contact_survey_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a survey.\n\nRequired Attributes:\n\nAt least one questions array, which could be empty."
+        },
+        {
+          "info": {
+            "name": "Get Contact Surveys",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/contact-surveys",
+            "params": [
+              {
+                "name": "page[number]",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "page[size]",
+                "value": "10",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Fetch a page of surveys. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters."
+        },
+        {
+          "info": {
+            "name": "Create Contact Survey",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://public.totalexpert.net/v1/contact-surveys",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a survey.\n\nRequired Attributes:\n\nsource\n\nsurvey_name\n\nquestions\n\nquestions.question_text\n\nquestions.system_name\n\nquestions.data_type"
+        },
+        {
+          "info": {
+            "name": "Get Contact Survey Response",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/contact-survey-responses/:contact_survey_response_id",
+            "params": [
+              {
+                "name": "contact_survey_response_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a specific survey response specified by ID."
+        },
+        {
+          "info": {
+            "name": "Get Contact Survey Responses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/contact-survey-responses",
+            "params": [
+              {
+                "name": "page[number]",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "page[size]",
+                "value": "10",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Fetch a page of survey responses. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters."
+        },
+        {
+          "info": {
+            "name": "Create Contact Survey Response (As User)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://public.totalexpert.net/v1/contact-survey-responses",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a response to a survey. Once created, responses may not be modified.\n\nRequired Attributes:\n\nquestion_responses\n\nRequired Relationships:\n\nsurvey\n\ncontact\n\nAlternate documented request: Create Contact Survey Response (As Admin)."
+        },
+        {
+          "info": {
+            "name": "Fetch Contact Note",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/contact-notes/:contact_note_id",
+            "params": [
+              {
+                "name": "contact_note_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a contact notes by ID."
+        },
+        {
+          "info": {
+            "name": "Update Contact Note",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://public.totalexpert.net/v1/contact-notes/:contact_note_id",
+            "params": [
+              {
+                "name": "contact_note_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing contact note by ID."
+        },
+        {
+          "info": {
+            "name": "Delete Contact Note",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://public.totalexpert.net/v1/contact-notes/:contact_note_id",
+            "params": [
+              {
+                "name": "contact_note_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a contact note by ID."
+        },
+        {
+          "info": {
+            "name": "Fetch Contact Notes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/contact-notes",
+            "params": [
+              {
+                "name": "page[number]",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "page[size]",
+                "value": "10",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Fetch a page of contact notes. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters."
+        },
+        {
+          "info": {
+            "name": "Create Contact Note (as User)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://public.totalexpert.net/v1/contact-notes",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a contact note.\n\nRequired Attributes:\n\ntitle\n\nnote\n\ntype_id\n\nRequired Relationships:\n\ncontact\n\nAlternate documented request: Create Contact Note (as Admin)."
+        },
+        {
+          "info": {
+            "name": "Fetch Contact Recruit",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/contact-recruits/:contact_id",
+            "params": [
+              {
+                "name": "contact_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a specific contact specified by ID."
+        },
+        {
+          "info": {
+            "name": "Update Contact Recruit",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://public.totalexpert.net/v1/contact-recruits/:contact_id",
+            "params": [
+              {
+                "name": "contact_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing contact by ID."
+        },
+        {
+          "info": {
+            "name": "Delete Contact Recruit",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://public.totalexpert.net/v1/contact-recruits/:contact_id",
+            "params": [
+              {
+                "name": "contact_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a contact by ID."
+        },
+        {
+          "info": {
+            "name": "Fetch Contact Recruits",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/contact-recruits",
+            "params": [
+              {
+                "name": "page[number]",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "page[size]",
+                "value": "10",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Fetch a page of contacts. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters."
+        },
+        {
+          "info": {
+            "name": "Create Contact Recruit (as Admin)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://public.totalexpert.net/v1/contact-recruits",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a contact.\n\nRequired Attributes (one of the following combinations):\n\nsource, first_name, last_name, email\n\nsource, first_name, last_name, phone_cell\n\nsource, first_name, last_name, phone_home\n\nsource, first_name, last_name, phone_office\n\nsource, first_name, last_name, address, city, state, zip_code\n\nRequired Relationships:\n\nowner*\n\n*required if authenticated as an organization admin\n\nAlternate documented request: Create Contact Recruit (as User)."
+        },
+        {
+          "info": {
+            "name": "Fetch Contact Recruit Statuses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/contact-recruit-statuses",
+            "params": [
+              {
+                "name": "page[number]",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "page[size]",
+                "value": "10",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Fetch Contact Recruit Statuses"
+        },
+        {
+          "info": {
+            "name": "Fetch Contact Recruit Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/contact-recruit-metrics",
+            "params": [
+              {
+                "name": "page[number]",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "page[size]",
+                "value": "10",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Fetch Contact Recruit Metrics"
+        },
+        {
+          "info": {
+            "name": "Fetch Contact Recruit Metric Units",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/contact-recruit-metric-units",
+            "params": [
+              {
+                "name": "page[number]",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "page[size]",
+                "value": "10",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Fetch Contact Recruit Metric Units"
+        },
+        {
+          "info": {
+            "name": "Fetch Channels",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/channels",
+            "params": [
+              {
+                "name": "page[number]",
+                "value": "1",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Fetch a page of channels. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters."
+        },
+        {
+          "info": {
+            "name": "Fetch WLP Access Types",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/wlp-access-types",
+            "params": [
+              {
+                "name": "page[number]",
+                "value": "1",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Fetch a page of wlp access types. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters."
+        },
+        {
+          "info": {
+            "name": "Fetch Campaigns",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/campaigns"
+          },
+          "docs": "Fetch a page of campaigns. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters."
+        },
+        {
+          "info": {
+            "name": "Create Campaign",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://public.totalexpert.net/v1/campaigns",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a campaign.\n\nRequired Attributes:\n\nname"
+        },
+        {
+          "info": {
+            "name": "Fetch Campaign",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/campaigns/:campaign_id",
+            "params": [
+              {
+                "name": "campaign_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a campaign by id."
+        },
+        {
+          "info": {
+            "name": "Fetch Campaign Activities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/campaign-activity",
+            "params": [
+              {
+                "name": "page[number]",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "page[size]",
+                "value": "100",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Fetch a page of campaign activity records. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters."
+        },
+        {
+          "info": {
+            "name": "Create Campaign Activity",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://public.totalexpert.net/v1/campaign-activity",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a campaign activity.\n\nRequired Attributes:\n\n[none]\n\nRequired Relationsips:\n\ncontact\n\ncampaign"
+        },
+        {
+          "info": {
+            "name": "Delete Campaign Activity",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://public.totalexpert.net/v1/campaign-activity"
+          },
+          "docs": "Delete a campaign activity record by id."
+        },
+        {
+          "info": {
+            "name": "Fetch Campaign Activity",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/campaign-activity/:campaign_activity_id",
+            "params": [
+              {
+                "name": "campaign_activity_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a campaign activity by id."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

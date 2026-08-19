@@ -1,8 +1,9 @@
-generated: '2026-07-21'
+generated: '2026-08-13'
 method: searched
 source: >-
   https://status.totalexpert.com (Atlassian Statuspage) + the Postman
-  collection documentation (deprecated-field notes) + developer portal guides.
+  collection documentation (deprecated-field notes) + developer portal guides +
+  https://totalexpert.freshdesk.com/support/solutions/22000109162 (Release Resources).
 versioning:
   scheme: uri-path
   current: v1
@@ -17,6 +18,16 @@ deprecation:
     the SMS opt statuses REQUESTED and OPTED_OUT are deprecated (requests
     passing them perform no update). The "ALM Leads" endpoints are labeled
     "formerly Lead Opportunities".
+changelog:
+  published: true
+  url: https://totalexpert.freshdesk.com/support/solutions/22000109162
+  artifact: changelog/total-expert-changelog.yml
+  scheme: calendar-monthly
+  latest: 2026 August Release (2026-08-12)
+  scope: >-
+    Product-level release notes, not an API changelog. API-affecting changes
+    (Lead Management API, Outbound Data Connector payload fields) appear inside
+    the product narrative; no endpoint-level diff is published.
 status_page: https://status.totalexpert.com
 sla: null
 deprecated_operations: []

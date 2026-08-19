@@ -1,0 +1,4231 @@
+{
+  "item": [
+    {
+      "id": "89a57877-05dc-4617-9723-6c76927f56c9",
+      "name": "Contact Endpoints",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e71b7027-e897-4fed-8c54-eb5fcead14e9",
+          "name": "Fetch Contact",
+          "request": {
+            "name": "Fetch Contact",
+            "description": {
+              "content": "Fetch a specific contact specified by ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contacts",
+                ":contact_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contact_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4904023e-4cd2-4e8f-86f1-59e2347a7f6c",
+              "name": "Fetch Contact (as User)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contacts",
+                    ":contact_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contact_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"address\": \"1234 Fake St\",\n  \"address_2\": \"Apartment -8\",\n  \"birthday\": \"1900-01-01\",\n  \"city\": \"Pleasantville\",\n  \"classification\": \"\",\n  \"close_date\": \"2016-12-26\",\n  \"creation_date\": \"2017-01-01 11:11:11\",\n  \"email\": \"username@example.com\",\n  \"email_work\": \"clark.gable2@totalexpertinc.com\",\n  \"employer_address\": \"1235 Fake Ave.\",\n  \"employer_address_2\": \"Ste 10058818144\",\n  \"employer_city\": \"Unpleasantville\",\n  \"employer_name\": \"BigIndustry Co, Inc. LLC\",\n  \"employer_state\": \"WI\",\n  \"employer_zip\": \"54321\",\n  \"external_id\": \"101010\",\n  \"first_name\": \"Clark\",\n  \"id\": 2317,\n  \"internal_created_at\": \"2019-01-31 18:53:53\",\n  \"internal_updated_at\": \"2019-01-31 18:55:29\",\n  \"last_contacted_date\": \"2017-01-01 12:12:12\",\n  \"last_name\": \"Gable\",\n  \"license_number\": \"Q10101010101011\",\n  \"list_date\": \"2016-12-25\",\n  \"ok_to_call\": false,\n  \"ok_to_email\": false,\n  \"ok_to_mail\": false,\n  \"phone_cell\": \"(763)555-0123\",\n  \"phone_home\": \"(612)-555-0123\",\n  \"phone_office\": \"(763)555-1234\",\n  \"referred_by\": \"\",\n  \"referred_to\": \"\",\n  \"source\": \"OurSystem\",\n  \"state\": \"MN\",\n  \"title\": \"Doctor\",\n  \"zip_code\": \"12345\",\n  \"contact_groups\": [\n    {\n      \"group_name\": \"Past Client\",\n      \"id\": 14\n    },\n    {\n      \"group_name\": \"Prospect\",\n      \"id\": 15\n    }\n  ],\n  \"external_ids\": [\n    {\n      \"external_id\": \"abcd\",\n      \"source\": \"local\"\n    },\n    {\n      \"external_id\": \"101010\",\n      \"source\": \"OurSystem\"\n    }\n  ],\n  \"external_status\": {\n    \"status_name\": \"Processing\"\n  },\n  \"preferences\": {\n    \"is_silenced\": true\n  },\n  \"assignee\": {\n    \"email\": \"toni.ark@expert.com\",\n    \"external_id\": \"ironExpertExternal\",\n    \"id\": \"58\",\n    \"username\": \"ironExpert\"\n  },\n  \"owner\": {\n    \"email\": \"stevie.dodgers@expert.com\",\n    \"external_id\": \"captainExpertExternal\",\n    \"id\": \"59\",\n    \"username\": \"captainExpert\"\n  },\n  \"shared_with_users\": [\n    {\n      \"email\": \"pete.park@expert.com\",\n      \"external_id\": \"spiderExpertExternal\",\n      \"id\": \"56\",\n      \"username\": \"spiderExpert\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "36313079-ef9f-41f1-9929-a4e25f4fcb69",
+          "name": "Update Contact",
+          "request": {
+            "name": "Update Contact",
+            "description": {
+              "content": "Update an existing contact by ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contacts",
+                ":contact_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contact_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Doctor\",\n  \"first_name\": \"Clark\",\n  \"last_name\": \"Gable\",\n  \"email\": \"username@example.com\",\n  \"email_work\": \"clark.gable2@totalexpertinc.com\",\n  \"address\": \"1234 Fake St\",\n  \"address_2\": \"Apartment -8\",\n  \"city\": \"Pleasantville\",\n  \"state\": \"MN\",\n  \"zip_code\": \"12345\",\n  \"phone_cell\": \"(763)555-0123\",\n  \"phone_office\": \"(763)555-1234\",\n  \"phone_home\": \"(612)-555-0123\",\n  \"employer_name\": \"BigIndustry Co, Inc. LLC\",\n  \"employer_address\": \"1235 Fake Ave.\",\n  \"employer_address_2\": \"Ste 10058818144\",\n  \"employer_city\": \"Unpleasantville\",\n  \"employer_state\": \"WI\",\n  \"employer_zip\": \"54321\",\n  \"license_number\": \"Q10101010101011\",\n  \"source\": \"OurSystem\",\n  \"creation_date\": \"2017-01-01 11:11:11\",\n  \"last_contacted\": \"2017-01-01 12:12:12\",\n  \"list_date\": \"2016-12-25 10:00:00\",\n  \"close_date\": \"2016-12-26 09:09:09\",\n  \"external_id\": \"101010\",\n  \"birthday\": \"1970-01-01\",\n  \"ok_to_mail\": 0,\n  \"ok_to_email\": 0,\n  \"ok_to_call\": 0,\n  \"contact_groups\": [\n    {\n      \"group_name\": \"Past Client\"\n    },\n    {\n      \"group_name\": \"Open House Visitors\"\n    }\n  ],\n  \"external_ids\": [\n    {\n      \"source\": \"local\",\n      \"external_id\": \"abcd\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a64544f0-c673-4d1f-ba91-08044d308963",
+              "name": "Success. See the Total Expert Public API documentation for the response shape.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contacts",
+                    ":contact_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contact_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Doctor\",\n  \"first_name\": \"Clark\",\n  \"last_name\": \"Gable\",\n  \"email\": \"username@example.com\",\n  \"email_work\": \"clark.gable2@totalexpertinc.com\",\n  \"address\": \"1234 Fake St\",\n  \"address_2\": \"Apartment -8\",\n  \"city\": \"Pleasantville\",\n  \"state\": \"MN\",\n  \"zip_code\": \"12345\",\n  \"phone_cell\": \"(763)555-0123\",\n  \"phone_office\": \"(763)555-1234\",\n  \"phone_home\": \"(612)-555-0123\",\n  \"employer_name\": \"BigIndustry Co, Inc. LLC\",\n  \"employer_address\": \"1235 Fake Ave.\",\n  \"employer_address_2\": \"Ste 10058818144\",\n  \"employer_city\": \"Unpleasantville\",\n  \"employer_state\": \"WI\",\n  \"employer_zip\": \"54321\",\n  \"license_number\": \"Q10101010101011\",\n  \"source\": \"OurSystem\",\n  \"creation_date\": \"2017-01-01 11:11:11\",\n  \"last_contacted\": \"2017-01-01 12:12:12\",\n  \"list_date\": \"2016-12-25 10:00:00\",\n  \"close_date\": \"2016-12-26 09:09:09\",\n  \"external_id\": \"101010\",\n  \"birthday\": \"1970-01-01\",\n  \"ok_to_mail\": 0,\n  \"ok_to_email\": 0,\n  \"ok_to_call\": 0,\n  \"contact_groups\": [\n    {\n      \"group_name\": \"Past Client\"\n    },\n    {\n      \"group_name\": \"Open House Visitors\"\n    }\n  ],\n  \"external_ids\": [\n    {\n      \"source\": \"local\",\n      \"external_id\": \"abcd\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "55a6b604-dbb8-4ff3-9083-8518c3f61f99",
+          "name": "Delete Contact",
+          "request": {
+            "name": "Delete Contact",
+            "description": {
+              "content": "Delete a contact by ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contacts",
+                ":contact_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contact_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "688bdbd4-7b29-49a0-937c-a390082256b0",
+              "name": "Success. See the Total Expert Public API documentation for the response shape.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contacts",
+                    ":contact_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contact_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6b8328c3-4d8e-4cda-bc90-bf801cf591a8",
+          "name": "Fetch Contacts",
+          "request": {
+            "name": "Fetch Contacts",
+            "description": {
+              "content": "Fetch a page of contacts. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contacts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page[number]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "page[size]",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "26bd4f7d-e7c4-4a5f-bcad-096394459e25",
+              "name": "Success. See the Total Expert Public API documentation for the response shape.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page[number]",
+                      "value": "1"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "80cdebf5-4b1b-48b7-ae26-c05e182e5bfd",
+          "name": "Create Contact (as Admin)",
+          "request": {
+            "name": "Create Contact (as Admin)",
+            "description": {
+              "content": "Create a contact.\n\nRequired Attributes (one of the following combinations):\n\nsource, first_name, last_name, email\n\nsource, first_name, last_name, phone_cell\n\nsource, first_name, last_name, phone_home\n\nsource, first_name, last_name, phone_office\n\nsource, first_name, last_name, address, city, state, zip_code\n\nRequired Relationships:\n\nowner*\n\n*required if authenticated as an organization admin\n\nAlternate documented request: Create Contact (as User).\n\nAlternate documented request: Create Contact (as Admin) with Entity.\n\nAlternate documented request: Grant Consent on Create.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contacts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Doctor\",\n  \"first_name\": \"Clark\",\n  \"last_name\": \"Gable\",\n  \"email\": \"username@example.com\",\n  \"email_work\": \"clark.gable2@totalexpert.com\",\n  \"address\": \"1234 Fake St\",\n  \"address_2\": \"Apartment -8\",\n  \"city\": \"Pleasantville\",\n  \"state\": \"MN\",\n  \"zip_code\": \"12345\",\n  \"phone_cell\": \"(763)555-0123\",\n  \"phone_office\": \"(763)555-1234\",\n  \"phone_home\": \"(612)-555-0123\",\n  \"employer_name\": \"BigIndustry Co, Inc. LLC\",\n  \"employer_address\": \"1235 Fake Ave.\",\n  \"employer_address_2\": \"Ste 10058818144\",\n  \"employer_city\": \"Unpleasantville\",\n  \"employer_state\": \"WI\",\n  \"employer_zip\": \"54321\",\n  \"license_number\": \"Q10101010101011\",\n  \"source\": \"OurSystem\",\n  \"creation_date\": \"2017-01-01 11:11:11\",\n  \"last_contacted_date\": \"2017-01-01 12:12:12\",\n  \"list_date\": \"2016-12-25 10:00:00\",\n  \"close_date\": \"2016-12-26 09:09:09\",\n  \"external_id\": \"101010\",\n  \"birthday\": \"1970-01-01\",\n  \"ok_to_mail\": 0,\n  \"ok_to_email\": 0,\n  \"ok_to_call\": 0,\n  \"preferences\": {\n    \"is_silenced\": true\n  },\n  \"owner\": {\n    \"external_id\": \"userExternal1\"\n  },\n  \"contact_groups\": [\n    {\n      \"group_name\": \"Past Client\"\n    },\n    {\n      \"id\": \"14\"\n    }\n  ],\n  \"custom\": [\n    {\n      \"field_name\": \"custom_string\",\n      \"value\": \"the custom field string value\"\n    }\n  ],\n  \"external_ids\": [\n    {\n      \"source\": \"local\",\n      \"external_id\": \"abcd\"\n    }\n  ],\n  \"external_status\": {\n    \"status_name\": \"Processing\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "800ad632-dd3d-4e3c-b63f-3c04feb06e1c",
+              "name": "Update Contact (as Admin)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Doctor\",\n  \"first_name\": \"Clark\",\n  \"last_name\": \"Gable\",\n  \"email\": \"username@example.com\",\n  \"email_work\": \"clark.gable2@totalexpert.com\",\n  \"address\": \"1234 Fake St\",\n  \"address_2\": \"Apartment -8\",\n  \"city\": \"Pleasantville\",\n  \"state\": \"MN\",\n  \"zip_code\": \"12345\",\n  \"phone_cell\": \"(763)555-0123\",\n  \"phone_office\": \"(763)555-1234\",\n  \"phone_home\": \"(612)-555-0123\",\n  \"employer_name\": \"BigIndustry Co, Inc. LLC\",\n  \"employer_address\": \"1235 Fake Ave.\",\n  \"employer_address_2\": \"Ste 10058818144\",\n  \"employer_city\": \"Unpleasantville\",\n  \"employer_state\": \"WI\",\n  \"employer_zip\": \"54321\",\n  \"license_number\": \"Q10101010101011\",\n  \"source\": \"OurSystem\",\n  \"creation_date\": \"2017-01-01 11:11:11\",\n  \"last_contacted_date\": \"2017-01-01 12:12:12\",\n  \"list_date\": \"2016-12-25 10:00:00\",\n  \"close_date\": \"2016-12-26 09:09:09\",\n  \"external_id\": \"101010\",\n  \"birthday\": \"1970-01-01\",\n  \"ok_to_mail\": 0,\n  \"ok_to_email\": 0,\n  \"ok_to_call\": 0,\n  \"preferences\": {\n    \"is_silenced\": true\n  },\n  \"owner\": {\n    \"external_id\": \"userExternal1\"\n  },\n  \"contact_groups\": [\n    {\n      \"group_name\": \"Past Client\"\n    },\n    {\n      \"id\": \"14\"\n    }\n  ],\n  \"custom\": [\n    {\n      \"field_name\": \"custom_string\",\n      \"value\": \"the custom field string value\"\n    }\n  ],\n  \"external_ids\": [\n    {\n      \"source\": \"local\",\n      \"external_id\": \"abcd\"\n    }\n  ],\n  \"external_status\": {\n    \"status_name\": \"Processing\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"duplicate\": \"external-api.totaldev.us/v1/contacts/56495\",\n  \"id\": 56495\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "422d62ac-fd7f-4237-905f-bf99b018f7a1",
+              "name": "Create Contact (as Admin)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Doctor\",\n  \"first_name\": \"Clark\",\n  \"last_name\": \"Gable\",\n  \"email\": \"username@example.com\",\n  \"email_work\": \"clark.gable2@totalexpert.com\",\n  \"address\": \"1234 Fake St\",\n  \"address_2\": \"Apartment -8\",\n  \"city\": \"Pleasantville\",\n  \"state\": \"MN\",\n  \"zip_code\": \"12345\",\n  \"phone_cell\": \"(763)555-0123\",\n  \"phone_office\": \"(763)555-1234\",\n  \"phone_home\": \"(612)-555-0123\",\n  \"employer_name\": \"BigIndustry Co, Inc. LLC\",\n  \"employer_address\": \"1235 Fake Ave.\",\n  \"employer_address_2\": \"Ste 10058818144\",\n  \"employer_city\": \"Unpleasantville\",\n  \"employer_state\": \"WI\",\n  \"employer_zip\": \"54321\",\n  \"license_number\": \"Q10101010101011\",\n  \"source\": \"OurSystem\",\n  \"creation_date\": \"2017-01-01 11:11:11\",\n  \"last_contacted_date\": \"2017-01-01 12:12:12\",\n  \"list_date\": \"2016-12-25 10:00:00\",\n  \"close_date\": \"2016-12-26 09:09:09\",\n  \"external_id\": \"101010\",\n  \"birthday\": \"1970-01-01\",\n  \"ok_to_mail\": 0,\n  \"ok_to_email\": 0,\n  \"ok_to_call\": 0,\n  \"preferences\": {\n    \"is_silenced\": true\n  },\n  \"owner\": {\n    \"external_id\": \"userExternal1\"\n  },\n  \"contact_groups\": [\n    {\n      \"group_name\": \"Past Client\"\n    },\n    {\n      \"id\": \"14\"\n    }\n  ],\n  \"custom\": [\n    {\n      \"field_name\": \"custom_string\",\n      \"value\": \"the custom field string value\"\n    }\n  ],\n  \"external_ids\": [\n    {\n      \"source\": \"local\",\n      \"external_id\": \"abcd\"\n    }\n  ],\n  \"external_status\": {\n    \"status_name\": \"Processing\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"created\": \"{external_api_host}/v1/contacts/56495\",\n  \"id\": 56495\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c2ea72bc-d369-4591-8d00-7c1a90525083",
+          "name": "Grant Consent on Update",
+          "request": {
+            "name": "Grant Consent on Update",
+            "description": {
+              "content": "Alternate documented request: Revoke Consent.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contacts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Doctor\",\n  \"first_name\": \"Clark\",\n  \"last_name\": \"Gable\",\n  \"email\": \"username@example.com\",\n  \"email_work\": \"clark.gable2@totalexpertinc.com\",\n  \"address\": \"1234 Fake St\",\n  \"address_2\": \"Apartment -8\",\n  \"city\": \"Pleasantville\",\n  \"state\": \"MN\",\n  \"zip_code\": \"12345\",\n  \"phone_cell\": \"(763)555-0123\",\n  \"phone_office\": \"(763)555-1234\",\n  \"phone_home\": \"(612)-555-0123\",\n  \"external_ids\": [\n    {\n      \"source\": \"local\",\n      \"external_id\": \"abcd\"\n    }\n  ],\n  \"grant_consent\": {\n    \"communication_agent\": \"agentic-a-i\",\n    \"communication_channel\": \"phone\",\n    \"channel_target\": \"+17635550123\",\n    \"contact_purpose\": \"marketing\",\n    \"capture_source\": \"A web form check box\",\n    \"consent_language\": \"Contact has consented to AI calls\",\n    \"ip_address\": \"1.1.1.1\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "de376999-f0ad-4fa2-97ed-4f4d55749b3b",
+              "name": "Success. See the Total Expert Public API documentation for the response shape.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Doctor\",\n  \"first_name\": \"Clark\",\n  \"last_name\": \"Gable\",\n  \"email\": \"username@example.com\",\n  \"email_work\": \"clark.gable2@totalexpertinc.com\",\n  \"address\": \"1234 Fake St\",\n  \"address_2\": \"Apartment -8\",\n  \"city\": \"Pleasantville\",\n  \"state\": \"MN\",\n  \"zip_code\": \"12345\",\n  \"phone_cell\": \"(763)555-0123\",\n  \"phone_office\": \"(763)555-1234\",\n  \"phone_home\": \"(612)-555-0123\",\n  \"external_ids\": [\n    {\n      \"source\": \"local\",\n      \"external_id\": \"abcd\"\n    }\n  ],\n  \"grant_consent\": {\n    \"communication_agent\": \"agentic-a-i\",\n    \"communication_channel\": \"phone\",\n    \"channel_target\": \"+17635550123\",\n    \"contact_purpose\": \"marketing\",\n    \"capture_source\": \"A web form check box\",\n    \"consent_language\": \"Contact has consented to AI calls\",\n    \"ip_address\": \"1.1.1.1\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "41c91ab8-b35d-4b6c-b912-de225b19ea03",
+          "name": "Fetch Contact Group",
+          "request": {
+            "name": "Fetch Contact Group",
+            "description": {
+              "content": "Fetch a contact group by ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contact-groups",
+                ":contact_group_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contact_group_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "219cf5f9-d3a6-443c-bb66-b9601f1afb8c",
+              "name": "Fetch Contact Group (as User)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contact-groups",
+                    ":contact_group_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contact_group_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"group_name\": \"My Group\",\n  \"id\": 15643,\n  \"user_editable\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f2b41262-73d9-4906-b0db-97ca7f5f71ab",
+          "name": "Update Contact Group",
+          "request": {
+            "name": "Update Contact Group",
+            "description": {
+              "content": "Update an existing contact group by ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contact-groups",
+                ":contact_group_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contact_group_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"group_name\": \"My Group\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fbcf64ca-c81b-4935-948c-2f33dde36ee8",
+              "name": "Update Contact Group",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contact-groups",
+                    ":contact_group_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contact_group_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"group_name\": \"My Group\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "293dfc40-0151-4dca-9ec5-4a5eaa46d4cf",
+          "name": "Delete Contact Group",
+          "request": {
+            "name": "Delete Contact Group",
+            "description": {
+              "content": "Deletes a contact group by ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contact-groups",
+                ":contact_group_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contact_group_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b78187b9-45d9-443e-980c-f1efbdf9975b",
+              "name": "Delete Contact Group",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contact-groups",
+                    ":contact_group_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contact_group_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0c76f5b7-35a5-4bd3-b18e-9e1eb9dbfa20",
+          "name": "Fetch Contact Groups",
+          "request": {
+            "name": "Fetch Contact Groups",
+            "description": {
+              "content": "Fetch a page of contact groups. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contact-groups"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page[number]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "page[size]",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9bf6ab82-d69f-43b7-b278-24a732d22fb7",
+              "name": "Fetch Contact Groups (as Admin)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contact-groups"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page[number]",
+                      "value": "1"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"group_name\": \"Active Lead\",\n      \"id\": 5,\n      \"user_editable\": false,\n      \"owner\": {\n        \"email\": \"ted@example.com\",\n        \"external_id\": \"userExternal1\",\n        \"id\": 65412,\n        \"username\": \"ted-example\"\n      }\n    },\n    {\n      \"group_name\": \"Active Client\",\n      \"id\": 6,\n      \"user_editable\": false,\n      \"owner\": {\n        \"email\": \"ted@example.com\",\n        \"external_id\": \"userExternal1\",\n        \"id\": 65412,\n        \"username\": \"ted-example\"\n      }\n    },\n    {\n      \"group_name\": \"Past Client\",\n      \"id\": 7,\n      \"user_editable\": false,\n      \"owner\": {\n        \"email\": \"ted@example.com\",\n        \"external_id\": \"userExternal1\",\n        \"id\": 65412,\n        \"username\": \"ted-example\"\n      }\n    },\n    {\n      \"group_name\": \"Won\",\n      \"id\": 8,\n      \"user_editable\": false,\n      \"owner\": {\n        \"email\": \"ted@example.com\",\n        \"external_id\": \"userExternal1\",\n        \"id\": 65412,\n        \"username\": \"ted-example\"\n      }\n    },\n    {\n      \"group_name\": \"Lost\",\n      \"id\": 9,\n      \"user_editable\": false,\n      \"owner\": {\n        \"email\": \"ted@example.com\",\n        \"external_id\": \"userExternal1\",\n        \"id\": 65412,\n        \"username\": \"ted-example\"\n      }\n    },\n    {\n      \"group_name\": \"Pre-Approved\",\n      \"id\": 10,\n      \"user_editable\": false,\n      \"owner\": {\n        \"email\": \"ted@example.com\",\n        \"external_id\": \"userExternal1\",\n        \"id\": 65412,\n        \"username\": \"ted-example\"\n      }\n    },\n    {\n      \"group_name\": \"Referral\",\n      \"id\": 11,\n      \"user_editable\": false,\n      \"owner\": {\n        \"email\": \"ted@example.com\",\n        \"external_id\": \"userExternal1\",\n        \"id\": 65412,\n        \"username\": \"ted-example\"\n      }\n    },\n    {\n      \"group_name\": \"Under Contract\",\n      \"id\": 12,\n      \"user_editable\": false,\n      \"owner\": {\n        \"email\": \"ted@example.com\",\n        \"external_id\": \"userExternal1\",\n        \"id\": 65412,\n        \"username\": \"ted-example\"\n      }\n    },\n    {\n      \"group_name\": \"Dead\",\n      \"id\": 13,\n      \"user_editable\": false,\n      \"owner\": {\n        \"email\": \"ted@example.com\",\n        \"external_id\": \"userExternal1\",\n        \"id\": 65412,\n        \"username\": \"ted-example\"\n      }\n    },\n    {\n      \"group_name\": \"Past Client\",\n      \"id\": 14,\n      \"user_editable\": false,\n      \"owner\": {\n        \"email\": \"eric@example.com\",\n        \"external_id\": \"userExternalTwo\",\n        \"id\": 70564,\n        \"username\": \"eric-example\"\n      }\n    }\n  ],\n  \"links\": {\n    \"first\": 1,\n    \"last\": 2,\n    \"next\": 2\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b79e3593-963c-41c3-aa8f-7ccf39a9e1ae",
+          "name": "Create Contact Group (as Admin)",
+          "request": {
+            "name": "Create Contact Group (as Admin)",
+            "description": {
+              "content": "Create a contact group.\n\nRequired Attributes:\n\ngroup_name\n\nRequired Relationships:\n\nowner*\n\n*required if authenticated as an organization admin\n\nAlternate documented request: Create Contact Group (as User).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contact-groups"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"group_name\": \"My Group\",\n  \"owner\": {\n    \"external_id\": \"userExternal1\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e9ffe4b4-09c6-47b0-9a4a-b993ade1dae5",
+              "name": "Create Contact Group (as Admin)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contact-groups"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"group_name\": \"My Group\",\n  \"owner\": {\n    \"external_id\": \"userExternal1\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"created\": \"{{external_api_host}}/v1/contact-groups/15643\",\n  \"id\": 15643\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6812c841-7f8d-4ca6-9c1c-981be3900fe4",
+              "name": "Owner not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contact-groups"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"group_name\": \"My Group\",\n  \"owner\": {\n    \"external_id\": \"userExternal1\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Unable to find target for relationship: 'owner'\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8760d275-823e-4a7a-a625-cbb67cea174f",
+          "name": "Get Contact Survey",
+          "request": {
+            "name": "Get Contact Survey",
+            "description": {
+              "content": "Fetch a specific survey specified by ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contact-surveys",
+                ":contact_survey_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contact_survey_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "deb7c750-928d-41f8-bf00-b0b58a87dc4e",
+              "name": "Get Contact Survey",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contact-surveys",
+                    ":contact_survey_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contact_survey_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"69003b93703638cf\",\n  \"internal_created_at\": \"2018-10-23 20:55:21\",\n  \"survey_name\": \"First Time Buyer Funnel\",\n  \"version\": \"1.3\",\n  \"questions\": [\n    {\n      \"data_type\": \"text\",\n      \"id\": \"7d06643723812637\",\n      \"question_text\": \"Any additional information you would like to leave?\",\n      \"sort_order\": \"3\",\n      \"system_name\": \"comments\"\n    },\n    {\n      \"data_type\": \"choice\",\n      \"id\": \"e68569b18b191912\",\n      \"question_text\": \"Are granite countertops a must?\",\n      \"sort_order\": \"2\",\n      \"system_name\": \"granite_tops\",\n      \"possible_choice_answers\": [\n        {\n          \"sort_order\": \"0\",\n          \"system_name\": \"no\",\n          \"value\": \"Nope\"\n        },\n        {\n          \"sort_order\": \"0\",\n          \"system_name\": \"yes\",\n          \"value\": \"Absolutely!\"\n        }\n      ]\n    },\n    {\n      \"data_type\": \"decimal\",\n      \"id\": \"f8781f1a6d2f3ab5\",\n      \"question_text\": \"What is your maximum price range?\",\n      \"sort_order\": \"1\",\n      \"system_name\": \"max_price\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ddbc76b2-af22-486d-8ec9-dcad5104fb64",
+          "name": "Update Contact Survey",
+          "request": {
+            "name": "Update Contact Survey",
+            "description": {
+              "content": "Update a survey.\n\nRequired Attributes:\n\nAt least one questions array, which could be empty.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contact-surveys",
+                ":contact_survey_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contact_survey_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"source\": \"Survey Origination System\",\n  \"survey_name\": \"First Time Buyer Funnel\",\n  \"version\": \"1.3\",\n  \"questions\": [\n    {\n      \"question_text\": \"What is your maximum price range?\",\n      \"system_name\": \"max_price\",\n      \"data_type\": \"decimal\",\n      \"sort_order\": \"1\"\n    },\n    {\n      \"question_text\": \"Any additional information you would like to leave?\",\n      \"system_name\": \"comments\",\n      \"data_type\": \"text\",\n      \"sort_order\": \"3\"\n    },\n    {\n      \"question_text\": \"Are granite countertops a must?\",\n      \"system_name\": \"granite_tops\",\n      \"data_type\": \"choice\",\n      \"sort_order\": \"2\",\n      \"possible_choice_answers\": [\n        {\n          \"value\": \"Absolutely!\",\n          \"system_name\": \"yes\"\n        },\n        {\n          \"value\": \"Nope\",\n          \"system_name\": \"no\"\n        }\n      ]\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "612a94fb-630f-4665-a11c-ef40469ab012",
+              "name": "Update Contact Survey",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contact-surveys",
+                    ":contact_survey_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contact_survey_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"source\": \"Survey Origination System\",\n  \"survey_name\": \"First Time Buyer Funnel\",\n  \"version\": \"1.3\",\n  \"questions\": [\n    {\n      \"question_text\": \"What is your maximum price range?\",\n      \"system_name\": \"max_price\",\n      \"data_type\": \"decimal\",\n      \"sort_order\": \"1\"\n    },\n    {\n      \"question_text\": \"Any additional information you would like to leave?\",\n      \"system_name\": \"comments\",\n      \"data_type\": \"text\",\n      \"sort_order\": \"3\"\n    },\n    {\n      \"question_text\": \"Are granite countertops a must?\",\n      \"system_name\": \"granite_tops\",\n      \"data_type\": \"choice\",\n      \"sort_order\": \"2\",\n      \"possible_choice_answers\": [\n        {\n          \"value\": \"Absolutely!\",\n          \"system_name\": \"yes\"\n        },\n        {\n          \"value\": \"Nope\",\n          \"system_name\": \"no\"\n        }\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"created\": \"public.totalexpert.net/v1/contact-surveys/69003b93703638cf\",\n  \"id\": \"69003b93703638cf\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0870b233-b886-4d24-acfc-bf117f200d22",
+          "name": "Get Contact Surveys",
+          "request": {
+            "name": "Get Contact Surveys",
+            "description": {
+              "content": "Fetch a page of surveys. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contact-surveys"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page[number]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "page[size]",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d4fee78c-495c-47d2-9ae0-bbfccd523707",
+              "name": "Success. See the Total Expert Public API documentation for the response shape.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contact-surveys"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page[number]",
+                      "value": "1"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b7476097-10f6-4710-9821-bebe6952ae5a",
+          "name": "Create Contact Survey",
+          "request": {
+            "name": "Create Contact Survey",
+            "description": {
+              "content": "Create a survey.\n\nRequired Attributes:\n\nsource\n\nsurvey_name\n\nquestions\n\nquestions.question_text\n\nquestions.system_name\n\nquestions.data_type",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contact-surveys"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"source\": \"Survey Origination System\",\n  \"survey_name\": \"First Time Buyer Funnel\",\n  \"version\": \"1.3\",\n  \"questions\": [\n    {\n      \"question_text\": \"What is your maximum price range?\",\n      \"system_name\": \"max_price\",\n      \"data_type\": \"decimal\",\n      \"sort_order\": \"1\"\n    },\n    {\n      \"question_text\": \"Any additional information you would like to leave?\",\n      \"system_name\": \"comments\",\n      \"data_type\": \"text\",\n      \"sort_order\": \"3\"\n    },\n    {\n      \"question_text\": \"Are granite countertops a must?\",\n      \"system_name\": \"granite_tops\",\n      \"data_type\": \"choice\",\n      \"sort_order\": \"2\",\n      \"possible_choice_answers\": [\n        {\n          \"value\": \"Absolutely!\",\n          \"system_name\": \"yes\"\n        },\n        {\n          \"value\": \"Nope\",\n          \"system_name\": \"no\"\n        }\n      ]\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "826d6a8f-48e0-4fbd-9178-dcfdb73df145",
+              "name": "Create Contact Survey",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contact-surveys"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"source\": \"Survey Origination System\",\n  \"survey_name\": \"First Time Buyer Funnel\",\n  \"version\": \"1.3\",\n  \"questions\": [\n    {\n      \"question_text\": \"What is your maximum price range?\",\n      \"system_name\": \"max_price\",\n      \"data_type\": \"decimal\",\n      \"sort_order\": \"1\"\n    },\n    {\n      \"question_text\": \"Any additional information you would like to leave?\",\n      \"system_name\": \"comments\",\n      \"data_type\": \"text\",\n      \"sort_order\": \"3\"\n    },\n    {\n      \"question_text\": \"Are granite countertops a must?\",\n      \"system_name\": \"granite_tops\",\n      \"data_type\": \"choice\",\n      \"sort_order\": \"2\",\n      \"possible_choice_answers\": [\n        {\n          \"value\": \"Absolutely!\",\n          \"system_name\": \"yes\"\n        },\n        {\n          \"value\": \"Nope\",\n          \"system_name\": \"no\"\n        }\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"created\": \"public.totalexpert.net/v1/contact-surveys/69003b93703638cf\",\n  \"id\": \"69003b93703638cf\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2c098d29-b3c5-47f0-9b94-09d0b1ef03ce",
+          "name": "Get Contact Survey Response",
+          "request": {
+            "name": "Get Contact Survey Response",
+            "description": {
+              "content": "Fetch a specific survey response specified by ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contact-survey-responses",
+                ":contact_survey_response_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contact_survey_response_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "fa9cafa8-13fe-4092-8500-a77a6991ad02",
+              "name": "Get Contact Survey Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contact-survey-responses",
+                    ":contact_survey_response_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contact_survey_response_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"fe20e62940c8a6fb\",\n  \"internal_created_at\": \"2018-10-23 21:10:27\",\n  \"contact\": {\n    \"id\": 4\n  },\n  \"question_responses\": [\n    {\n      \"response_value\": \"265000\",\n      \"question\": {\n        \"data_type\": \"decimal\",\n        \"id\": \"f8781f1a6d2f3ab5\",\n        \"question_text\": \"What is your maximum price range?\",\n        \"sort_order\": \"1\",\n        \"system_name\": \"max_price\"\n      }\n    },\n    {\n      \"response_value\": \"Nope\",\n      \"question\": {\n        \"data_type\": \"choice\",\n        \"id\": \"e68569b18b191912\",\n        \"question_text\": \"Are granite countertops a must?\",\n        \"sort_order\": \"2\",\n        \"system_name\": \"granite_tops\",\n        \"possible_choice_answers\": [\n          {\n            \"sort_order\": \"0\",\n            \"system_name\": \"no\",\n            \"value\": \"Nope\"\n          },\n          {\n            \"sort_order\": \"0\",\n            \"system_name\": \"yes\",\n            \"value\": \"Absolutely!\"\n          }\n        ]\n      }\n    },\n    {\n      \"response_value\": \"Look forward to working with you!\",\n      \"question\": {\n        \"data_type\": \"text\",\n        \"id\": \"7d06643723812637\",\n        \"question_text\": \"Any additional information you would like to leave?\",\n        \"sort_order\": \"3\",\n        \"system_name\": \"comments\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0291a8bc-fa27-4683-86df-b37ea41669a9",
+          "name": "Get Contact Survey Responses",
+          "request": {
+            "name": "Get Contact Survey Responses",
+            "description": {
+              "content": "Fetch a page of survey responses. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contact-survey-responses"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page[number]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "page[size]",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "46ea5307-ec1c-4aeb-b7ae-0bfa9c30ed3d",
+              "name": "Success. See the Total Expert Public API documentation for the response shape.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contact-survey-responses"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page[number]",
+                      "value": "1"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "997f805d-9f2e-42ab-bf69-284b388bffbd",
+          "name": "Create Contact Survey Response (As User)",
+          "request": {
+            "name": "Create Contact Survey Response (As User)",
+            "description": {
+              "content": "Create a response to a survey. Once created, responses may not be modified.\n\nRequired Attributes:\n\nquestion_responses\n\nRequired Relationships:\n\nsurvey\n\ncontact\n\nAlternate documented request: Create Contact Survey Response (As Admin).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contact-survey-responses"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contact\": {\n    \"id\": 4\n  },\n  \"survey\": {\n    \"id\": \"69003b93703638cf\"\n  },\n  \"question_responses\": [\n    {\n      \"question\": {\n        \"id\": \"f8781f1a6d2f3ab5\"\n      },\n      \"response_value\": \"265000\"\n    },\n    {\n      \"question\": {\n        \"id\": \"e68569b18b191912\"\n      },\n      \"response_value\": \"Nope\"\n    },\n    {\n      \"question\": {\n        \"id\": \"7d06643723812637\"\n      },\n      \"response_value\": \"Look forward to working with you!\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "49738d74-304f-4707-8ab9-d3519aa064f2",
+              "name": "Create Contact Survey Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contact-survey-responses"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contact\": {\n    \"id\": 4\n  },\n  \"survey\": {\n    \"id\": \"69003b93703638cf\"\n  },\n  \"question_responses\": [\n    {\n      \"question\": {\n        \"id\": \"f8781f1a6d2f3ab5\"\n      },\n      \"response_value\": \"265000\"\n    },\n    {\n      \"question\": {\n        \"id\": \"e68569b18b191912\"\n      },\n      \"response_value\": \"Nope\"\n    },\n    {\n      \"question\": {\n        \"id\": \"7d06643723812637\"\n      },\n      \"response_value\": \"Look forward to working with you!\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"created\": \"public.totalexpert.net/v1/contact-survey-responses/192c0803946dab25\",\n  \"id\": \"192c0803946dab25\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "95c41244-cdbb-4b91-91fa-b00660472091",
+              "name": "Unknown contact",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contact-survey-responses"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contact\": {\n    \"id\": 4\n  },\n  \"survey\": {\n    \"id\": \"69003b93703638cf\"\n  },\n  \"question_responses\": [\n    {\n      \"question\": {\n        \"id\": \"f8781f1a6d2f3ab5\"\n      },\n      \"response_value\": \"265000\"\n    },\n    {\n      \"question\": {\n        \"id\": \"e68569b18b191912\"\n      },\n      \"response_value\": \"Nope\"\n    },\n    {\n      \"question\": {\n        \"id\": \"7d06643723812637\"\n      },\n      \"response_value\": \"Look forward to working with you!\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Unable to find target for relationship: 'contact'\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d56e2b3f-df2b-4f3d-b61d-df5a0e7329e0",
+          "name": "Fetch Contact Note",
+          "request": {
+            "name": "Fetch Contact Note",
+            "description": {
+              "content": "Fetch a contact notes by ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contact-notes",
+                ":contact_note_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contact_note_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "90dda972-56cc-4b98-b743-86c72a4c61fa",
+              "name": "Fetch Contact Note",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contact-notes",
+                    ":contact_note_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contact_note_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 14,\n  \"note\": \"My Note Content2\",\n  \"title\": \"My Title2\",\n  \"type_id\": \"2\",\n  \"contact\": {\n    \"id\": 65489\n  },\n  \"owner\": {\n    \"email\": \"ted@example.com\",\n    \"external_id\": \"userExternal1\",\n    \"id\": 65412,\n    \"username\": \"ted-example\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "df16c660-6209-4749-86a5-3e318f5b840f",
+          "name": "Update Contact Note",
+          "request": {
+            "name": "Update Contact Note",
+            "description": {
+              "content": "Update an existing contact note by ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contact-notes",
+                ":contact_note_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contact_note_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"My Title2\",\n  \"note\": \"My Note Content2\",\n  \"type_id\": 2,\n  \"contact\": {\n    \"first_name\": \"Clark\",\n    \"last_name\": \"Gable\",\n    \"email\": \"me@you.com\",\n    \"source\": \"local\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "9a0048f9-93de-4189-973f-388439e90180",
+              "name": "Update Contact Note",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contact-notes",
+                    ":contact_note_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contact_note_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"My Title2\",\n  \"note\": \"My Note Content2\",\n  \"type_id\": 2,\n  \"contact\": {\n    \"first_name\": \"Clark\",\n    \"last_name\": \"Gable\",\n    \"email\": \"me@you.com\",\n    \"source\": \"local\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "839ad4b1-526a-43d1-9cd9-ce078cb136e7",
+          "name": "Delete Contact Note",
+          "request": {
+            "name": "Delete Contact Note",
+            "description": {
+              "content": "Deletes a contact note by ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contact-notes",
+                ":contact_note_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contact_note_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "09338890-ae40-4659-9ed7-14e5e585a94b",
+              "name": "Delete Contact Note",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contact-notes",
+                    ":contact_note_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contact_note_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ee2a3b3e-a468-4ff5-aeaf-7154d2c917de",
+          "name": "Fetch Contact Notes",
+          "request": {
+            "name": "Fetch Contact Notes",
+            "description": {
+              "content": "Fetch a page of contact notes. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contact-notes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page[number]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "page[size]",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "05031412-c931-4f2f-bfce-827bd2523594",
+              "name": "Fetch Contact Notes (as User)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contact-notes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page[number]",
+                      "value": "1"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"id\": 1,\n      \"note\": \"Additional information pending\",\n      \"title\": \"Contact info\",\n      \"type_id\": \"1\",\n      \"contact\": {\n        \"id\": 45613\n      }\n    },\n    {\n      \"id\": 2,\n      \"note\": \"This is a note with a link https://www.totalexpert.com\",\n      \"title\": \"Link note\",\n      \"type_id\": \"1\",\n      \"contact\": {\n        \"id\": 65548\n      }\n    },\n    {\n      \"id\": 3,\n      \"note\": \"This needs attention\",\n      \"title\": \"Contact update success\",\n      \"type_id\": \"2\",\n      \"contact\": {\n        \"id\": 65548\n      }\n    },\n    {\n      \"id\": 4,\n      \"note\": \"Failed to push contact\",\n      \"title\": \"Integration Note\",\n      \"type_id\": \"2\",\n      \"contact\": {\n        \"id\": 65548\n      }\n    }\n  ],\n  \"links\": {\n    \"first\": 1,\n    \"last\": 1\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "998b98b8-4dd3-4cb8-9938-2dbeede08fe7",
+          "name": "Create Contact Note (as User)",
+          "request": {
+            "name": "Create Contact Note (as User)",
+            "description": {
+              "content": "Create a contact note.\n\nRequired Attributes:\n\ntitle\n\nnote\n\ntype_id\n\nRequired Relationships:\n\ncontact\n\nAlternate documented request: Create Contact Note (as Admin).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contact-notes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"My Title\",\n  \"note\": \"My Note Content:<br/>It includes linebreaks <sup>superscripts</sup>, <sub>subscripts</sub>, and even <em>italicized text!!</em>\",\n  \"type_id\": 1,\n  \"contact\": {\n    \"first_name\": \"Clark\",\n    \"last_name\": \"Gable2\",\n    \"email\": \"me@you2.com\",\n    \"source\": \"local\"\n  },\n  \"outcome\": {\n    \"outcome_id\": 1\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2b79a989-1bc1-4173-af7a-463a5789b183",
+              "name": "Create Contact Note (as User)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contact-notes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"My Title\",\n  \"note\": \"My Note Content:<br/>It includes linebreaks <sup>superscripts</sup>, <sub>subscripts</sub>, and even <em>italicized text!!</em>\",\n  \"type_id\": 1,\n  \"contact\": {\n    \"first_name\": \"Clark\",\n    \"last_name\": \"Gable2\",\n    \"email\": \"me@you2.com\",\n    \"source\": \"local\"\n  },\n  \"outcome\": {\n    \"outcome_id\": 1\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"created\": \"{external_api_host}/v1/contact-notes/14\",\n  \"id\": 14\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b0390d34-12a6-47c9-b674-d54f2bab1eb5",
+              "name": "Contact not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contact-notes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"My Title\",\n  \"note\": \"My Note Content:<br/>It includes linebreaks <sup>superscripts</sup>, <sub>subscripts</sub>, and even <em>italicized text!!</em>\",\n  \"type_id\": 1,\n  \"contact\": {\n    \"first_name\": \"Clark\",\n    \"last_name\": \"Gable2\",\n    \"email\": \"me@you2.com\",\n    \"source\": \"local\"\n  },\n  \"outcome\": {\n    \"outcome_id\": 1\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Unable to find target for relationship: 'contact'\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4973a1a5-0e48-40d1-8a73-81118fb0f442",
+          "name": "Fetch Contact Recruit",
+          "request": {
+            "name": "Fetch Contact Recruit",
+            "description": {
+              "content": "Fetch a specific contact specified by ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contact-recruits",
+                ":contact_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contact_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5e1d57b1-8e3f-4c35-995a-921aeefb033d",
+              "name": "Fetch Contact Recruit",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contact-recruits",
+                    ":contact_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contact_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"address\": \"1234 Bermuda St\",\n  \"address_2\": \"Apt. 3\",\n  \"birthday\": \"1900-01-01\",\n  \"city\": \"Pleasantville\",\n  \"classification\": \"\",\n  \"creation_date\": \"2017-01-01 11:11:11\",\n  \"email\": \"jlsmith@example.com\",\n  \"email_work\": \"jlsmith@otherlender.com\",\n  \"employer_address\": \"1235 Fake Ave.\",\n  \"employer_address_2\": \"Ste 5\",\n  \"employer_city\": \"Unpleasantville\",\n  \"employer_name\": \"Other Lender LLC\",\n  \"employer_state\": \"WI\",\n  \"employer_zip\": \"54321\",\n  \"external_id\": \"101010\",\n  \"first_name\": \"Jane\",\n  \"id\": 520,\n  \"internal_created_at\": \"2019-03-21 18:10:48\",\n  \"internal_updated_at\": \"2019-03-21 18:10:48\",\n  \"last_contacted_date\": \"2017-01-01 12:12:12\",\n  \"last_name\": \"Smith\",\n  \"license_number\": \"Q10101010101011\",\n  \"ok_to_call\": false,\n  \"ok_to_email\": false,\n  \"ok_to_mail\": false,\n  \"phone_cell\": \"(763)555-0123\",\n  \"phone_home\": \"(612)-555-0123\",\n  \"phone_office\": \"(763)555-1234\",\n  \"referred_by\": \"\",\n  \"referred_to\": \"\",\n  \"source\": \"Recruit Intake System\",\n  \"state\": \"MN\",\n  \"title\": \"Ms.\",\n  \"zip_code\": \"12345\",\n  \"contact_groups\": [\n    {\n      \"group_name\": \"Recruit - Hot\",\n      \"id\": 15\n    }\n  ],\n  \"external_ids\": [\n    {\n      \"external_id\": \"abcd\",\n      \"source\": \"Other Recruit Intake System\"\n    },\n    {\n      \"external_id\": \"101010\",\n      \"source\": \"Recruit Intake System\"\n    }\n  ],\n  \"external_status\": {\n    \"status_name\": \"Processing\"\n  },\n  \"owner\": {\n    \"email\": \"john@example.com\",\n    \"external_id\": \"userExternal1\",\n    \"id\": 57,\n    \"username\": \"john-example\"\n  },\n  \"preferences\": {\n    \"is_silenced\": true\n  },\n  \"recruit_info\": {\n    \"background\": \"Jane started as a loan officer...\",\n    \"commission_cap\": \"26002\",\n    \"commission_split\": \"50%\",\n    \"corporate_objective\": \"1\",\n    \"has_resume\": true,\n    \"nmls_id\": \"NMLS identifier\",\n    \"resume_url\": \"http:/jlsmith.lender.com/resume\",\n    \"sourced_percentage\": \"10\",\n    \"ust_is_complete\": true,\n    \"years_experience\": \"6\",\n    \"branch_manager\": {\n      \"email\": \"glen@lender.com\",\n      \"external_id\": \"\",\n      \"id\": 53,\n      \"username\": \"glen-lender\"\n    },\n    \"division_manager\": {\n      \"email\": \"suzy@lender.com\",\n      \"external_id\": \"\",\n      \"id\": 53,\n      \"username\": \"suzy-lender\"\n    },\n    \"recruit_status\": {\n      \"status_name\": \"Active\"\n    },\n    \"regional_manager\": {\n      \"email\": \"richard@lender.com\",\n      \"external_id\": \"\",\n      \"id\": 53,\n      \"username\": \"richard-lender\"\n    }\n  },\n  \"recruit_metrics\": [\n    {\n      \"value\": \"30\",\n      \"metric\": {\n        \"metric_name\": \"Builders\",\n        \"metric_type\": \"business_source\"\n      },\n      \"unit\": {\n        \"unit_name\": \"percent\"\n      }\n    },\n    {\n      \"value\": \"40\",\n      \"metric\": {\n        \"metric_name\": \"Realtors\",\n        \"metric_type\": \"business_source\"\n      },\n      \"unit\": {\n        \"unit_name\": \"percent\"\n      }\n    },\n    {\n      \"on_date\": \"2018-01-01 00:00:00\",\n      \"value\": \"10123\",\n      \"metric\": {\n        \"metric_name\": \"Sales Production\",\n        \"metric_type\": \"sales_production\"\n      },\n      \"unit\": {\n        \"unit_name\": \"dollars\"\n      }\n    }\n  ],\n  \"state_licenses\": [\n    {\n      \"state_name\": \"MN\"\n    },\n    {\n      \"state_name\": \"KS\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "698ce580-0a78-4a9d-a062-9fb0f98378a3",
+          "name": "Update Contact Recruit",
+          "request": {
+            "name": "Update Contact Recruit",
+            "description": {
+              "content": "Update an existing contact by ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contact-recruits",
+                ":contact_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contact_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"recruit_metrics\": [\n    {\n      \"metric\": {\n        \"metric_name\": \"Builders\",\n        \"metric_type\": \"business_source\"\n      },\n      \"unit\": {\n        \"unit_name\": \"percent\"\n      },\n      \"value\": \"50\"\n    },\n    {\n      \"metric\": {\n        \"metric_name\": \"Realtors\",\n        \"metric_type\": \"business_source\"\n      },\n      \"unit\": {\n        \"unit_name\": \"percent\"\n      },\n      \"value\": \"20\"\n    },\n    {\n      \"metric\": {\n        \"metric_name\": \"Sales Production\",\n        \"metric_type\": \"sales_production\"\n      },\n      \"unit\": {\n        \"unit_name\": \"dollars\"\n      },\n      \"value\": \"10123\",\n      \"on_date\": \"2018\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "60eb16b0-ec3d-4b86-bd74-f427376e8908",
+              "name": "Remove Metric",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contact-recruits",
+                    ":contact_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contact_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"recruit_metrics\": [\n    {\n      \"metric\": {\n        \"metric_name\": \"Builders\",\n        \"metric_type\": \"business_source\"\n      },\n      \"unit\": {\n        \"unit_name\": \"percent\"\n      },\n      \"value\": \"50\"\n    },\n    {\n      \"metric\": {\n        \"metric_name\": \"Realtors\",\n        \"metric_type\": \"business_source\"\n      },\n      \"unit\": {\n        \"unit_name\": \"percent\"\n      },\n      \"value\": \"20\"\n    },\n    {\n      \"metric\": {\n        \"metric_name\": \"Sales Production\",\n        \"metric_type\": \"sales_production\"\n      },\n      \"unit\": {\n        \"unit_name\": \"dollars\"\n      },\n      \"value\": \"10123\",\n      \"on_date\": \"2018\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b98456fc-2e11-4b65-a1bb-0dd240f41979",
+          "name": "Delete Contact Recruit",
+          "request": {
+            "name": "Delete Contact Recruit",
+            "description": {
+              "content": "Delete a contact by ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contact-recruits",
+                ":contact_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contact_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7c53c2a4-819b-4b17-816d-820a1c0459f0",
+              "name": "Success. See the Total Expert Public API documentation for the response shape.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contact-recruits",
+                    ":contact_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contact_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "15894ca4-6e79-4542-8078-9363963a80fa",
+          "name": "Fetch Contact Recruits",
+          "request": {
+            "name": "Fetch Contact Recruits",
+            "description": {
+              "content": "Fetch a page of contacts. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contact-recruits"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page[number]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "page[size]",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "919d5529-8db1-4fc8-a6f0-c07caa65a2b6",
+              "name": "Fetch Contact Recruits",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contact-recruits"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page[number]",
+                      "value": "1"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"address\": \"1234 Bermuda St\",\n      \"address_2\": \"Apt. 3\",\n      \"birthday\": \"1900-01-01\",\n      \"city\": \"Pleasantville\",\n      \"classification\": \"\",\n      \"creation_date\": \"2017-01-01 11:11:11\",\n      \"email\": \"jlsmith@example.com\",\n      \"email_work\": \"jlsmith@otherlender.com\",\n      \"employer_address\": \"1235 Fake Ave.\",\n      \"employer_address_2\": \"Ste 5\",\n      \"employer_city\": \"Unpleasantville\",\n      \"employer_name\": \"Other Lender LLC\",\n      \"employer_state\": \"WI\",\n      \"employer_zip\": \"54321\",\n      \"external_id\": \"101010\",\n      \"first_name\": \"Jane\",\n      \"id\": 520,\n      \"internal_created_at\": \"2019-03-21 18:10:48\",\n      \"internal_updated_at\": \"2019-03-21 18:10:48\",\n      \"last_contacted_date\": \"2017-01-01 12:12:12\",\n      \"last_name\": \"Smith\",\n      \"license_number\": \"Q10101010101011\",\n      \"ok_to_call\": false,\n      \"ok_to_email\": false,\n      \"ok_to_mail\": false,\n      \"phone_cell\": \"(763)555-0123\",\n      \"phone_home\": \"(612)-555-0123\",\n      \"phone_office\": \"(763)555-1234\",\n      \"referred_by\": \"\",\n      \"referred_to\": \"\",\n      \"source\": \"Recruit Intake System\",\n      \"state\": \"MN\",\n      \"title\": \"Ms.\",\n      \"zip_code\": \"12345\",\n      \"contact_groups\": [\n        {\n          \"group_name\": \"Recruit - Hot\",\n          \"id\": 15\n        }\n      ],\n      \"external_ids\": [\n        {\n          \"external_id\": \"abcd\",\n          \"source\": \"Other Recruit Intake System\"\n        },\n        {\n          \"external_id\": \"101010\",\n          \"source\": \"Recruit Intake System\"\n        }\n      ],\n      \"external_status\": {\n        \"status_name\": \"Processing\"\n      },\n      \"owner\": {\n        \"email\": \"john@example.com\",\n        \"external_id\": \"userExternal1\",\n        \"id\": 57,\n        \"username\": \"john-example\"\n      },\n      \"preferences\": {\n        \"is_silenced\": true\n      },\n      \"recruit_info\": {\n        \"background\": \"Jane started as a loan officer...\",\n        \"commission_cap\": \"26002\",\n        \"commission_split\": \"50%\",\n        \"corporate_objective\": \"1\",\n        \"has_resume\": true,\n        \"nmls_id\": \"NMLS identifier\",\n        \"resume_url\": \"http:/jlsmith.lender.com/resume\",\n        \"sourced_percentage\": \"10\",\n        \"ust_is_complete\": true,\n        \"years_experience\": \"6\",\n        \"branch_manager\": {\n          \"email\": \"glen@lender.com\",\n          \"external_id\": \"\",\n          \"id\": 53,\n          \"username\": \"glen-lender\"\n        },\n        \"division_manager\": {\n          \"email\": \"suzy@lender.com\",\n          \"external_id\": \"\",\n          \"id\": 53,\n          \"username\": \"suzy-lender\"\n        },\n        \"recruit_status\": {\n          \"status_name\": \"Active\"\n        },\n        \"regional_manager\": {\n          \"email\": \"richard@lender.com\",\n          \"external_id\": \"\",\n          \"id\": 53,\n          \"username\": \"richard-lender\"\n        }\n      },\n      \"recruit_metrics\": [\n        {\n          \"value\": \"30\",\n          \"metric\": {\n            \"metric_name\": \"Builders\",\n            \"metric_type\": \"business_source\"\n          },\n          \"unit\": {\n            \"unit_name\": \"percent\"\n          }\n        },\n        {\n          \"value\": \"40\",\n          \"metric\": {\n            \"metric_name\": \"Realtors\",\n            \"metric_type\": \"business_source\"\n          },\n          \"unit\": {\n            \"unit_name\": \"percent\"\n          }\n        },\n        {\n          \"on_date\": \"2018-01-01 00:00:00\",\n          \"value\": \"10123\",\n          \"metric\": {\n            \"metric_name\": \"Sales Production\",\n            \"metric_type\": \"sales_production\"\n          },\n          \"unit\": {\n            \"unit_name\": \"dollars\"\n          }\n        }\n      ],\n      \"state_licenses\": [\n        {\n          \"state_name\": \"MN\"\n        },\n        {\n          \"state_name\": \"KS\"\n        }\n      ]\n    }\n  ],\n  \"links\": {\n    \"first\": 1,\n    \"last\": 1\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fc998b50-6eca-4b88-9d01-28bbee0f1187",
+          "name": "Create Contact Recruit (as Admin)",
+          "request": {
+            "name": "Create Contact Recruit (as Admin)",
+            "description": {
+              "content": "Create a contact.\n\nRequired Attributes (one of the following combinations):\n\nsource, first_name, last_name, email\n\nsource, first_name, last_name, phone_cell\n\nsource, first_name, last_name, phone_home\n\nsource, first_name, last_name, phone_office\n\nsource, first_name, last_name, address, city, state, zip_code\n\nRequired Relationships:\n\nowner*\n\n*required if authenticated as an organization admin\n\nAlternate documented request: Create Contact Recruit (as User).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contact-recruits"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Ms.\",\n  \"first_name\": \"Jane\",\n  \"last_name\": \"Smith\",\n  \"email\": \"jlsmith@example.com\",\n  \"email_work\": \"jlsmith@otherlender.com\",\n  \"address\": \"1234 Bermuda St\",\n  \"address_2\": \"Apt. 3\",\n  \"city\": \"Pleasantville\",\n  \"state\": \"MN\",\n  \"zip_code\": \"12345\",\n  \"phone_cell\": \"(763)555-0123\",\n  \"phone_office\": \"(763)555-1234\",\n  \"phone_home\": \"(612)-555-0123\",\n  \"employer_name\": \"Other Lender LLC\",\n  \"employer_address\": \"1235 Fake Ave.\",\n  \"employer_address_2\": \"Ste 5\",\n  \"employer_city\": \"Unpleasantville\",\n  \"employer_state\": \"WI\",\n  \"employer_zip\": \"54321\",\n  \"license_number\": \"Q10101010101011\",\n  \"source\": \"Recruit Intake System\",\n  \"creation_date\": \"2017-01-01 11:11:11\",\n  \"last_contacted_date\": \"2017-01-01 12:12:12\",\n  \"external_id\": \"101010\",\n  \"birthday\": \"1970-01-01\",\n  \"ok_to_mail\": 0,\n  \"ok_to_email\": 0,\n  \"ok_to_call\": 0,\n  \"preferences\": {\n    \"is_silenced\": true\n  },\n  \"owner\": {\n    \"external_id\": \"userExternal1\"\n  },\n  \"contact_groups\": [\n    {\n      \"group_name\": \"Recruit - Hot\"\n    }\n  ],\n  \"external_ids\": [\n    {\n      \"source\": \"Recruit Intake System\",\n      \"external_id\": \"101010\"\n    },\n    {\n      \"source\": \"Other Recruit Intake System\",\n      \"external_id\": \"abcd\"\n    }\n  ],\n  \"external_status\": {\n    \"status_name\": \"Processing\"\n  },\n  \"recruit_info\": {\n    \"nmls_id\": \"NMLS identifier\",\n    \"regional_manager\": {\n      \"username\": \"glen-lender\"\n    },\n    \"division_manager\": {\n      \"username\": \"suzy-lender\"\n    },\n    \"branch_manager\": {\n      \"username\": \"richard-lender\"\n    },\n    \"recruit_status\": {\n      \"status_name\": \"Active\"\n    },\n    \"corporate_objective\": \"2306\",\n    \"sourced_percentage\": \"10\",\n    \"commission_cap\": \"26002\",\n    \"commission_split\": \"50%\",\n    \"ust_is_complete\": true,\n    \"background\": \"Jane started as a loan officer...\",\n    \"years_experience\": 6,\n    \"has_resume\": true,\n    \"resume_url\": \"http:/jlsmith.lender.com/resume\"\n  },\n  \"state_licenses\": [\n    {\n      \"state_name\": \"minnesota\"\n    },\n    {\n      \"state_name\": \"KS\"\n    }\n  ],\n  \"recruit_metrics\": [\n    {\n      \"metric\": {\n        \"metric_name\": \"Builders\",\n        \"metric_type\": \"business_source\"\n      },\n      \"unit\": {\n        \"unit_name\": \"percent\"\n      },\n      \"value\": \"30\"\n    },\n    {\n      \"metric\": {\n        \"metric_name\": \"Realtors\",\n        \"metric_type\": \"business_source\"\n      },\n      \"unit\": {\n        \"unit_name\": \"percent\"\n      },\n      \"value\": \"40\"\n    },\n    {\n      \"metric\": {\n        \"metric_name\": \"Sales Production\",\n        \"metric_type\": \"sales_production\"\n      },\n      \"unit\": {\n        \"unit_name\": \"dollars\"\n      },\n      \"value\": \"10123\",\n      \"on_date\": \"2018\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a6a61c7c-ad94-41b5-9010-dc97770abf12",
+              "name": "Update Contact Recruit (as Admin)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contact-recruits"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Ms.\",\n  \"first_name\": \"Jane\",\n  \"last_name\": \"Smith\",\n  \"email\": \"jlsmith@example.com\",\n  \"email_work\": \"jlsmith@otherlender.com\",\n  \"address\": \"1234 Bermuda St\",\n  \"address_2\": \"Apt. 3\",\n  \"city\": \"Pleasantville\",\n  \"state\": \"MN\",\n  \"zip_code\": \"12345\",\n  \"phone_cell\": \"(763)555-0123\",\n  \"phone_office\": \"(763)555-1234\",\n  \"phone_home\": \"(612)-555-0123\",\n  \"employer_name\": \"Other Lender LLC\",\n  \"employer_address\": \"1235 Fake Ave.\",\n  \"employer_address_2\": \"Ste 5\",\n  \"employer_city\": \"Unpleasantville\",\n  \"employer_state\": \"WI\",\n  \"employer_zip\": \"54321\",\n  \"license_number\": \"Q10101010101011\",\n  \"source\": \"Recruit Intake System\",\n  \"creation_date\": \"2017-01-01 11:11:11\",\n  \"last_contacted_date\": \"2017-01-01 12:12:12\",\n  \"external_id\": \"101010\",\n  \"birthday\": \"1970-01-01\",\n  \"ok_to_mail\": 0,\n  \"ok_to_email\": 0,\n  \"ok_to_call\": 0,\n  \"preferences\": {\n    \"is_silenced\": true\n  },\n  \"owner\": {\n    \"external_id\": \"userExternal1\"\n  },\n  \"contact_groups\": [\n    {\n      \"group_name\": \"Recruit - Hot\"\n    }\n  ],\n  \"external_ids\": [\n    {\n      \"source\": \"Recruit Intake System\",\n      \"external_id\": \"101010\"\n    },\n    {\n      \"source\": \"Other Recruit Intake System\",\n      \"external_id\": \"abcd\"\n    }\n  ],\n  \"external_status\": {\n    \"status_name\": \"Processing\"\n  },\n  \"recruit_info\": {\n    \"nmls_id\": \"NMLS identifier\",\n    \"regional_manager\": {\n      \"username\": \"glen-lender\"\n    },\n    \"division_manager\": {\n      \"username\": \"suzy-lender\"\n    },\n    \"branch_manager\": {\n      \"username\": \"richard-lender\"\n    },\n    \"recruit_status\": {\n      \"status_name\": \"Active\"\n    },\n    \"corporate_objective\": \"2306\",\n    \"sourced_percentage\": \"10\",\n    \"commission_cap\": \"26002\",\n    \"commission_split\": \"50%\",\n    \"ust_is_complete\": true,\n    \"background\": \"Jane started as a loan officer...\",\n    \"years_experience\": 6,\n    \"has_resume\": true,\n    \"resume_url\": \"http:/jlsmith.lender.com/resume\"\n  },\n  \"state_licenses\": [\n    {\n      \"state_name\": \"minnesota\"\n    },\n    {\n      \"state_name\": \"KS\"\n    }\n  ],\n  \"recruit_metrics\": [\n    {\n      \"metric\": {\n        \"metric_name\": \"Builders\",\n        \"metric_type\": \"business_source\"\n      },\n      \"unit\": {\n        \"unit_name\": \"percent\"\n      },\n      \"value\": \"30\"\n    },\n    {\n      \"metric\": {\n        \"metric_name\": \"Realtors\",\n        \"metric_type\": \"business_source\"\n      },\n      \"unit\": {\n        \"unit_name\": \"percent\"\n      },\n      \"value\": \"40\"\n    },\n    {\n      \"metric\": {\n        \"metric_name\": \"Sales Production\",\n        \"metric_type\": \"sales_production\"\n      },\n      \"unit\": {\n        \"unit_name\": \"dollars\"\n      },\n      \"value\": \"10123\",\n      \"on_date\": \"2018\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"duplicate\": \"external-api.totaldev.us/v1/contact-recruits/520\",\n  \"id\": 520\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0d9f93b1-6340-4070-974e-b3ce2f6bd445",
+              "name": "Create Contact Recruit (as Admin)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contact-recruits"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Ms.\",\n  \"first_name\": \"Jane\",\n  \"last_name\": \"Smith\",\n  \"email\": \"jlsmith@example.com\",\n  \"email_work\": \"jlsmith@otherlender.com\",\n  \"address\": \"1234 Bermuda St\",\n  \"address_2\": \"Apt. 3\",\n  \"city\": \"Pleasantville\",\n  \"state\": \"MN\",\n  \"zip_code\": \"12345\",\n  \"phone_cell\": \"(763)555-0123\",\n  \"phone_office\": \"(763)555-1234\",\n  \"phone_home\": \"(612)-555-0123\",\n  \"employer_name\": \"Other Lender LLC\",\n  \"employer_address\": \"1235 Fake Ave.\",\n  \"employer_address_2\": \"Ste 5\",\n  \"employer_city\": \"Unpleasantville\",\n  \"employer_state\": \"WI\",\n  \"employer_zip\": \"54321\",\n  \"license_number\": \"Q10101010101011\",\n  \"source\": \"Recruit Intake System\",\n  \"creation_date\": \"2017-01-01 11:11:11\",\n  \"last_contacted_date\": \"2017-01-01 12:12:12\",\n  \"external_id\": \"101010\",\n  \"birthday\": \"1970-01-01\",\n  \"ok_to_mail\": 0,\n  \"ok_to_email\": 0,\n  \"ok_to_call\": 0,\n  \"preferences\": {\n    \"is_silenced\": true\n  },\n  \"owner\": {\n    \"external_id\": \"userExternal1\"\n  },\n  \"contact_groups\": [\n    {\n      \"group_name\": \"Recruit - Hot\"\n    }\n  ],\n  \"external_ids\": [\n    {\n      \"source\": \"Recruit Intake System\",\n      \"external_id\": \"101010\"\n    },\n    {\n      \"source\": \"Other Recruit Intake System\",\n      \"external_id\": \"abcd\"\n    }\n  ],\n  \"external_status\": {\n    \"status_name\": \"Processing\"\n  },\n  \"recruit_info\": {\n    \"nmls_id\": \"NMLS identifier\",\n    \"regional_manager\": {\n      \"username\": \"glen-lender\"\n    },\n    \"division_manager\": {\n      \"username\": \"suzy-lender\"\n    },\n    \"branch_manager\": {\n      \"username\": \"richard-lender\"\n    },\n    \"recruit_status\": {\n      \"status_name\": \"Active\"\n    },\n    \"corporate_objective\": \"2306\",\n    \"sourced_percentage\": \"10\",\n    \"commission_cap\": \"26002\",\n    \"commission_split\": \"50%\",\n    \"ust_is_complete\": true,\n    \"background\": \"Jane started as a loan officer...\",\n    \"years_experience\": 6,\n    \"has_resume\": true,\n    \"resume_url\": \"http:/jlsmith.lender.com/resume\"\n  },\n  \"state_licenses\": [\n    {\n      \"state_name\": \"minnesota\"\n    },\n    {\n      \"state_name\": \"KS\"\n    }\n  ],\n  \"recruit_metrics\": [\n    {\n      \"metric\": {\n        \"metric_name\": \"Builders\",\n        \"metric_type\": \"business_source\"\n      },\n      \"unit\": {\n        \"unit_name\": \"percent\"\n      },\n      \"value\": \"30\"\n    },\n    {\n      \"metric\": {\n        \"metric_name\": \"Realtors\",\n        \"metric_type\": \"business_source\"\n      },\n      \"unit\": {\n        \"unit_name\": \"percent\"\n      },\n      \"value\": \"40\"\n    },\n    {\n      \"metric\": {\n        \"metric_name\": \"Sales Production\",\n        \"metric_type\": \"sales_production\"\n      },\n      \"unit\": {\n        \"unit_name\": \"dollars\"\n      },\n      \"value\": \"10123\",\n      \"on_date\": \"2018\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"created\": \"external-api.totaldev.us/v1/contact-recruits/520\",\n  \"id\": 520\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "44e84281-0c65-4702-ab06-90501b626aef",
+              "name": "Insufficient Scope",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contact-recruits"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Ms.\",\n  \"first_name\": \"Jane\",\n  \"last_name\": \"Smith\",\n  \"email\": \"jlsmith@example.com\",\n  \"email_work\": \"jlsmith@otherlender.com\",\n  \"address\": \"1234 Bermuda St\",\n  \"address_2\": \"Apt. 3\",\n  \"city\": \"Pleasantville\",\n  \"state\": \"MN\",\n  \"zip_code\": \"12345\",\n  \"phone_cell\": \"(763)555-0123\",\n  \"phone_office\": \"(763)555-1234\",\n  \"phone_home\": \"(612)-555-0123\",\n  \"employer_name\": \"Other Lender LLC\",\n  \"employer_address\": \"1235 Fake Ave.\",\n  \"employer_address_2\": \"Ste 5\",\n  \"employer_city\": \"Unpleasantville\",\n  \"employer_state\": \"WI\",\n  \"employer_zip\": \"54321\",\n  \"license_number\": \"Q10101010101011\",\n  \"source\": \"Recruit Intake System\",\n  \"creation_date\": \"2017-01-01 11:11:11\",\n  \"last_contacted_date\": \"2017-01-01 12:12:12\",\n  \"external_id\": \"101010\",\n  \"birthday\": \"1970-01-01\",\n  \"ok_to_mail\": 0,\n  \"ok_to_email\": 0,\n  \"ok_to_call\": 0,\n  \"preferences\": {\n    \"is_silenced\": true\n  },\n  \"owner\": {\n    \"external_id\": \"userExternal1\"\n  },\n  \"contact_groups\": [\n    {\n      \"group_name\": \"Recruit - Hot\"\n    }\n  ],\n  \"external_ids\": [\n    {\n      \"source\": \"Recruit Intake System\",\n      \"external_id\": \"101010\"\n    },\n    {\n      \"source\": \"Other Recruit Intake System\",\n      \"external_id\": \"abcd\"\n    }\n  ],\n  \"external_status\": {\n    \"status_name\": \"Processing\"\n  },\n  \"recruit_info\": {\n    \"nmls_id\": \"NMLS identifier\",\n    \"regional_manager\": {\n      \"username\": \"glen-lender\"\n    },\n    \"division_manager\": {\n      \"username\": \"suzy-lender\"\n    },\n    \"branch_manager\": {\n      \"username\": \"richard-lender\"\n    },\n    \"recruit_status\": {\n      \"status_name\": \"Active\"\n    },\n    \"corporate_objective\": \"2306\",\n    \"sourced_percentage\": \"10\",\n    \"commission_cap\": \"26002\",\n    \"commission_split\": \"50%\",\n    \"ust_is_complete\": true,\n    \"background\": \"Jane started as a loan officer...\",\n    \"years_experience\": 6,\n    \"has_resume\": true,\n    \"resume_url\": \"http:/jlsmith.lender.com/resume\"\n  },\n  \"state_licenses\": [\n    {\n      \"state_name\": \"minnesota\"\n    },\n    {\n      \"state_name\": \"KS\"\n    }\n  ],\n  \"recruit_metrics\": [\n    {\n      \"metric\": {\n        \"metric_name\": \"Builders\",\n        \"metric_type\": \"business_source\"\n      },\n      \"unit\": {\n        \"unit_name\": \"percent\"\n      },\n      \"value\": \"30\"\n    },\n    {\n      \"metric\": {\n        \"metric_name\": \"Realtors\",\n        \"metric_type\": \"business_source\"\n      },\n      \"unit\": {\n        \"unit_name\": \"percent\"\n      },\n      \"value\": \"40\"\n    },\n    {\n      \"metric\": {\n        \"metric_name\": \"Sales Production\",\n        \"metric_type\": \"sales_production\"\n      },\n      \"unit\": {\n        \"unit_name\": \"dollars\"\n      },\n      \"value\": \"10123\",\n      \"on_date\": \"2018\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"insufficient_scope\",\n  \"error_description\": \"The request requires higher privileges than provided by the access token\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c82ba679-bb60-43da-bb18-b2b76d75b564",
+          "name": "Fetch Contact Recruit Statuses",
+          "request": {
+            "name": "Fetch Contact Recruit Statuses",
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contact-recruit-statuses"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page[number]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "page[size]",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5fae6f77-7495-4e82-82ab-46537c3420f7",
+              "name": "Fetch Contact Recruit Statuses",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contact-recruit-statuses"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page[number]",
+                      "value": "1"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"status_name\": \"Active\"\n    },\n    {\n      \"status_name\": \"On Hold\"\n    },\n    {\n      \"status_name\": \"Decline\"\n    },\n    {\n      \"status_name\": \"Engaged\"\n    },\n    {\n      \"status_name\": \"Offer Out\"\n    }\n  ],\n  \"links\": {\n    \"first\": 1,\n    \"last\": 1\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "20177c26-9eb4-40b1-8c76-79863eb92220",
+          "name": "Fetch Contact Recruit Metrics",
+          "request": {
+            "name": "Fetch Contact Recruit Metrics",
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contact-recruit-metrics"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page[number]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "page[size]",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "df7a7343-1182-4d37-a438-7c876c14df48",
+              "name": "Fetch Contact Recruit Metrics",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contact-recruit-metrics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page[number]",
+                      "value": "1"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"metric_name\": \"Referrals\",\n      \"metric_type\": \"business_source\"\n    },\n    {\n      \"metric_name\": \"Leads\",\n      \"metric_type\": \"business_source\"\n    },\n    {\n      \"metric_name\": \"Lead Sources\",\n      \"metric_type\": \"business_source\"\n    },\n    {\n      \"metric_name\": \"Realtors\",\n      \"metric_type\": \"business_source\"\n    },\n    {\n      \"metric_name\": \"Sales Production\",\n      \"metric_type\": \"sales_production\"\n    },\n    {\n      \"metric_name\": \"Builders\",\n      \"metric_type\": \"business_source\"\n    },\n    {\n      \"metric_name\": \"Conforming\",\n      \"metric_type\": \"product\"\n    },\n    {\n      \"metric_name\": \"FHA/VA\",\n      \"metric_type\": \"product\"\n    },\n    {\n      \"metric_name\": \"Jumbo\",\n      \"metric_type\": \"product\"\n    },\n    {\n      \"metric_name\": \"Broker\",\n      \"metric_type\": \"product\"\n    }\n  ],\n  \"links\": {\n    \"first\": 1,\n    \"last\": 2,\n    \"next\": 2\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "569267f6-77c2-4bbf-97e7-494108c82d69",
+          "name": "Fetch Contact Recruit Metric Units",
+          "request": {
+            "name": "Fetch Contact Recruit Metric Units",
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "contact-recruit-metric-units"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page[number]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "page[size]",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e7c6a99a-a167-4bf2-ad87-d00d04ce7e97",
+              "name": "Fetch Contact Recruit Metric Units",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "contact-recruit-metric-units"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page[number]",
+                      "value": "1"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"unit_name\": \"percent\"\n    },\n    {\n      \"unit_name\": \"dollars\"\n    },\n    {\n      \"unit_name\": \"loans\"\n    },\n    {\n      \"unit_name\": \"years\"\n    }\n  ],\n  \"links\": {\n    \"first\": 1,\n    \"last\": 1\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2203e54a-f606-4567-a6b9-b2890b2f283c",
+          "name": "Fetch Channels",
+          "request": {
+            "name": "Fetch Channels",
+            "description": {
+              "content": "Fetch a page of channels. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "channels"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page[number]",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4e0f1bfb-23d0-4b5a-8a38-37b2e21af633",
+              "name": "Success. See the Total Expert Public API documentation for the response shape.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "channels"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page[number]",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9132399b-d162-417d-adee-0b5128b08c06",
+          "name": "Fetch WLP Access Types",
+          "request": {
+            "name": "Fetch WLP Access Types",
+            "description": {
+              "content": "Fetch a page of wlp access types. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "wlp-access-types"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page[number]",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2e80fc01-c95c-4fe6-af11-30e9cd9fcafa",
+              "name": "Success. See the Total Expert Public API documentation for the response shape.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "wlp-access-types"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page[number]",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "15a1708e-04b0-4a75-b47e-e5b43757e473",
+          "name": "Fetch Campaigns",
+          "request": {
+            "name": "Fetch Campaigns",
+            "description": {
+              "content": "Fetch a page of campaigns. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "campaigns"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "eba2c63e-a2c8-4b05-9fea-993c87faa661",
+              "name": "Success. See the Total Expert Public API documentation for the response shape.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "campaigns"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2053346e-1d53-47b3-86c3-7f6893916f16",
+          "name": "Create Campaign",
+          "request": {
+            "name": "Create Campaign",
+            "description": {
+              "content": "Create a campaign.\n\nRequired Attributes:\n\nname",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "campaigns"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Campaign Test Name\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1d43c170-3595-4069-a808-27b96361ba9d",
+              "name": "Success. See the Total Expert Public API documentation for the response shape.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "campaigns"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Campaign Test Name\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9d7b5629-9071-4319-8df2-91a597c2c936",
+          "name": "Fetch Campaign",
+          "request": {
+            "name": "Fetch Campaign",
+            "description": {
+              "content": "Fetch a campaign by id.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "campaigns",
+                ":campaign_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "campaign_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "096bc035-8f59-4be7-a2d0-1c60efde1804",
+              "name": "Success. See the Total Expert Public API documentation for the response shape.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "campaigns",
+                    ":campaign_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaign_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "16574a3f-973e-4fa3-bd8c-bf0fe56a09bf",
+          "name": "Create Campaign Activity",
+          "request": {
+            "name": "Create Campaign Activity",
+            "description": {
+              "content": "Create a campaign activity.\n\nRequired Attributes:\n\n[none]\n\nRequired Relationsips:\n\ncontact\n\ncampaign",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "campaign-activity"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"touched_at\": \"2019-01-01 10:00:00\",\n  \"owner\": {\n    \"id\": 50\n  },\n  \"contact\": {\n    \"id\": \"500\"\n  },\n  \"campaign\": {\n    \"id\": \"374363f2971dedcddae7502e5f920c35\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "782eac57-4066-46f6-99e6-5149268552ad",
+              "name": "Success. See the Total Expert Public API documentation for the response shape.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "campaign-activity"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"touched_at\": \"2019-01-01 10:00:00\",\n  \"owner\": {\n    \"id\": 50\n  },\n  \"contact\": {\n    \"id\": \"500\"\n  },\n  \"campaign\": {\n    \"id\": \"374363f2971dedcddae7502e5f920c35\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e138fcf7-98ad-4544-b2cb-9a8e098e35d3",
+          "name": "Delete Campaign Activity",
+          "request": {
+            "name": "Delete Campaign Activity",
+            "description": {
+              "content": "Delete a campaign activity record by id.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "campaign-activity"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "24359d58-9183-496d-a5a4-a3e48b5fe5c0",
+              "name": "Success. See the Total Expert Public API documentation for the response shape.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "campaign-activity"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b2519453-af44-47f6-ac61-35f7bc5899be",
+          "name": "Fetch Campaign Activities",
+          "request": {
+            "name": "Fetch Campaign Activities",
+            "description": {
+              "content": "Fetch a page of campaign activity records. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "campaign-activity"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page[number]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "page[size]",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c2dba23d-7f69-4189-9b12-cd57a2ff7efd",
+              "name": "Success. See the Total Expert Public API documentation for the response shape.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "campaign-activity"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page[number]",
+                      "value": "1"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3723bf6f-352e-4ef6-96f6-37913fb40438",
+          "name": "Fetch Campaign Activity",
+          "request": {
+            "name": "Fetch Campaign Activity",
+            "description": {
+              "content": "Fetch a campaign activity by id.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "campaign-activity",
+                ":campaign_activity_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "campaign_activity_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "184a9335-b305-4e44-a5cb-bd313fd6f0ff",
+              "name": "Success. See the Total Expert Public API documentation for the response shape.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "campaign-activity",
+                    ":campaign_activity_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaign_activity_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://public.totalexpert.net",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "crm leadInteraction loanInteraction leadSurveyInteraction postLeads"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://public.totalexpert.net/v1/token"
+      },
+      {
+        "key": "grant_type",
+        "value": "client_credentials"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "1f907ad3-b754-4387-91be-ab81259cf959",
+    "name": "Total Expert Public Account Endpoints Contact Endpoints API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Total Expert REST API allows you to programmatically create, retrieve, update, and delete information through various endpoints.\n\nDocumentation Layout\n\nEach section of this documentation describes a collection of related endpoints that affect a given resource.\n\nWhere applicable, at the top of a section you will find a table listing the attributes for the resource and a second showing its relationships with other resources.\n\nNOTE: If an attribute is marked as 'Assignable', its value can be set via a POST/PATCH. You can also modify the data for an 'Assignable' relationship.\n\nAuthentication in the TE API\n\nInteraction with the TE API is protected with OAuth 2.0. A client ID/secret pair is required to use the API.\n\nThe ID/secret pair is used to request an access token from the '/token' endpoint. This token will need to be present within the header on all calls to the API.\n\nNOTE: See the 'Authentication' endpoint collection for more information. See the 'Heartbeats' endpoint collection for more information on how to test your authentication.\n\nEndpoint Standards\n\nEach endpoint provides interaction with two aspects of an entity:\n\n'Attributes' - Attributes of the entity itself. Includes things like first name, phone number, or birthday of the contact.\nE.g. A 'Contact'\n\n'Relationships' - Describe a relationship between that entity and another entity.\nE.g. A contact that has an owner in the TE System OR a set of contact groups (separate entities with their own endpoint).\n\nAttributes\n\nEach endpoint returns a JSON object with a set of attributes. Each endpoint collection should describe the names and types of attributes available in each endpoint.\n\nData Types\n\nEach attribute has a type. There are four data types in the TE API - Numeric, String, Boolean, and Date.\n\nData Types\n\nType\nDescription\n\nNumeric\nInteger or floating point numbers. Supplied with no surrounding quotes. e.g. { \"loan_rate\":4.5 }\n\nString\nString of characters - supplied surrounded with quotes. e.g. { \"first_name\":\"Clark\" }\n\nBoolean\nTruth value - supplied in one of two ways - see Boolean (String) and Boolean (Numeric) for details\n\nBoolean (String)\nTruth value - supplied as the word \"True\" or \"False\", surrounded by quotes. e.g. { \"first_time_buyer\":\"True\" }\n\nBoolean (Numeric)\nTruth value - supplied as the number 1 or 0, not surrounded by quotes. e.g. { \"first_time_buyer\":0 }\n\nDate\nA date and time - preferred supplied in the format \"YYYY-MM-DD hh:mm:ss\". All dates must be provided in UTC timezone. When returned, the value will be expressed in UTC. To clear a field with a date type, use the value \"0000-00-00 00:00:00\".\n\nPhone Numbers\n\nPhone numbers are accepted in any format. For deduplication, any non-numeric symbols will be stripped out and the numeric phone number will be stored separately. If a numerically identical phone number is used in a different format later, the records are compared using the numeric value only. This applies only to phone numbers with at least 7 digits.\n\nAll phone numbers will also be converted into E164 for use in external services (e.g. Twilio). If a phone number cannot be converted into E164, the number will be marked 'Invalid', and external services that rely on phone numbers will not function.\n\nUniqueness in the TE API\n\nEach type of entity in the TE API can be uniquely identified by a set of attributes. In some cases, multiple options are available to uniquely identify an entity. See each section below for details. These sets of attributes are used to deduplicate entries on creation and to uniquely identify the target in a relationship.\n\nRelationships\n\nRelationships in the TE API are very flexible.\n\n'GET'ing\n\nWhen GETing an entity, a relationship will be returned with only a partial set of attributes that make sense in the context of that endpoint - e.g. the 'contact_groups' relationship on the '/contacts' endpoint will display only the group name of the target contact_group.\n\nPOST and PATCH Requests\n\nWhen setting a relationship (by POST or PATCH), the target entity is specified using one or more attributes that uniquely identify the entity.\n\nThe allowed attributes are listed in the 'Settable Fields' column of each Relationships table. For example, when POSTing to the '/contact-groups' endpoint, either of the following are allowed:\n\n{\n  \"group_name\": \"Hot Leads\",\n  \"owner\":{\"username\": \"alfred\"}\n  }\n  OR\n\n{\n  \"group_name\": \"Hot Leads\",\n  \"owner\":{\"id\": \"123589\"}\n  }\n\nIn cases where an endpoint's relationship supports multiple Settable Fields be aware that the request examples may only make use of one of the attributes though any could be used in its place.\n\nInteracting with the API\n\nAdmin Calls vs User Calls\n\nYou'll notice that many sections of the documentation have samples for POSTs and GETs that are labeled \"As Admin\" or \"As User\".\nWhen using client credentials to access the API, you'll use the \"As Admin\" examples. For Authorization Code access, you'll use the \"As User\" examples.\n\n'GET'ing\n\nThere are two types of GETable endpoints in the TE API: Paging and Individual. Paging endpoints provide lists of entities. E.g. '/contacts' returns a list of contacts.\n\nGetting Individual Entities\n\nIndividual endpoints return specific individual entities, specified by TE ID. E.g. '/contacts/51151' returns the contact with the 'id' attribute '51151' (the TE internal identifier).\n\nGetting Multiple Entities (Paging)\n\nPaging endpoints will return an object with two properties: 'objects' and 'links'. The 'objects' property will be an array of entities in 'pages'. Each page will have a number of entities along with a set of links. The page size and page number can be specified using the '?page' GET parameter. Setting '?page[number]=5' will return the fifth page. Setting '?page[size]=100' will make each page consist of 100 items, instead of the default of 10. Both attributes can be set together. E.g. setting '?page[size]=100&page[number]=6' will return items 501-600.\n\nPaging Links\n\nThe 'links' attribute on a page object will have four attributes, specifying metadata about the number of entities available to page.\n\n'first' will be the page number of the first page of entities (always '1').\n\n'last' will be the page number of the last page of entities.\n\n'next' will be the page number of the next page after the currently requested one. 'next' may be null if there are no subsequent pages.\n\n'prev' will be the page number of the page immediately preceding the current one. 'prev' may be null if there are no preceding pages.\n\n'POST'ing\n\nEntities can be created in the TE system by POSTing to paging endpoints. E.g. sending a POST to '/contacts' will create a contact.\n\nDeduplication\n\nWhen POSTing an entity, the TE API will attempt to 'Deduplicate' by searching for existing entities with similar attributes. If such a duplicate does exist, the TE API will treat the POST as a PATCH to that entity instead. See each section for details on what attributes will be used to search for duplicates.\n\n'PATCH'ing\n\nEntities can be updated in the TE system by PATCHing to individual endpoints. E.g. sending a PATCH to '/contacts/51151' will update the attributes of the contact with TE 'id' of '51151'.\n\n'DELETE'ing\n\nEntities can be deleted only by TE ID. Send a DELETE request to the appropriate individual entity endpoint to delete it.\n\nReturn Codes\n\nWhere applicable, the API will respond with an HTTP status code that indicates what happened during the request. Possible values include:\n\nHTTP CODES\n\nStatus Code\nGeneral Description\n\n200 SUCCESS\nThe operation completed successfully. See the response body for details (if applicable).\n\n201 CREATED\nThe object was created successfully. See the response body for details (if applicable).\n\n400 BAD REQUEST\nThe JSON supplied to the API was malformed and unparseable.\n\n401 UNAUTHORIZED\nThe request's credentials are invalid. This could mean your token has expired and should be renewed. See the response body for details.\n\n403 FORBIDDEN\nAn attempt was made to access a resource for which you do not have permission\n\n405 METHOD NOT ALLOWED\nAn attempt was made to interact with an endpoint in an unsupported manner, e.g. sending a POST to '/contacts/1'\n\n415 UNSUPPORTED MEDIA TYPE\nThe API endpoints expect a content type of 'media/json'\n\n422 UNPROCESSABLE ENTITY\nThe JSON body supplied is valid, but not processable semantically. For example, the 'owner' relationship for a contact refers to a User that does not exist in the TE system.\n\n418 I'M A TEAPOT\nThe API is a teapot (See the 'Heartbeat' section for details).\n\n503 SERVICE UNAVAILABLE\nThe API is unavailable. Please try your request again later. If this message persists, please contact Technical Support",
+      "type": "text/plain"
+    }
+  }
+}

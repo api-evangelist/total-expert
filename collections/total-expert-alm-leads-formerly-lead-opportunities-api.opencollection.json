@@ -1,0 +1,84 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Total Expert Public Account Endpoints ALM Leads (formerly Lead Opportunities) API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://public.totalexpert.net/v1/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "ALM Leads (formerly Lead Opportunities)",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch Lead Opportunity",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/leads/:lead_id",
+            "params": [
+              {
+                "name": "lead_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "The GET endpoint returns details about the lead record, including the lead_opportunity details, any existing lead_opportunity_offers, and more.\n\nAttributes unique to GET\n\nowner\n\nDetails about the current owner of the lead, including the following:\n\nattribute\nvalue\n\nemail\nThe user's e-mail address as stored in the Total Expert database\n\nexternal_id\nAn assignable identifier of the user as represented in a third-party system\n\nid\nThe user's internal Total Expert identifier\n\nusername\nThe user's inter"
+        },
+        {
+          "info": {
+            "name": "Update Lead Opportunity",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://public.totalexpert.net/v1/leads/:lead_id",
+            "params": [
+              {
+                "name": "lead_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The PATCH request accepts any variant of the body specified below, allowing for partial modifications of the existing lead resource. Fields that are\n\nData Types\n\nThe PATCH is sensitive to data types, and will error if types do not align with the types in the request body below.\n\nIf the value of a given attribute does not match the type specified in PATCH validation, the request should fail and tell you why.\n\nAccepted type details:\n\nInteger values, real, positive values only\n\nString values must b"
+        },
+        {
+          "info": {
+            "name": "Create Lead Opportunity",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://public.totalexpert.net/v1/leads",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Leads and Contacts\n\nA POST request for a new lead wil also create a new contact record, but only if a matching contact is not found. A matching contact is one that meets this criteria:\n\nHas a first name identical to the request first_name\n\nHas a last name identical tp the request last_name\n\nHas an e-mail address or phone number field identical to those in the request\n\nIf owner_id is not in the request, the contact meets the above matching criteria and is owned by the same organization\n\nIf an own"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,44 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Total Expert Public Account Endpoints Authentication API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://public.totalexpert.net/v1/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Authentication",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch a Token From Client Credentials Grant",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://public.totalexpert.net/v1/token",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Supply client credentials to obtain an access token.\n\nIf you are integrating with the Total Expert API from a confidential client you will likely want to use this endpoint. For the client_credentials authorization grant type you will need to make certain that your client is also the resource owner.\n\nAuthorization Header Encoding\n\nShown in the HEADERS table below, the Authorization header field implements the Basic Authentication Schema. The 'basic_auth' value needs to be a base64-encoded string "
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

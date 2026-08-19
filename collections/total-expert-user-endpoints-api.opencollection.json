@@ -1,0 +1,303 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Total Expert Public Account Endpoints User Endpoints API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://public.totalexpert.net/v1/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "User Endpoints",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch User",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/users/:user_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a specific user by ID."
+        },
+        {
+          "info": {
+            "name": "Update User",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://public.totalexpert.net/v1/users/:user_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a user"
+        },
+        {
+          "info": {
+            "name": "Fetch Users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/users",
+            "params": [
+              {
+                "name": "page[number]",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "page[size]",
+                "value": "10",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Fetch a page of users. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters."
+        },
+        {
+          "info": {
+            "name": "Create Users",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://public.totalexpert.net/v1/users",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a user.\n\nRequired Attributes:\n\nemail\n\ntype\n\nRequired Relationships:\n\ninfo\n\nrole"
+        },
+        {
+          "info": {
+            "name": "Fetch User Roles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/user-roles",
+            "params": [
+              {
+                "name": "page[number]",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "page[size]",
+                "value": "10",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Fetch a page of user roles. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters."
+        },
+        {
+          "info": {
+            "name": "Fetch User Role",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/user-roles/:user_role_id",
+            "params": [
+              {
+                "name": "user_role_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a specific user role specified by ID."
+        },
+        {
+          "info": {
+            "name": "Fetch Permissions for User Role",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/role-permissions/:role_id",
+            "params": [
+              {
+                "name": "role_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch Permissions for User Role"
+        },
+        {
+          "info": {
+            "name": "Fetch Team",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/teams/:team_id",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a team by ID."
+        },
+        {
+          "info": {
+            "name": "Update Team",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://public.totalexpert.net/v1/teams/:team_id",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing team by ID."
+        },
+        {
+          "info": {
+            "name": "Delete Team",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://public.totalexpert.net/v1/teams/:team_id",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a team by ID."
+        },
+        {
+          "info": {
+            "name": "Fetch Teams",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/teams",
+            "params": [
+              {
+                "name": "page[number]",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "page[size]",
+                "value": "10",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Fetch a page of teams. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters."
+        },
+        {
+          "info": {
+            "name": "Create Team",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://public.totalexpert.net/v1/teams",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a Team.\n\nRequired Attributes:\n\nteam_name"
+        },
+        {
+          "info": {
+            "name": "Fetch Permissions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/permissions",
+            "params": [
+              {
+                "name": "page[number]",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "page[size]",
+                "value": "10",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Fetch Permissions"
+        },
+        {
+          "info": {
+            "name": "Fetch Permission",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/permissions/:permission_id",
+            "params": [
+              {
+                "name": "permission_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch Permission"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

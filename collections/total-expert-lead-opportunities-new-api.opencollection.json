@@ -1,0 +1,102 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Total Expert Public Account Endpoints Lead Opportunities (New) API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://public.totalexpert.net/v1/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Lead Opportunities (New)",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Invalid Filter Expression",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/lead-opportunities",
+            "params": [
+              {
+                "name": "filter",
+                "value": "invalidfilter",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Example error for invalid filter syntax.\n\nExpected Response (400):\n\n{\n  \"error\": \"Invalid filter expression: invalidfilter\"\n}\n\nAlternate documented request: Invalid Sort Field.\n\nAlternate documented request: Page Out of Range.\n\nAlternate documented request: List Lead Opportunities (Default).\n\nAlternate documented request: List with Pagination.\n\nAlternate documented request: Filter by Contact ID.\n\nAlternate documented request: Multiple Filters.\n\nAlternate documented request: Sort by Created Date "
+        },
+        {
+          "info": {
+            "name": "Missing Required Fields",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://public.totalexpert.net/v1/lead-opportunities",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Example error when required fields are missing.\n\nExpected Response (400):\n\n{\n  \"error\": \"Missing required fields. Must provide: first_name, last_name, source, and either phone or email\"\n}\n\nAlternate documented request: Create Lead Opportunity (Minimal).\n\nAlternate documented request: Create Lead Opportunity (Full)."
+        },
+        {
+          "info": {
+            "name": "Get Lead Opportunity by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/lead-opportunities/:lead_opportunity_id",
+            "params": [
+              {
+                "name": "lead_opportunity_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve a specific lead opportunity by its unique identifier.\n\nPath Parameters:\n\nid - Lead opportunity UUID or alphanumeric ID\n\nResponse (200 OK):\n\n{\n  \"id\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\",\n  \"stage\": {\"id\": \"stage-123\", \"name\": \"New Lead\"},\n  \"product\": {\"type\": \"mortgage\", \"values\": {...}},\n  \"source\": {\"id\": 1, \"display_name\": \"Website\"},\n  \"assigned_user_id\": 789,\n  \"legacy_contact_id\": 456,\n  \"created_at\": \"2024-01-15T10:30:00Z\",\n  \"upd"
+        },
+        {
+          "info": {
+            "name": "Update Lead Opportunity",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://public.totalexpert.net/v1/lead-opportunities/:lead_opportunity_id",
+            "params": [
+              {
+                "name": "lead_opportunity_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing lead opportunity.\n\nRequired: contact_id (always required for updates)\n\nUpdate Behavior:\nThree independent operations:\n\nAssignment update (assigned_user_id)\n\nStage update (stage.id)\n\nLead opportunity update (other fields)\n\nProduct Values: Partial updates merge with existing values.\n\nMarketing attribution: utm_source, utm_campaign, utm_medium are optional strings, each patched independently. Omit a field to leave its stored value unchanged; send a field to overwrite it.\n\nRespons"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

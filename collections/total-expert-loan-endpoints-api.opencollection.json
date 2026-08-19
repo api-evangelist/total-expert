@@ -1,0 +1,349 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Total Expert Public Account Endpoints Loan Endpoints API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://public.totalexpert.net/v1/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Loan Endpoints",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch Loan",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/loans/:loan_id",
+            "params": [
+              {
+                "name": "loan_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a specific loan type specified by ID."
+        },
+        {
+          "info": {
+            "name": "Update Loan ",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://public.totalexpert.net/v1/loans/:loan_id",
+            "params": [
+              {
+                "name": "loan_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing loan by ID."
+        },
+        {
+          "info": {
+            "name": "Delete Loan",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://public.totalexpert.net/v1/loans/:loan_id",
+            "params": [
+              {
+                "name": "loan_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a loan by ID."
+        },
+        {
+          "info": {
+            "name": "Fetch Loans",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/loans",
+            "params": [
+              {
+                "name": "page[number]",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "page[size]",
+                "value": "10",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Fetch a page of loans. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters."
+        },
+        {
+          "info": {
+            "name": "Create Loan (as Admin)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://public.totalexpert.net/v1/loans",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a loan.\n\nRequired Attributes:\n\nexternal_id\n\nRequired Relationships:\n\nowner\n\nborrower\nMust have required fields for contact creation, found here: Create Contact (as Admin)\n\nany other required loan participant roles, which can be found using the Fetch Loan Participant Roles request (requires describeSchema scope to access)\n\nAlternate documented request: Create Loan (as User)."
+        },
+        {
+          "info": {
+            "name": "Fetch Loan Type",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/loan-types/:type_id",
+            "params": [
+              {
+                "name": "type_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a specific loan type specified by ID."
+        },
+        {
+          "info": {
+            "name": "Fetch Loan Types",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/loan-types",
+            "params": [
+              {
+                "name": "page[number]",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "page[size]",
+                "value": "10",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Fetch a page of loan types. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters."
+        },
+        {
+          "info": {
+            "name": "Create Loan Type",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://public.totalexpert.net/v1/loan-types",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a loan type.\nRequired Attributes:\n\nloan_type\n\nRequired Relationships:\n\nowning_organization*\n\n*required if authenticated as an TE admin"
+        },
+        {
+          "info": {
+            "name": "Fetch Loan Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/loan-statuses/:status_id",
+            "params": [
+              {
+                "name": "status_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a specific loan status specified by ID."
+        },
+        {
+          "info": {
+            "name": "Fetch Loan Statuses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/loan-statuses",
+            "params": [
+              {
+                "name": "page[number]",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "page[size]",
+                "value": "10",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Fetch a page of loan statuses. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters."
+        },
+        {
+          "info": {
+            "name": "Create Loan Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://public.totalexpert.net/v1/loan-statuses",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a loan status.\nRequired Attributes:\n\nloan_status\n\nRequired Relationships:\n\nowning_organization*\n\n*required if authenticated as an TE admin"
+        },
+        {
+          "info": {
+            "name": "Fetch Loan Purpose",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/loan-purposes/:purpose_id",
+            "params": [
+              {
+                "name": "purpose_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a specific loan purpose specified by ID."
+        },
+        {
+          "info": {
+            "name": "Fetch Loan Purposes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/loan-purposes",
+            "params": [
+              {
+                "name": "page[number]",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "page[size]",
+                "value": "10",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Fetch a page of loan purposes. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters."
+        },
+        {
+          "info": {
+            "name": "Create Loan Purpose",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://public.totalexpert.net/v1/loan-purposes",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a loan purpose.\nRequired Attributes:\n\nloan_purpose\n\nRequired Relationships:\n\nowning_organization*\n\n*required if authenticated as an TE admin"
+        },
+        {
+          "info": {
+            "name": "Fetch Loan Program",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/loan-programs/:program_id",
+            "params": [
+              {
+                "name": "program_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a specific loan program specified by TE ID."
+        },
+        {
+          "info": {
+            "name": "Fetch Loan Programs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/loan-programs",
+            "params": [
+              {
+                "name": "page[number]",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "page[size]",
+                "value": "10",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Fetch a page of loan programs. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters."
+        },
+        {
+          "info": {
+            "name": "Create Loan Program",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://public.totalexpert.net/v1/loan-programs",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a loan program.\nRequired Attributes:\n\nloan_program\n\nRequired Relationships:\n\nowning_organization*\n\n*required if authenticated as an TE admin"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

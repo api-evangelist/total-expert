@@ -1,0 +1,91 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Total Expert Public Account Endpoints Email APIs API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://public.totalexpert.net/v1/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Email APIs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Archive Email -  Encoded (id-{orgId}-{msgId})",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/email-archive/id-42-9001",
+            "params": [
+              {
+                "name": "filter",
+                "value": "user_id",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieves archived email content using the encoded messageId format: id-{organizationId}-{messageId}.\n\nThe organization ID embedded in the messageId is validated against the authenticated caller's organization. A mismatch returns 404 — not 403 — to avoid leaking whether a message exists.\n\nPath parameter: id-{orgId}-{msgId} — replace 42 with the org ID and 9001 with the message ID.\n\nRequired filter: user_id={userId} — the user must belong to the caller's org."
+        },
+        {
+          "info": {
+            "name": "Archive Email  -  Raw numeric ({msgId})",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/email-archive/9001",
+            "params": [
+              {
+                "name": "filter",
+                "value": "user_id",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieves archived email content using a plain numeric messageId.\n\nThe organization is inferred from the authenticated caller's token — no org ID is embedded in the messageId. The caller's org is validated against the message sender's org inside the DataManager.\n\nPath parameter: plain integer string — replace 9001 with the message ID.\n\nRequired filter: user_id={userId} — the user must belong to the caller's org."
+        },
+        {
+          "info": {
+            "name": "Email Template Render - By template ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://public.totalexpert.net/v1/email-templates/render",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Renders a saved email template by its id with placeholders resolved for the given sender, recipient, and optional context.\n\nThe template must belong to the caller's organization and be accessible to the sender.\n\nRequired: id, sender_id\n\nOptional: recipient, loan_id, account_id, comarketer_id, odc_push_result_id, video, content.subject (overrides template subject)\n\nAlternate documented request: Email Template Render - By inline HTML."
+        },
+        {
+          "info": {
+            "name": "POST /user-images",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://public.totalexpert.net/v1/user-images"
+          },
+          "docs": "Uploads a user image as raw binary in the request body.\n\nThe image is stored in S3 under the target user's marketing images path and a record is created in the database.\n\nHeaders required:\n\nContent-Type — MIME type of the image (image/jpeg, image/png, image/gif)\n\nX-User-Id — TE user ID of the target user. Must belong to the same org as the caller.\n\nBody: raw binary bytes of the image file. Max 5 MB."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

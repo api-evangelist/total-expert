@@ -1,0 +1,59 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Total Expert Public Account Endpoints SMS Opting API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://public.totalexpert.net/v1/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "SMS Opting",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Opt-in",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://public.totalexpert.net/v1/sms/opt-in",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a SMS Opt-in record.\n\nRequired Attributes:\n\nphone_number\n\nuser\n\nstatus"
+        },
+        {
+          "info": {
+            "name": "Create Opt-out",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://public.totalexpert.net/v1/sms/opt-out",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a SMS Opt-out record.\n\nRequired Attributes:\n\nphone_number"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

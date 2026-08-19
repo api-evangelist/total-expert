@@ -1,0 +1,51 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Total Expert Public Account Endpoints Heartbeat API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://public.totalexpert.net/v1/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Heartbeat",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch Heartbeat",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/heartbeat"
+          },
+          "docs": "The API will respond with a heartbeat with a string describing the running item. Useful for testing routing and API status."
+        },
+        {
+          "info": {
+            "name": "Fetch Teapot",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/teapot"
+          },
+          "docs": "Checks whether the API is a teapot. Should return '418 - IM A TEAPOT'. This is, naturally, protected information. You will need to authenticate with the API in order to check whether the API is a teapot.\n\nThis endpoint is useful for testing whether your authentication credentials are correct, particularly when first integrating with the TE API."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

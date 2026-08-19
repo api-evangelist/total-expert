@@ -1,0 +1,823 @@
+# generated: '2026-08-13'
+# method: searched
+# source: https://totalexpert.freshdesk.com/support/solutions/articles/22000293933-te-connect-ppe-schema-yaml-file- (attachment https://totalexpert.freshdesk.com/helpdesk/attachments/22183164851)
+# note: Verbatim provider-published YAML. Do not edit. Article modified 2026-01-27.
+# Total Expert Pricing Engine (PPE) Schema
+# YAML representation of the TE PPE Schema for JSON request/response structure
+
+---
+# API Configuration
+api_configuration:
+  authentication:
+    method: "POST"
+    endpoint: "{{configured_ppe_endpoint}}"
+    headers:
+      api-token: "{{configured_api_token}}"
+    description: "Configured in Pricing Engine Authentication screen under 'TE Connect'"
+  
+  organization_setting:
+    name: "rate_quote_default_ppe"
+    value: "TE Connect"
+    description: "Required organization setting to enable TE Connect PPE requests"
+
+# Request Structure
+request_schema:
+  
+  org_context:
+    description: "Organization context information"
+    fields:
+      name:
+        type: "string"
+        required: true
+        description: "TE Organization Name"
+        example: "Expert Bank"
+      
+      org_id:
+        type: "string"
+        required: true
+        description: "TE Organization ID"
+        example: "622"
+      
+      ppe_service_url:
+        type: "string"
+        required: true
+        description: "Configured TE Connect URL in Pricing Auth Settings"
+        example: "https://apim.workato.com/teconnect/example-ppe-v1/example-ppe"
+  
+  user_context:
+    description: "User context for the requesting user"
+    fields:
+      username:
+        type: "string"
+        required: true
+        description: "Requesting user TE username"
+        example: "super.admin@prgo-example.com"
+      
+      external_id:
+        type: "string"
+        required: false
+        conditional: "Sent if configured for user"
+        description: "Requesting user TE external ID"
+        example: "1234"
+      
+      email:
+        type: "string"
+        required: true
+        description: "Requesting user TE email address"
+        example: "super.admin@prgo-example.com"
+      
+      id:
+        type: "string"
+        required: true
+        description: "Requesting user TE ID"
+        example: "22419214"
+  
+  invocation_context:
+    description: "Context about where the PPE request was invoked"
+    fields:
+      type:
+        type: "string"
+        required: true
+        description: "Location where PPE request was invoked in TE"
+        enum: ["Marketing Material", "Contact"]
+        example: "Marketing Material"
+      
+      contact_id:
+        type: "string"
+        required: false
+        conditional: "Sent if request type is Contact"
+        description: "TE Contact ID if request invoked from Contact"
+        example: "339444304"
+      
+      loan_to_compare_id:
+        type: "string"
+        required: false
+        conditional: "Sent if request is Contact, purpose is refinance, and loan to compare selected"
+        description: "TE Loan ID if request invoked from Contact with loan to compare"
+        example: ""
+      
+      asset_id:
+        type: "string"
+        required: true
+        conditional: "Sent if invoked from marketing material"
+        description: "Marketing Material asset ID if invoked from print flyer"
+        example: "676994"
+  
+  custom:
+    description: "Top-level custom fields configured in Pricing Engine Defaults Config"
+    type: "array"
+    required: false
+    conditional: "Sent if configured"
+    items:
+      name:
+        type: "string"
+        description: "Custom field name"
+        example: "test3"
+      
+      value:
+        type: "string"
+        description: "Custom field value"
+        example: "test5"
+  
+  lead_source:
+    type: "string"
+    required: false
+    conditional: "Sent if configured"
+    description: "Lead Source value configured in Pricing Engine Defaults Config"
+    example: "1234"
+  
+  request:
+    description: "Main request object containing property, loan, and borrower details"
+    
+    property:
+      description: "Property information"
+      fields:
+        value:
+          type: "number"
+          required: true
+          description: "Property value figure entered in Create Quote interface"
+          example: 795000
+        
+        type:
+          type: "string"
+          required: true
+          description: "Property type"
+          enum:
+            - "SingleFamily"
+            - "Condo"
+            - "ManufacturedDoubleWide"
+            - "Condotel"
+            - "Modular"
+            - "PUD"
+            - "Timesharer"
+            - "ManufacturedSingleWide"
+            - "Coop"
+            - "NonWarrantableCondo"
+            - "Townhouse"
+            - "DetachedCondo"
+          example: "SingleFamily"
+        
+        use:
+          type: "string"
+          required: true
+          description: "Property use type"
+          enum:
+            - "PrimaryResidence"
+            - "SecondHome"
+            - "InvestmentProperty"
+          example: "PrimaryResidence"
+        
+        stories:
+          type: "integer"
+          required: true
+          description: "Stories of the property financed"
+          example: 1
+        
+        taxes_annual:
+          type: "number"
+          required: false
+          conditional: "Sent if provided"
+          description: "Annual taxes value of the property financed"
+          example: 4751
+        
+        units:
+          type: "integer"
+          required: true
+          description: "Units of the property financed"
+          example: 1
+        
+        insurance_annual:
+          type: "number"
+          required: false
+          conditional: "Sent if provided"
+          description: "Annual insurance of the property financed"
+          example: 1400
+        
+        state:
+          type: "string"
+          required: true
+          description: "Two letter acronym of state location of property financed"
+          example: "NE"
+        
+        zip_code:
+          type: "string"
+          required: true
+          description: "Zip code of location of property financed"
+          example: "68521"
+        
+        county:
+          type: "string"
+          required: true
+          description: "County location of property financed"
+          example: "Lancaster"
+        
+        fips:
+          type: "string"
+          required: true
+          description: "FIPS code location of property financed"
+          example: "31109"
+        
+        new_construction:
+          type: "boolean"
+          required: false
+          conditional: "Sent only for Contact request types"
+          description: "If property financed is new construction"
+          example: true
+        
+        unique_property:
+          type: "boolean"
+          required: false
+          conditional: "Sent only for Contact request types"
+          description: "If property financed is a unique property"
+          example: true
+    
+    loan:
+      description: "Loan information"
+      fields:
+        request_id:
+          type: "string"
+          required: true
+          description: "Unique identifier of the request, use in response to correlate request/response in TE UI"
+          format: "uuid"
+          example: "d7831ccb-d4e2-456b-ae90-3338c634669d"
+        
+        loan_purpose:
+          type: "string"
+          required: true
+          description: "Loan purpose type (refinance only available for Contact request types)"
+          enum:
+            - "Purchase"
+            - "Refinance"
+          example: "Purchase"
+        
+        refinance:
+          description: "Refinance specific details"
+          conditional: "Only passed if loan_purpose is Refinance"
+          fields:
+            purpose:
+              type: "string"
+              required: false
+              conditional: "Only sent if Contact request type and loan_purpose is refinance"
+              description: "Refinance purpose type"
+              enum:
+                - "CashoutRefinance"
+                - "RateAndTermRefinance"
+                - "InterestRateReductionRefinance"
+                - "StreamlineRefinance"
+              example: "CashoutRefinance"
+            
+            amount_of_cash_out:
+              type: "number"
+              required: false
+              conditional: "Only sent if Contact request type, loan_purpose is refinance, refinance.purpose is CashoutRefinance, and if provided"
+              description: "Cashout value figure entered in Create Quote interface"
+              example: 30000
+        
+        downpayment_value:
+          type: "number"
+          required: true
+          description: "Downpayment value figure entered in Create Quote interface"
+          example: 159000
+        
+        loan_amount:
+          type: "number"
+          required: true
+          description: "Loan amount value figure entered in Create Quote interface"
+          example: 636000
+        
+        loan_type:
+          type: "string"
+          required: true
+          description: "Loan type"
+          enum:
+            - "Conforming"
+            - "NonConforming"
+            - "FHA"
+            - "VA"
+            - "USDARuralHousing"
+          example: "Conforming"
+        
+        amortization_type:
+          type: "string"
+          required: true
+          description: "Amortization type"
+          enum:
+            - "Fixed"
+            - "ARM"
+          example: "Fixed"
+        
+        arm_fixed_term:
+          type: "integer"
+          required: false
+          conditional: "Only sent if amortization_type is ARM"
+          description: "ARM fixed term in months (1, 3, 6, 12, etc)"
+          example: 0
+        
+        loan_term:
+          type: "integer"
+          required: true
+          description: "Loan term in months (120, 360, etc)"
+          example: 360
+        
+        desired_price:
+          type: "number"
+          required: true
+          description: "Desired price of offer entered in Create Quote interface"
+          example: 99.75
+        
+        interest_only:
+          type: "boolean"
+          required: true
+          description: "If offer should be interest only"
+          example: false
+        
+        automated_underwriting_system:
+          type: "string"
+          required: true
+          description: "Automated underwriting system"
+          enum:
+            - "DU"
+            - "LP"
+            - "NotSpecified"
+            - "InvestorAUS"
+            - "ManualTraditional"
+          example: "NotSpecified"
+        
+        exempt_from_va_funding_fee:
+          type: "boolean"
+          required: true
+          description: "If offer should be exempt from VA funding fee"
+          example: false
+        
+        heloc_drawn_amount:
+          type: "number"
+          required: true
+          description: "Desired HELOC draw amount entered in Create Quote interface"
+          example: 15000
+        
+        borrower_paid_mi:
+          type: "boolean"
+          required: true
+          description: "If offer has borrower paid mortgage insurance"
+          example: true
+        
+        prepay_penalty:
+          type: "string"
+          required: false
+          conditional: "Only sent for Contact request types"
+          description: "Prepayment penalty (1 equals a 1 year prepayment penalty)"
+          enum:
+            - "None"
+            - "1"
+            - "2"
+            - "3"
+            - "4"
+            - "5"
+          example: "2"
+        
+        debt_consolidation:
+          type: "boolean"
+          required: false
+          conditional: "Only sent for Contact request types"
+          description: "If cashout reason is debt consolidation"
+          example: true
+        
+        lien_position:
+          type: "string"
+          required: true
+          description: "Lien position"
+          enum:
+            - "First"
+            - "Second"
+          example: "First"
+        
+        second_lien_amount:
+          type: "number"
+          required: false
+          conditional: "Only sent for Contact request types"
+          description: "Second lien amount entered in Create Quote interface"
+          example: 30000
+        
+        custom:
+          description: "Loan-level custom fields configured in Default Loan Product"
+          type: "array"
+          required: false
+          conditional: "Sent if configured"
+          items:
+            name:
+              type: "string"
+              description: "Custom field name"
+              example: "test1"
+            
+            value:
+              type: "string"
+              description: "Custom field value"
+              example: "test2"
+    
+    borrower:
+      description: "Borrower information"
+      fields:
+        debt_to_income_ratio:
+          type: "number"
+          required: true
+          description: "DTI value entered in Create Quote interface"
+          example: 32
+        
+        fico_score:
+          type: "integer"
+          required: true
+          description: "FICO value entered in Create Quote interface"
+          example: 738
+        
+        months_reserves:
+          type: "integer"
+          required: true
+          description: "Months reserved value entered in Create Quote interface"
+          example: 12
+        
+        desired_lock_period:
+          type: "integer"
+          required: true
+          description: "Desired lock period entered in Create Quote Interface"
+          example: 30
+        
+        first_time_home_buyer:
+          type: "boolean"
+          required: true
+          description: "If first time home buyer"
+          example: false
+        
+        waive_escrows:
+          type: "boolean"
+          required: true
+          description: "If escrows are waived"
+          example: false
+        
+        self_employed:
+          type: "boolean"
+          required: true
+          description: "If borrower is self employed"
+          example: false
+        
+        va_first_time_use:
+          type: "boolean"
+          required: false
+          conditional: "Only sent for Contact request types"
+          description: "If borrower is first time VA borrower"
+          example: true
+        
+        income_verification_type:
+          type: "string"
+          required: false
+          conditional: "Only sent for Contact request types"
+          description: "Income verification type"
+          enum:
+            - "FullDoc"
+            - "PersonalBankStmt1Mo"
+            - "PersonalBankStmt6Mos"
+            - "PersonalBankStmt12Mos"
+            - "PersonalBankStmt18Mos"
+            - "PersonalBankStmt24Mos"
+            - "BusinessBankStmt1Mo"
+            - "BusinessBankStmt6Mos"
+            - "BusinessBankStmt12Mos"
+            - "BusinessBankStmt18Mos"
+            - "BusinessBankStmt24Mos"
+            - "OneYearAltDoc"
+            - "AssetRelated"
+            - "InvestorDscr"
+            - "RestrictedStock"
+            - "InvestorNoRatio"
+            - "PersonalBankStmt3Mos"
+            - "BusinessBankStmt3Mos"
+            - "TwoYearAltDoc"
+            - "WrittenVOE"
+            - "Stated"
+            - "OneYear1099"
+            - "TwoYear1099"
+            - "PLOneYear"
+            - "PLTwoYear"
+            - "NoIncomeVerification"
+          example: "PersonalBankStmt1Mo"
+        
+        time_since:
+          description: "Time since credit events"
+          conditional: "Only sent for Contact request types"
+          fields:
+            bankruptcy:
+              type: "integer"
+              required: false
+              description: "Months since bankruptcy: 0, 12, 24, 36, 48, 60, 72 (Greater than 5 Years = 72)"
+              enum: [0, 12, 24, 36, 48, 60, 72]
+              example: 0
+            
+            foreclosure:
+              type: "integer"
+              required: false
+              description: "Months since foreclosure: 0, 12, 24, 36, 48, 60, 72 (Greater than 5 Years = 72)"
+              enum: [0, 12, 24, 36, 48, 60, 72]
+              example: 0
+        
+        housing_event:
+          description: "Housing event information"
+          conditional: "Only sent for Contact request types"
+          fields:
+            type:
+              type: "string"
+              required: false
+              description: "Housing event type"
+              enum:
+                - "None"
+                - "Modification"
+                - "DeedInLieu"
+                - "Foreclosure"
+                - "ShortSale"
+                - "Forbearance"
+              example: "None"
+            
+            seasoning:
+              type: "string"
+              required: false
+              description: "Housing event seasoning period"
+              enum:
+                - "NotApplicable"
+                - "Last1To12Months"
+                - "Last13To24Months"
+                - "Last25to36Months"
+                - "Last37To48Months"
+                - "Last49to60Months"
+                - "MoreThanFiveYearsAgo"
+              example: "NotApplicable"
+        
+        citizenship:
+          type: "string"
+          required: false
+          conditional: "Only sent for Contact request types"
+          description: "Borrower citizenship status"
+          enum:
+            - "USCitizen"
+            - "PermResidentAlien"
+            - "USCitizenAbroad"
+            - "ForeignNational"
+            - "NonPermResidentAlien"
+          example: "NonPermResidentAlien"
+        
+        debt_service_coverage_ratio:
+          type: "number"
+          required: false
+          conditional: "Only sent if Contact request type and income_verification_type is InvestorDscr"
+          description: "DSCR value entered into the Create Quote interface"
+          example: 30
+        
+        mortgage_lates:
+          description: "Mortgage late payment history"
+          conditional: "Only sent for Contact request types"
+          fields:
+            greater_than_30days_12months:
+              type: "integer"
+              required: false
+              description: "Count of lates greater than 30 days in last 12 months"
+              example: 0
+            
+            greater_than_60days_12months:
+              type: "integer"
+              required: false
+              description: "Count of lates greater than 60 days in last 12 months"
+              example: 0
+            
+            greater_than_90days_12months:
+              type: "integer"
+              required: false
+              description: "Count of lates greater than 90 days in last 12 months"
+              example: 0
+            
+            greater_than_120days_12months:
+              type: "integer"
+              required: false
+              description: "Count of lates greater than 120 days in last 12 months"
+              example: 0
+            
+            greater_than_30days_24months:
+              type: "integer"
+              required: false
+              description: "Count of lates greater than 30 days in last 24 months"
+              example: 0
+            
+            greater_than_60days_24months:
+              type: "integer"
+              required: false
+              description: "Count of lates greater than 60 days in last 24 months"
+              example: 0
+            
+            greater_than_90days_24months:
+              type: "integer"
+              required: false
+              description: "Count of lates greater than 90 days in last 24 months"
+              example: 0
+            
+            greater_than_120days_24months:
+              type: "integer"
+              required: false
+              description: "Count of lates greater than 120 days in last 24 months"
+              example: 0
+
+# Response Structure
+response_schema:
+  
+  success_response:
+    description: "Successful response with pricing results"
+    http_status: [200, 201]
+    structure:
+      results:
+        type: "array"
+        required: true
+        description: "Array of pricing results correlated by request_id"
+        items:
+          request_id:
+            type: "string"
+            required: true
+            description: "Echo of correlating request identifier"
+            format: "uuid"
+            example: "da611ac2-bd7b-4101-8777-7fadd9c227c8"
+          
+          product_name:
+            type: "string"
+            required: false
+            description: "Product name of offer"
+            example: "30 Year Fixed"
+          
+          rate:
+            type: "string"
+            required: true
+            description: "Rate of offer"
+            example: "5.250"
+          
+          price:
+            type: "string"
+            required: true
+            description: "Price of offer"
+            example: "100.234"
+          
+          net_price:
+            type: "string"
+            required: false
+            description: "Net price of offer"
+            example: "100.345"
+          
+          apr:
+            type: "string"
+            required: true
+            description: "APR of offer"
+            example: "5.375"
+          
+          monthly_principal_and_interest:
+            type: "string"
+            required: true
+            description: "Monthly principal and interest of offer"
+            example: "3000.00"
+          
+          monthly_mi:
+            type: "string"
+            required: false
+            description: "Monthly mortgage insurance premium of offer"
+            example: "67.04"
+          
+          total_monthly_payment:
+            type: "string"
+            required: true
+            description: "Total monthly payment of offer"
+            example: "3067.04"
+          
+          total_loan_amount:
+            type: "string"
+            required: true
+            description: "Total loan amount of offer (including financed government fees, etc)"
+            example: "636000.00"
+          
+          closing_cost:
+            type: "string"
+            required: false
+            description: "Total closing costs of offer, including upfront government fees"
+            example: "2000.00"
+          
+          amortization_term:
+            type: "string"
+            required: false
+            description: "Amortization term of offer"
+            example: "345"
+          
+          amortization_type:
+            type: "string"
+            required: false
+            description: "Amortization type of offer"
+            example: "ARM"
+          
+          arm_index:
+            type: "string"
+            required: false
+            description: "ARM index of offer"
+            example: "LIBOR"
+          
+          arm_margin:
+            type: "string"
+            required: false
+            description: "ARM margin of offer"
+            example: "2.6"
+          
+          discount:
+            type: "string"
+            required: false
+            description: "Discount dollar value of offer (points)"
+            example: "150.02"
+          
+          rebate:
+            type: "string"
+            required: false
+            description: "Rebate dollar value of offer"
+            example: "225.02"
+          
+          price_status:
+            type: "string"
+            required: false
+            description: "Current investor status of offer"
+            example: "Available"
+          
+          last_update:
+            type: "string"
+            required: false
+            description: "Date and time of last updated offers of investor"
+            format: "datetime"
+            example: "2025-12-19 16:24:27"
+          
+          investor:
+            type: "string"
+            required: false
+            description: "Investor of offer"
+            example: "US Bank"
+  
+  ineligible_response:
+    description: "Success response but no eligible products found"
+    http_status: 300
+    structure:
+      results:
+        type: "array"
+        required: true
+        description: "Array indicating no products found for request"
+        items:
+          request_id:
+            type: "string"
+            required: true
+            description: "Echo of correlating request identifier"
+            example: ""
+          
+          message:
+            type: "string"
+            required: true
+            description: "Message indicating no product found"
+            example: "No product found"
+  
+  authentication_failure_response:
+    description: "Authentication failure response"
+    http_status: 400
+    structure:
+      error:
+        type: "string"
+        required: true
+        description: "Error type"
+        example: "Unauthorized"
+      
+      error_description:
+        type: "string"
+        required: true
+        description: "Error description"
+        example: "The access token provided is invalid"
+  
+  system_error_response:
+    description: "System error response"
+    http_status: 500
+    structure:
+      error:
+        type: "string"
+        description: "System error message"
+
+# Required Response Fields Summary
+response_required_fields:
+  - "request_id"
+  - "rate"
+  - "price"
+  - "apr"
+  - "monthly_principal_and_interest"
+  - "total_monthly_payment"
+  - "total_loan_amount"
+
+# Notes
+notes:
+  - "Custom Loan Products have no impact on PPE request (TE UX Only)"
+  - "Default Borrower Information has no impact on PPE request (TE UX Only)"
+  - "Default Loan Products drive default options for TE user and available values for PPE requests"
+  - "Custom fields configured in Default Loan Products are nested under individual loan request"
+  - "Top-level custom fields are passed to PPE in top-level 'custom' node"
+  - "Lead source is passed to PPE in top-level 'lead_source' field"
+  - "Marketing Material requests have fewer available fields than Contact requests"
+  - "Refinance loan purpose is only available for Contact request types"
+  - "PPE endpoint recipient should translate TE data inputs to their correlating fields or apply defaults"

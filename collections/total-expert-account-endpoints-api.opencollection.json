@@ -1,0 +1,274 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Total Expert Public Account Endpoints API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://public.totalexpert.net/v1/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Account Endpoints",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/accounts/:account_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a specific account specified by ID."
+        },
+        {
+          "info": {
+            "name": "Update Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://public.totalexpert.net/v1/accounts/:account_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing account by ID."
+        },
+        {
+          "info": {
+            "name": "Fetch Accounts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/accounts",
+            "params": [
+              {
+                "name": "page[number]",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "page[size]",
+                "value": "10",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Fetch a page of accounts. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters."
+        },
+        {
+          "info": {
+            "name": "Create Accounts",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://public.totalexpert.net/v1/accounts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an account"
+        },
+        {
+          "info": {
+            "name": "Fetch Account Type",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/account-types/:type_id",
+            "params": [
+              {
+                "name": "type_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a specific account type specified by ID."
+        },
+        {
+          "info": {
+            "name": "Update Account Type",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://public.totalexpert.net/v1/account-types/:type_id",
+            "params": [
+              {
+                "name": "type_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing account type by ID."
+        },
+        {
+          "info": {
+            "name": "Fetch Account Types",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/account-types",
+            "params": [
+              {
+                "name": "page[number]",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "page[size]",
+                "value": "10",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Fetch a page of account types. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters."
+        },
+        {
+          "info": {
+            "name": "Create Account Type",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://public.totalexpert.net/v1/account-types",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an account type.\nRequired Attributes:\n\naccount_type\n\nRequired Relationships:\n\nowning_organization*\n\n*required if authenticated as an TE admin"
+        },
+        {
+          "info": {
+            "name": "Fetch Classes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/account-classifications"
+          },
+          "docs": "Fetch Classes"
+        },
+        {
+          "info": {
+            "name": "Fetch Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/account-statuses/:status_id",
+            "params": [
+              {
+                "name": "status_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a specific account status specified by ID."
+        },
+        {
+          "info": {
+            "name": "Update Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://public.totalexpert.net/v1/account-statuses/:status_id",
+            "params": [
+              {
+                "name": "status_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing account status by ID."
+        },
+        {
+          "info": {
+            "name": "Fetch Statuses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/account-statuses",
+            "params": [
+              {
+                "name": "page[number]",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "page[size]",
+                "value": "10",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Fetch a page of account statuses. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters."
+        },
+        {
+          "info": {
+            "name": "Create Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://public.totalexpert.net/v1/account-statuses",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an account status.\n\nRequired Attributes:\n\naccount_status\n\nRequired Relationships:\n\nowning_organization*\n\n*required if authenticated as an TE admin"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

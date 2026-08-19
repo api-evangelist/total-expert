@@ -1,19 +1,15 @@
 generated: '2026-07-21'
 method: derived
 status: candidate
-source: >-
-  openapi/total-expert-openapi.yml (no official Total Expert MCP server found
-  in the official MCP registry, npm, or the provider's docs)
+source: openapi/total-expert-openapi.yml (no official Total Expert MCP server found in the official MCP
+  registry, npm, or the provider's docs)
 server:
   name: total-expert
   transport: http
   url: null
-notes: >-
-  Candidate tool list derived from the operations in the derived OpenAPI
-  (129 operations total; the core resource surface is listed here, and every
-  remaining operation in openapi/total-expert-openapi.yml is an equally valid
-  candidate). Authentication would use OAuth 2.0 client credentials against
-  https://public.totalexpert.net/v1/token.
+notes: Candidate tool list derived from the operations in the derived OpenAPI (129 operations total; the
+  core resource surface is listed here, and every remaining operation in openapi/total-expert-openapi.yml
+  is an equally valid candidate). Authentication would use OAuth 2.0 client credentials against https://public.totalexpert.net/v1/token.
 tools:
 - name: fetch_heartbeat
   description: Verify authentication and API availability (GET /v1/heartbeat)
@@ -105,3 +101,25 @@ tools:
 - name: fetch_custom_field_schema
   description: Fetch the organization's custom-field schema (GET /v1/schema/custom-fields)
   source_operation: openapi/total-expert-openapi.yml#fetchCustomFieldSchema
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: oauth
+  verified: probed
+  tools: 30
+  checked: '2026-08-13'
+  source: >-
+    Re-probed 2026-08-13. No Total Expert MCP server exists: mcp.totalexpert.com,
+    mcp.totalexpert.net and api.totalexpert.com all fail to resolve; no MCP
+    server appears in the official MCP registry, on npm, or anywhere in the
+    provider's public docs, help center Developer Resources, or 2025-2026
+    release notes. The tools[] list below is an API Evangelist candidate derived
+    from the OpenAPI operations — nobody ships this. Authentication, if one were
+    built, would be OAuth 2.0 client credentials against
+    https://public.totalexpert.net/v1/token.
+  probes:
+  - {url: 'https://mcp.totalexpert.com/mcp', status: 0, note: DNS/connection failure}
+  - {url: 'https://mcp.totalexpert.net/mcp', status: 0, note: DNS/connection failure}
+  - {url: 'https://api.totalexpert.com/mcp', status: 0, note: DNS/connection failure}

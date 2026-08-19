@@ -1,0 +1,96 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Total Expert Public Account Endpoints Email Unsubscribes API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://public.totalexpert.net/v1/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Email Unsubscribes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch Email Domains",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/email-domains"
+          },
+          "docs": "Fetch a page of email domains. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters.\n\nAttributes\n\nField\nAssignable\nType\nDescription\n\ndomain_name\nNo\nstring\nThe sending domain, e.g. 'totalexpert.com'"
+        },
+        {
+          "info": {
+            "name": "Fetch Email Unsubscribes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/email-unsubscribes",
+            "params": [
+              {
+                "name": "page[number]",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "page[size]",
+                "value": "10",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Fetch a page of unsubscribes. Specify page size and page number via the '?page[size]' and '?page[number]' GET parameters.\n\nAttributes\n\nField\nAssignable\nType\nDescription\n\nid\nNo\nint\nThe id of the email unsubscribe\n\nemail\nNo\nstring\nThe email that is unsubscribed\n\norganization_unsub_at\nNo\ndatetime\nThe timestamp of when an organization unsubscribed\n\norganization_wide\nNo\nbool\nThe unsubscribe is org-wide"
+        },
+        {
+          "info": {
+            "name": "Create Email Unsubscribe",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://public.totalexpert.net/v1/email-unsubscribes",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Change the subscripition status for an email.\n\nRequired Attributes:\n\nemail\n\nRequired Relationships:\nNone"
+        },
+        {
+          "info": {
+            "name": "Fetch Email Unsubscribe",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://public.totalexpert.net/v1/email-unsubscribes/:email_unsubscribe_id",
+            "params": [
+              {
+                "name": "email_unsubscribe_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a particular email unsubscribe by id.\n\nAttributes\n\nField\nAssignable\nType\nDescription\n\nid\nNo\nint\nThe id of the email unsubscribe\n\nemail\nNo\nstring\nThe email that is unsubscribed\n\norganization_unsub_at\nNo\ndatetime\nThe timestamp of when an organization unsubscribed\n\norganization_wide\nNo\nbool\nThe unsubscribe is org-wide"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

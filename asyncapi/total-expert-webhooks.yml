@@ -1,13 +1,16 @@
-generated: '2026-07-21'
+generated: '2026-08-13'
 method: searched
 source: >-
   https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
-  (Webhooks section of the Total Expert Public API documentation)
+  (Webhooks section of the Total Expert Public API documentation) +
+  https://totalexpert.freshdesk.com/support/solutions/articles/22000296302-outbound-data-connector-advanced-guide
 spec_type: Webhooks
 notes: >-
-  Total Expert publishes no AsyncAPI document. This captures its documented
-  webhook surface: organizations subscribe an HTTPS endpoint to a set of
-  actions and receive POST notifications when those actions occur.
+  Total Expert publishes no AsyncAPI document. This captures its two documented
+  outbound event surfaces: (1) Webhooks — organizations subscribe an HTTPS
+  endpoint to a set of actions and receive POST notifications when those actions
+  occur; and (2) the Outbound Data Connector (ODC), a templated JSON push to an
+  external system or API on a trigger.
 subscription:
   create: POST /v1/webhook-subscriptions (see openapi/total-expert-openapi.yml#createWebhookSubscription)
   list_actions: GET /v1/webhook-actions returns the full list of subscribable actions (openapi/total-expert-openapi.yml#fetchWebhookActions)
@@ -38,7 +41,55 @@ notification:
     Notifications fire only for contact records associated with your
     organization; co-marketers of organizational contacts do not receive
     notifications.
+outbound_data_connector:
+  name: Outbound Data Connector (ODC)
+  docs: https://totalexpert.freshdesk.com/support/solutions/articles/22000296302-outbound-data-connector-advanced-guide
+  guide_pdf: https://totalexpert-trainingteam.s3.us-east-2.amazonaws.com/TE_OutboundDataConnector/Outbound+Data+Connector.pdf
+  modified: '2026-08-11'
+  description: >-
+    ODC pushes a structured JSON payload to an external system or API whenever a
+    trigger fires (a workflow step, a status change, or a scheduled event). The
+    payload is authored as a template: each JSON value can be static, or a
+    dynamic value resolved at send time from the triggering record using Liquid
+    template tags. One connector configuration serves thousands of records.
+  templating:
+    language: Liquid
+    constructs:
+    - {syntax: '{{ variable }}', purpose: renders a field or expression into the output}
+    - {syntax: '{% logic %}', purpose: executes logic (if/else, loops, assignments); produces no output itself}
+    - {syntax: '{{ variable | filter }}', purpose: transforms the output value before rendering; filters chain left to right}
+    note: >-
+      The advanced guide publishes a full filter library (string case, number
+      and math, date, default/fallback), conditional logic patterns, and a tag
+      reference. Total Expert cautions that platform implementations may support
+      only a subset of Liquid filters, so each filter should be tested in the
+      target environment.
+  data_objects:
+  - {object: contact, description: Contact record that triggered the event, example: '{{contact.f_name}}'}
+  - {object: owner, description: The user (loan officer) who owns the contact or loan, example: '{{owner.email}}'}
+  - {object: loan, description: The loan record associated with the trigger, example: '{{loan.amount}}'}
+  - {object: lead, description: The lead record associated with the trigger event, example: '{{lead.stage}}'}
+  - {object: 'brand_*', description: Organization-level branding variables, example: '{{brand_company_name}}'}
+  - {object: contact.enriched.rate, description: Enriched rate/market data on the contact, example: '{{contact.enriched.rate.loan_rate}}'}
+  - {object: contact.enriched.equity, description: Enriched equity/property data on the contact, example: '{{contact.enriched.equity.estimated_ltv}}'}
+  - {object: contact.enriched.debt, description: Enriched debt/credit profile data on the contact, example: '{{contact.enriched.debt.credit_score}}'}
+  scoping_caveat: >-
+    Not every object is available in every trigger context — a loan-triggered
+    connector exposes loan.* fields, a contact-triggered connector may not.
+    Consumers must verify which objects are in scope for the workflow trigger.
+  recent_changes:
+  - {date: '2026-06-08', change: 'Lead Entity Support — loan purpose, property information and lead ID can be included in ODC payloads to third-party systems such as AI sales agents and dialers.', source: 'https://totalexpert.freshdesk.com/support/solutions/articles/22000295615-2026-june-release-notes'}
+inbound_callback_contracts:
+- name: TE Connect PPE
+  direction: Total Expert -> partner endpoint
+  description: >-
+    Total Expert POSTs a rate-quote request to a partner-configured pricing
+    engine endpoint and consumes the response. The provider publishes the full
+    field-level request/response schema as a downloadable YAML file.
+  schema: vocabulary/total-expert-te-connect-ppe-schema.yml
+  docs: https://totalexpert.freshdesk.com/support/solutions/articles/22000293934-te-connect-ppe-integration-guide
 use_cases:
 - Keep an external CRM in sync with contacts/leads created or updated directly in Total Expert.
 - Propagate contact deletions/archivals to a mirrored database.
 - Sync email opt-outs so downstream systems stop communicating with opted-out contacts.
+- Push templated JSON to a downstream API (AI sales agent, dialer, data warehouse) on a workflow trigger via ODC.

@@ -1,34 +1,84 @@
-generated: '2026-07-21'
-method: searched
+generated: '2026-08-13'
+method: probed
 source: live probes of /.well-known/ and /llms.txt on the website, developer portal, and API hosts
+hit: false
 notes: >-
-  No well-known discovery documents are published. developer.totalexpert.net
+  RECORDED ABSENCE. No well-known discovery documents are published on any Total
+  Expert host. Re-probed 2026-08-13: every path on every host returned 404, 403
+  or failed to connect — not one 200 carrying a document. developer.totalexpert.net
   fronts its static assets with a CDN that returns 403 for unknown paths;
-  public.totalexpert.net returns 404s. No security.txt, OIDC discovery,
-  OAuth authorization-server metadata, api-catalog, ai-plugin, or llms.txt
-  anywhere.
+  public.totalexpert.net and www.totalexpert.com return 404s;
+  public.vt.totalexpert.net (the CT sandbox host) refuses connections from the
+  public internet. No security.txt, OIDC discovery, OAuth authorization-server
+  or protected-resource metadata, api-catalog, ai-plugin, agent card, or
+  llms.txt anywhere. Because nothing was served, this file carries NO
+  `WellKnown` / `SecurityTxt` pointer in apis.yml — the pointer would assert a
+  surface the provider does not serve.
 hosts:
 - host: https://www.totalexpert.com
   documents:
   - {path: /.well-known/security.txt, status: 404}
   - {path: /.well-known/openid-configuration, status: 404}
   - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/oauth-protected-resource, status: 404}
   - {path: /.well-known/api-catalog, status: 404}
   - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+  - {path: /security.txt, status: 404}
   - {path: /llms.txt, status: 404}
 - host: https://developer.totalexpert.net
   documents:
   - {path: /.well-known/security.txt, status: 403}
   - {path: /.well-known/openid-configuration, status: 403}
   - {path: /.well-known/oauth-authorization-server, status: 403}
+  - {path: /.well-known/oauth-protected-resource, status: 403}
   - {path: /.well-known/api-catalog, status: 403}
   - {path: /.well-known/ai-plugin.json, status: 403}
+  - {path: /.well-known/agent-card.json, status: 403}
+  - {path: /.well-known/agent.json, status: 403}
+  - {path: /security.txt, status: 404}
   - {path: /llms.txt, status: 404}
 - host: https://public.totalexpert.net
   documents:
   - {path: /.well-known/security.txt, status: 404}
   - {path: /.well-known/openid-configuration, status: 404}
   - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/oauth-protected-resource, status: 404}
   - {path: /.well-known/api-catalog, status: 404}
   - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+  - {path: /security.txt, status: 404}
   - {path: /llms.txt, status: 404}
+- host: https://public.vt.totalexpert.net
+  documents:
+  - {path: /.well-known/security.txt, status: 0, note: connection failed (sandbox host is not publicly reachable)}
+  - {path: /.well-known/openid-configuration, status: 0, note: connection failed}
+  - {path: /.well-known/oauth-authorization-server, status: 0, note: connection failed}
+  - {path: /.well-known/oauth-protected-resource, status: 0, note: connection failed}
+  - {path: /.well-known/api-catalog, status: 0, note: connection failed}
+  - {path: /.well-known/ai-plugin.json, status: 0, note: connection failed}
+  - {path: /.well-known/agent-card.json, status: 0, note: connection failed}
+  - {path: /.well-known/agent.json, status: 0, note: connection failed}
+  - {path: /llms.txt, status: 0, note: connection failed}
+spec_discovery:
+  note: >-
+    STEP 0b contract-discovery probes run in the same pass. No REST OpenAPI is
+    served at any host root and no GraphQL endpoint exists; the only
+    machine-readable contracts Total Expert publishes are the Postman collection
+    (from which openapi/ is derived) and the TE Connect PPE schema YAML in
+    vocabulary/.
+  probes:
+  - {url: 'https://public.totalexpert.net/openapi.json', status: 404}
+  - {url: 'https://public.totalexpert.net/openapi.yaml', status: 404}
+  - {url: 'https://public.totalexpert.net/swagger.json', status: 404}
+  - {url: 'https://public.totalexpert.net/v1/openapi.json', status: 404}
+  - {url: 'https://public.totalexpert.net/api-docs', status: 404}
+  - {url: 'https://public.totalexpert.net/docs', status: 404}
+  - {url: 'https://public.totalexpert.net/graphql', status: 404, note: 'POST introspection query'}
+  - {url: 'https://developer.totalexpert.net/openapi.json', status: 404}
+  - {url: 'https://www.totalexpert.com/openapi.json', status: 404}
+  - {url: 'https://mcp.totalexpert.com/mcp', status: 0, note: DNS/connection failure}
+  - {url: 'https://mcp.totalexpert.net/mcp', status: 0, note: DNS/connection failure}
+  - {url: 'https://api.totalexpert.com/mcp', status: 0, note: DNS/connection failure}
