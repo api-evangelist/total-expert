@@ -280,6 +280,8 @@ apis:
   humanURL: https://developer.totalexpert.net
   baseURL: https://public.totalexpert.net/v1
   tags:
+  - Webhook
+  tags_raw:
   - Webhooks
   properties:
   - type: OpenAPI
