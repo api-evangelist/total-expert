@@ -10,6 +10,18 @@ description: >-
   documented deduplication, pagination, and rate-limit contracts and an
   isolated sandbox environment for integration partners.
 url: https://raw.githubusercontent.com/api-evangelist/total-expert/refs/heads/main/apis.yml
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: unknown
   onboarding: self-serve
