@@ -308,6 +308,9 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: CapabilityMap
+  url: capabilities/total-expert-capability-edges.yml
+  name: Total Expert Business Capability Map
 - type: PostmanWorkspace
   url: https://www.postman.com/kinlaneapi/total-expert/overview
 - type: Website

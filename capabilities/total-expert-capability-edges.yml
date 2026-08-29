@@ -1,0 +1,54 @@
+slug: total-expert
+provider: Total Expert
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Banking & Capital Markets
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 4
+edges:
+- tag: Lead Opportunities (New)
+  spec_file: total-expert-lead-opportunities-new-api-openapi.yml
+  capability_id: BC-410.30
+  capability_id_l1: BC-410
+  capability_name: Opportunity & Pipeline Management
+  confidence: 0.85
+  evidence: GET /v1/lead-opportunities/{lead_opportunity_id} getLeadOpportunityById; PATCH /v1/lead-opportunities
+    updateLeadOpportunity
+  reason: Create/read/update of lead opportunity records on a CRM — lead and opportunity lifecycle management.
+- tag: ALM Leads (formerly Lead Opportunities)
+  spec_file: total-expert-alm-leads-formerly-lead-opportunities-api-openapi.yml
+  capability_id: BC-410.30
+  capability_id_l1: BC-410
+  capability_name: Opportunity & Pipeline Management
+  confidence: 0.8
+  evidence: '''Create Lead Opportunity'', ''Fetch Lead Opportunity'', ''Update Lead Opportunity'' on /v1/leads'
+  reason: CRUD over lead opportunities in a lender-focused CRM is lead/opportunity lifecycle management
+    within Sales Management.
+- tag: Contact Endpoints
+  spec_file: total-expert-contact-endpoints-api-openapi.yml
+  capability_id: BC-420.10
+  capability_id_l1: BC-420
+  capability_name: Customer Data Management
+  confidence: 0.8
+  evidence: GET /v1/contacts fetchContacts; POST /v1/contacts createContactAsAdmin; GET /v1/contact-groups
+    fetchContactGroups
+  reason: CRUD over CRM contact records and contact groups on a customer-engagement platform — customer
+    master data management within CRM.
+- tag: Loan Endpoints
+  spec_file: total-expert-loan-endpoints-api-openapi.yml
+  capability_id: BC-1320
+  capability_id_l1: BC-1320
+  capability_name: Credit & Lending Management
+  confidence: 0.7
+  evidence: POST /v1/loans createLoanAsAdmin; GET /v1/loan-types fetchLoanTypes; GET /v1/loan-statuses
+    fetchLoanStatuses; GET /v1/loan-purposes fetchLoanPurpose
+  reason: Loan records with types, statuses and purposes tracked for lenders/mortgage companies — clearly
+    credit & lending domain, but the surface does not name whether it is origination, servicing or pipeline
+    tracking, so no L2.
