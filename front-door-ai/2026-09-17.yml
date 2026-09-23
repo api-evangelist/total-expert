@@ -1,0 +1,29 @@
+# Front Door AI Index — total-expert — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: total-expert
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.totalexpert.com
+  final_host: www.totalexpert.com
+  ownership: own
+  owner: total-expert
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 14
+  host_score: 14
+  density: 9.68
+  words: 1446
+  tiers:
+    agentic: 5
+    core: 9
+    model: 0
+  ambiguous: 9
+  top_terms:
+    AI: 9
+    automation: 7
+    AI assistant: 3
+    agentic: 2
+    intelligence: 2
