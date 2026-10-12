@@ -1,0 +1,118 @@
+generated: '2026-10-12'
+method: derived
+source: the pre-flight dossier, apis.yml pointers, spec servers, well-known, vendors -- nothing fetched here
+generator: derive-hosts.py
+summary:
+  hosts: 9
+  own: 2
+  other_domain: 5
+  platform: 2
+  roles:
+  - docs
+  - identity
+  - other
+  - portal
+  - source
+  - status
+  - website
+hosts:
+- host: developer.totalexpert.net
+  found_by:
+  - pointer
+  - apis[]
+  types:
+  - DeveloperPortal
+  serves:
+  - docs
+  registrable_domain: totalexpert.net
+  role: portal
+  relation: other-domain
+- host: documenter.getpostman.com
+  found_by:
+  - pointer
+  - vendor-detect
+  types:
+  - Documentation
+  - APIReference
+  - Postman
+  serves:
+  - api-collections
+  vendor: postman
+  registrable_domain: getpostman.com
+  role: docs
+  relation: other-domain
+- host: github.com
+  found_by:
+  - pointer
+  types:
+  - GitHubOrganization
+  serves: []
+  registrable_domain: github.com
+  role: source
+  relation: platform
+- host: public.totalexpert.net
+  found_by:
+  - pointer
+  - apis[]
+  types:
+  - GettingStarted
+  serves:
+  - api
+  registrable_domain: totalexpert.net
+  role: docs
+  relation: other-domain
+- host: status.totalexpert.com
+  found_by:
+  - pointer
+  types:
+  - StatusPage
+  serves: []
+  registrable_domain: totalexpert.com
+  role: status
+  relation: own
+- host: totalexpert.freshdesk.com
+  found_by:
+  - pointer
+  types:
+  - ReleaseNotes
+  - HelpCenter
+  serves: []
+  registrable_domain: freshdesk.com
+  role: other
+  relation: other-domain
+- host: totalexpert.net
+  found_by:
+  - pointer
+  types:
+  - Login
+  serves: []
+  registrable_domain: totalexpert.net
+  role: identity
+  relation: other-domain
+- host: www.postman.com
+  found_by:
+  - pointer
+  types:
+  - PostmanWorkspace
+  serves: []
+  registrable_domain: postman.com
+  role: other
+  relation: platform
+- host: www.totalexpert.com
+  found_by:
+  - pointer
+  - vendor-detect
+  types:
+  - BlogRSS
+  - Website
+  - Support
+  - Blog
+  - TermsOfService
+  - PrivacyPolicy
+  - Compliance
+  serves:
+  - cdn
+  vendor: cloudflare
+  registrable_domain: totalexpert.com
+  role: website
+  relation: own

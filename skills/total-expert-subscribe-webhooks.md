@@ -1,5 +1,5 @@
 ---
-name: Subscribe to Total Expert webhooks
+name: subscribe-webhooks
 description: Register an HTTPS endpoint for entity/verb actions and process notifications using the hashValue change-detection contract.
 api: openapi/total-expert-openapi.yml
 operations: [fetchWebhookActions, createWebhookSubscription, fetchWebhookSubscriptions, updateWebhookSubscription, deleteWebhookSubscription]

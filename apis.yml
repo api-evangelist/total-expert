@@ -1,5 +1,7 @@
 aid: total-expert
+
 name: Total Expert
+
 description: >-
   Total Expert is a fintech CRM and customer-engagement platform built for
   banks, credit unions, lenders, and mortgage companies. Its Public API is a
@@ -9,7 +11,9 @@ description: >-
   campaigns, users, teams, accounts, and webhook subscriptions, with
   documented deduplication, pagination, and rate-limit contracts and an
   isolated sandbox environment for integration partners.
+
 url: https://raw.githubusercontent.com/api-evangelist/total-expert/refs/heads/main/apis.yml
+
 deliveryModel:
   model: saas
   open_source: false
@@ -22,6 +26,7 @@ deliveryModel:
   - pricing
   generated: '2026-08-28'
   method: derived
+
 accessModel:
   pricing: unknown
   onboarding: self-serve
@@ -34,21 +39,26 @@ accessModel:
   - authentication
   generated: '2026-07-22'
   method: derived
+
 image: https://developer.totalexpert.net/img/Total-Expert-Logo-Color.png
+
 x-type: company
+
 x-source: vc-portfolio
+
 x-backed-by:
 - emergence-capital
-x-tier: stub
-x-tier-reason: portfolio-lead
+
+x-tier: profiled
+
+x-tier-reason: enrichment pass 2026-10-12 (local-v5; was portfolio-lead)
+
 specificationVersion: '0.23'
-x-enrichment:
-  date: '2026-08-13'
-  status: enriched
-  artifacts_added: 4
-  pass: local-v1
+
 created: '2026-07-17'
+
 modified: '2026-10-06'
+
 tags:
 - Company
 - Fintech
@@ -58,6 +68,109 @@ tags:
 - Banking
 - Lending
 - Customer Engagement
+
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
+- FN: APIs.json
+  email: info@apis.io
+
+common:
+- type: Spectral
+  url: rules/total-expert-rules.yml
+- type: Hosts
+  url: hosts/total-expert-hosts.yml
+- type: IntegrationEdges
+  url: integrations/total-expert-integration-edges.yml
+- type: Vendors
+  url: vendors/total-expert-vendors.yml
+- type: Newsroom
+  url: https://www.totalexpert.com/resources/news
+- type: Leadership
+  url: https://www.totalexpert.com/leadership
+- url: https://www.totalexpert.com/blog/rss.xml
+  type: BlogRSS
+- type: CapabilityMap
+  url: capabilities/total-expert-capability-edges.yml
+  name: Total Expert Business Capability Map
+- type: PostmanWorkspace
+  url: https://www.postman.com/kinlaneapi/total-expert/overview
+- type: Website
+  url: https://www.totalexpert.com
+- type: DeveloperPortal
+  url: https://developer.totalexpert.net
+- type: Documentation
+  url: https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
+- type: APIReference
+  url: https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
+- type: GettingStarted
+  url: https://public.totalexpert.net/v1/docs/Getting+Started.pdf
+- type: Postman
+  url: https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
+- type: Support
+  url: https://www.totalexpert.com/services/support
+- type: Blog
+  url: https://www.totalexpert.com/resources/blog
+- type: GitHubOrganization
+  url: https://github.com/TotalExpert
+- type: StatusPage
+  url: https://status.totalexpert.com
+- type: TermsOfService
+  url: https://www.totalexpert.com/terms-of-service
+- type: PrivacyPolicy
+  url: https://www.totalexpert.com/privacy-policy
+- type: Compliance
+  url: https://www.totalexpert.com/security
+- type: TrustCenter
+  url: security/total-expert-trust-center.yml
+- type: Authentication
+  url: authentication/total-expert-authentication.yml
+- type: OAuthScopes
+  url: scopes/total-expert-scopes.yml
+- type: AgenticAccess
+  url: agentic-access/total-expert-agentic-access.yml
+- type: DomainSecurity
+  url: security/total-expert-domain-security.yml
+- type: X-MCPServerCandidate
+  url: mcp/total-expert-mcp.yml
+  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate — a tool list derived from the published API contracts, not an existing server. The scorer already read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type surfaces with a server that does not exist.'
+- type: Overlay
+  url: overlays/total-expert-openapi-overlay.yaml
+- type: Conformance
+  url: conformance/total-expert-conformance.yml
+- type: ErrorCatalog
+  url: errors/total-expert-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/total-expert-lifecycle.yml
+- type: Sandbox
+  url: sandbox/total-expert-sandbox.yml
+- type: Conventions
+  url: conventions/total-expert-conventions.yml
+- type: Idempotency
+  url: conventions/total-expert-conventions.yml
+- type: RateLimits
+  url: rate-limits/total-expert-rate-limits.yml
+- type: Webhooks
+  url: asyncapi/total-expert-webhooks.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: DataModel
+  url: data-model/total-expert-data-model.yml
+- type: ChangeLog
+  url: changelog/total-expert-changelog.yml
+- type: ReleaseNotes
+  url: https://totalexpert.freshdesk.com/support/solutions/22000109162
+- type: Plans
+  url: plans/total-expert-plans-pricing.yml
+- type: Components
+  url: components/total-expert-components.yml
+- type: Vocabulary
+  url: vocabulary/total-expert-te-connect-ppe-schema.yml
+- type: HelpCenter
+  url: https://totalexpert.freshdesk.com/support/home
+- type: Login
+  url: https://totalexpert.net/login
+
 apis:
 - aid: total-expert:total-expert-account-endpoints-api
   name: Total Expert Account Endpoints API
@@ -302,95 +415,8 @@ apis:
     url: https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
   - type: PostmanCollection
     url: postman/total-expert-public-api.postman_collection.json
-maintainers:
-- FN: Kin Lane
-  email: kin@apievangelist.com
-- FN: APIs.json
-  email: info@apis.io
-common:
-- url: https://www.totalexpert.com/blog/rss.xml
-  type: BlogRSS
-- type: CapabilityMap
-  url: capabilities/total-expert-capability-edges.yml
-  name: Total Expert Business Capability Map
-- type: PostmanWorkspace
-  url: https://www.postman.com/kinlaneapi/total-expert/overview
-- type: Website
-  url: https://www.totalexpert.com
-- type: DeveloperPortal
-  url: https://developer.totalexpert.net
-- type: Documentation
-  url: https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
-- type: APIReference
-  url: https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
-- type: GettingStarted
-  url: https://public.totalexpert.net/v1/docs/Getting+Started.pdf
-- type: Postman
-  url: https://documenter.getpostman.com/view/1929166/total-expert-public-api/6Z2RYyU
-- type: Support
-  url: https://www.totalexpert.com/services/support
-- type: Blog
-  url: https://www.totalexpert.com/resources/blog
-- type: GitHubOrganization
-  url: https://github.com/TotalExpert
-- type: StatusPage
-  url: https://status.totalexpert.com
-- type: TermsOfService
-  url: https://www.totalexpert.com/terms-of-service
-- type: PrivacyPolicy
-  url: https://www.totalexpert.com/privacy-policy
-- type: Compliance
-  url: https://www.totalexpert.com/security
-- type: TrustCenter
-  url: security/total-expert-trust-center.yml
-- type: Authentication
-  url: authentication/total-expert-authentication.yml
-- type: OAuthScopes
-  url: scopes/total-expert-scopes.yml
-- type: AgenticAccess
-  url: agentic-access/total-expert-agentic-access.yml
-- type: DomainSecurity
-  url: security/total-expert-domain-security.yml
-- type: Packages
-  url: packages/total-expert-packages.yml
-- type: X-MCPServerCandidate
-  url: mcp/total-expert-mcp.yml
-  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate — a tool list derived from the published API contracts, not an existing server. The scorer already read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type surfaces with a server that does not exist.'
-- type: LLMsTxt
-  url: llms/total-expert-llms.txt
-- type: Overlay
-  url: overlays/total-expert-openapi-overlay.yaml
-- type: Conformance
-  url: conformance/total-expert-conformance.yml
-- type: ErrorCatalog
-  url: errors/total-expert-problem-types.yml
-- type: Lifecycle
-  url: lifecycle/total-expert-lifecycle.yml
-- type: Sandbox
-  url: sandbox/total-expert-sandbox.yml
-- type: Conventions
-  url: conventions/total-expert-conventions.yml
-- type: Idempotency
-  url: conventions/total-expert-conventions.yml
-- type: RateLimits
-  url: rate-limits/total-expert-rate-limits.yml
-- type: Webhooks
-  url: asyncapi/total-expert-webhooks.yml
-- type: AgentSkill
-  url: skills/_index.yml
-- type: DataModel
-  url: data-model/total-expert-data-model.yml
-- type: ChangeLog
-  url: changelog/total-expert-changelog.yml
-- type: ReleaseNotes
-  url: https://totalexpert.freshdesk.com/support/solutions/22000109162
-- type: Plans
-  url: plans/total-expert-plans-pricing.yml
-- type: Components
-  url: components/total-expert-components.yml
-- type: Vocabulary
-  url: vocabulary/total-expert-te-connect-ppe-schema.yml
-- type: HelpCenter
-  url: https://totalexpert.freshdesk.com/support/home
-- type: Login
-  url: https://totalexpert.net/login
+x-enrichment:
+  date: '2026-10-12'
+  status: enriched
+  artifacts_added: 2
+  pass: local-v5

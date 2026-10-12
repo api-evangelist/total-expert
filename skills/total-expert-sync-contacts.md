@@ -1,5 +1,5 @@
 ---
-name: Sync contacts into Total Expert
+name: sync-contacts
 description: Create or update contacts in Total Expert from an external system, honoring authentication, deduplication, ownership, and pagination rules.
 api: openapi/total-expert-openapi.yml
 operations: [fetchATokenFromClientCredentialsGrant, fetchHeartbeat, fetchContacts, fetchContact, createContactAsAdmin, updateContact, fetchContactGroups]

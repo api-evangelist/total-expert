@@ -1,0 +1,72 @@
+arazzo: 1.0.1
+info:
+  title: Sync a Total Expert contact into Birdeye
+  version: 1.0.0
+  description: >-
+    Reads one contact from Total Expert and creates or updates the matching
+    customer in a Birdeye business location, so review requests and reputation
+    workflows in Birdeye reach the same borrower the loan officer manages in
+    Total Expert. Total Expert lists Birdeye as an Integrated Partner
+    (Reputation Management) on its partner ecosystem page.
+sourceDescriptions:
+- name: totalExpertContacts
+  url: https://raw.githubusercontent.com/api-evangelist/total-expert/refs/heads/main/openapi/total-expert-contact-endpoints-api-openapi.yml
+  type: openapi
+- name: birdeyeContacts
+  url: https://raw.githubusercontent.com/api-evangelist/birdeye/refs/heads/main/openapi/birdeye-contact-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: syncContactToBirdeye
+  summary: Copy a Total Expert contact into Birdeye as a customer
+  inputs:
+    type: object
+    required: [contact_id, businessId]
+    properties:
+      contact_id:
+        type: string
+        description: Total Expert contact id
+      businessId:
+        type: string
+        description: Birdeye business (location) id
+  steps:
+  - stepId: fetchContact
+    operationId: $sourceDescriptions.totalExpertContacts.fetchContact
+    parameters:
+    - name: contact_id
+      in: path
+      value: $inputs.contact_id
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      first_name: $response.body#/first_name
+      last_name: $response.body#/last_name
+      email: $response.body#/email
+      external_id: $response.body#/id
+  - stepId: saveBirdeyeCustomer
+    operationId: $sourceDescriptions.birdeyeContacts.create-or-update-contact
+    parameters:
+    - name: businessId
+      in: query
+      value: $inputs.businessId
+    requestBody:
+      contentType: application/json
+      payload:
+        firstName: $steps.fetchContact.outputs.first_name
+        lastName: $steps.fetchContact.outputs.last_name
+        email: $steps.fetchContact.outputs.email
+        externalId: $steps.fetchContact.outputs.external_id
+    successCriteria:
+    - condition: $statusCode == 200
+  outputs:
+    contact_email: $steps.fetchContact.outputs.email
+x-integration:
+  partner: birdeye
+  edge_evidence: https://www.totalexpert.com/partners
+  edge_type: claimed
+  method: generated
+  generated: '2026-10-12'
+  generator: claude-opus-5-5 enrichment local-v5
+  guessed_steps:
+  - step: fetchContact
+    cause: provider-contract
+    why: fetchContact's 200 response carries only an example, no schema; output paths are read from the example's field names.

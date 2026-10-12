@@ -1,5 +1,5 @@
 ---
-name: Capture surveys and insights for a contact
+name: capture-survey-insights
 description: Store custom data against Total Expert contacts using surveys, and trigger marketing automation with insights.
 api: openapi/total-expert-openapi.yml
 operations: [createContactSurvey, getContactSurveys, createContactSurveyResponseAsUser, createContactAsAdmin, createInsightAsAdmin, fetchInsightTypes]

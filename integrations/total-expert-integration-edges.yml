@@ -1,5 +1,5 @@
 generated: '2026-10-12'
-method: none
+method: searched
 source:
 - https://zapier.com/apps/total-expert/integrations
 - https://n8n.io/integrations/total-expert/
@@ -9,8 +9,67 @@ checked:
 - https://composio.dev/toolkits/total-expert
 - https://monid.ai/tools/total-expert
 - https://n8n.io/integrations/total-expert/
+- https://www.totalexpert.com/partners
 - https://zapier.com/apps/total-expert/integrations
-summary: null
+summary: 9 Integrated Partners named on Total Expert's own partner ecosystem page; no Zapier/n8n marketplace listing
+  found.
 marketplace_apps: []
-edges: []
+edges:
+- partner_name: Adwerx
+  partner: null
+  type: claimed
+  evidence: https://www.totalexpert.com/partners
+  direction: unknown
+  category: Digital Advertising
+- partner_name: Birdeye
+  partner: birdeye
+  type: claimed
+  evidence: https://www.totalexpert.com/partners
+  direction: unknown
+  category: Reputation Management
+  partner_match: name-exact
+- partner_name: Box+Bestow
+  partner: null
+  type: claimed
+  evidence: https://www.totalexpert.com/partners
+  direction: unknown
+  category: Gifting
+- partner_name: Cordless
+  partner: null
+  type: claimed
+  evidence: https://www.totalexpert.com/partners
+  direction: unknown
+  category: Customer Engagement
+- partner_name: Cotality OneHomeowner
+  partner: null
+  type: claimed
+  evidence: https://www.totalexpert.com/partners
+  direction: unknown
+  category: Market Intelligence
+- partner_name: Cotality Precision Marketing
+  partner: null
+  type: claimed
+  evidence: https://www.totalexpert.com/partners
+  direction: unknown
+  category: Market Intelligence
+- partner_name: Covered
+  partner: null
+  type: claimed
+  evidence: https://www.totalexpert.com/partners
+  direction: unknown
+  category: Insurance Agency Management System (AMS)
+- partner_name: CredEvolv
+  partner: null
+  type: claimed
+  evidence: https://www.totalexpert.com/partners
+  direction: unknown
+  category: Financial Wellness & Education
+- partner_name: DirectMailers
+  partner: null
+  type: claimed
+  evidence: https://www.totalexpert.com/partners
+  direction: unknown
+  category: Business Solutions
 templates: []
+note: Partner page server-renders the first 9 Integrated Partners of a filterable directory; remaining entries load
+  client-side and were not recorded.
