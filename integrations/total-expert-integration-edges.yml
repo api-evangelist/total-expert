@@ -9,6 +9,7 @@ checked:
 - https://composio.dev/toolkits/total-expert
 - https://monid.ai/tools/total-expert
 - https://n8n.io/integrations/total-expert/
+- https://services.reso.org/orgs?showStats=true&showEndorsements=true
 - https://www.totalexpert.com/partners
 - https://zapier.com/apps/total-expert/integrations
 summary: 9 Integrated Partners named on Total Expert's own partner ecosystem page; no Zapier/n8n marketplace listing
@@ -70,6 +71,26 @@ edges:
   evidence: https://www.totalexpert.com/partners
   direction: unknown
   category: Business Solutions
+- partner_name: RESO
+  partner: reso
+  type: contract
+  channel: network-directory
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://services.reso.org/orgs?showStats=true&showEndorsements=true
+  contract_reference:
+    register: RESO organizations and endorsements (Real Estate Standards Organization)
+    spec_file: null
+    role: Technology Company
+    tier: Uncertified
+    registered_name: Total Expert
+    organization_uoi: T00000169
+    matched_domain: totalexpert.com
+    matched_by: domain
+    endorsements: null
+    summary_url: https://certification.reso.org/summary/T00000169
+    detected_by: sweep-real-estate.py
+    detected: '2026-10-13'
 templates: []
 note: Partner page server-renders the first 9 Integrated Partners of a filterable directory; remaining entries load
   client-side and were not recorded.

@@ -85,3 +85,27 @@
   source: edge
   status: pending-partner-spec
   arazzo: null
+- slug: total-expert-reso
+  label: RESO
+  partner: reso
+  partner_name: RESO
+  type: contract
+  channel: network-directory
+  evidence: https://services.reso.org/orgs?showStats=true&showEndorsements=true
+  source: edge
+  relationship: standard-participant
+  contract_reference:
+    register: RESO organizations and endorsements (Real Estate Standards Organization)
+    spec_file: null
+    role: Technology Company
+    tier: Uncertified
+    registered_name: Total Expert
+    organization_uoi: T00000169
+    matched_domain: totalexpert.com
+    matched_by: domain
+    endorsements: null
+    summary_url: https://certification.reso.org/summary/T00000169
+    detected_by: sweep-real-estate.py
+    detected: '2026-10-13'
+  status: not-a-workflow
+  arazzo: null
