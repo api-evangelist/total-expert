@@ -1,0 +1,48 @@
+# DERIVED by derive-integration-map.py (roadmap#949): each integration workflow, step by step,
+# resolved to spec file -> tag -> business capability (Turbo EA, CC BY 4.0) and the operation's
+# phrasing intent. Read from our own files; an unmapped link says why.
+slug: total-expert
+workflows:
+- file: total-expert-birdeye-sync-contact-to-reputation.yml
+  title: Sync a Total Expert contact into Birdeye
+  partner: birdeye
+  template: null
+  repos:
+  - total-expert
+  - birdeye
+  steps:
+  - step: fetchContact
+    repo: total-expert
+    spec_file: total-expert-contact-endpoints-api-openapi.yml
+    operationId: fetchContact
+    tag: Contact Endpoints
+    capability_id: BC-420.10
+    capability: Customer Data Management
+    capability_l1: BC-420
+    intent: null
+    effect: null
+    unmapped: null
+  - step: saveBirdeyeCustomer
+    repo: birdeye
+    spec_file: birdeye-contact-api-openapi.yml
+    operationId: create-or-update-contact
+    tag: Contact
+    capability_id: BC-420.10
+    capability: Customer Data Management
+    capability_l1: BC-420
+    intent: Create or update a contact
+    effect: write
+    unmapped: null
+  connects:
+    total-expert:
+      capabilities:
+      - BC-420.10
+      tags:
+      - Contact Endpoints
+    birdeye:
+      capabilities:
+      - BC-420.10
+      tags:
+      - Contact
+  intents:
+  - Create or update a contact
